@@ -1,0 +1,5 @@
+{
+  "name": "sot-builder",
+  "description": "Bộ skill dựng và duy trì SoT (Source of Truth) cho dự án design: sot-init, sot-feature, sot-sync, sot-audit, sot-handoff và các skill hỗ trợ (spec-review, design-system-build, figma-design-rename, flowchart, document-fullstack-v2).",
+  "author": { "name": "ducndiKame" }
+}

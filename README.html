@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="sot-builder md_to_html">
+<title>SoT builder</title>
+<style>
+:root{--bg:#FAF6F0;--surface:#FFFFFF;--surface-2:#F3EEE6;--text:#18191F;--text-2:#5F6063;--text-3:#707070;--line:#E7E0D5;--brand:#C4381F;--code:#F3EEE6;--quote:#8A5A00;--quote-bg:#FBEFD5;--shadow:0 4px 24px rgba(0,0,0,.05)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}}
+:root[data-theme="dark"]{--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--brand);word-break:break-word}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);max-width:1320px;margin:0 auto}
+nav.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 18px;border-right:1px solid var(--line)}
+nav.toc .doc{font-weight:700;font-size:15px;margin-bottom:14px;line-height:1.35}
+nav.toc a{display:block;color:var(--text-2);text-decoration:none;font-size:13.5px;padding:4px 8px;border-radius:8px;line-height:1.35}
+nav.toc a:hover{background:var(--surface-2);color:var(--text)}
+.themebtn{margin-top:18px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:20px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer;min-height:40px}
+main{padding:36px 44px 100px;min-width:0}
+h1{font-size:30px;line-height:1.25;margin:0 0 16px}
+h2{font-size:22px;margin:40px 0 12px;padding-top:8px;border-top:1px solid var(--line);scroll-margin-top:12px}
+h3{font-size:17px;margin:26px 0 8px}h4{font-size:15px;margin:20px 0 6px}
+p,li{max-width:84ch}
+blockquote{margin:14px 0;padding:12px 16px;border-left:4px solid var(--quote);background:var(--quote-bg);border-radius:0 12px 12px 0;font-size:14.5px}
+.tablewrap{overflow-x:auto;margin:12px 0 18px;border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--text-3);background:var(--surface-2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+code{font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:1px 6px;border-radius:6px;word-break:break-word}
+pre{background:var(--code);border-radius:14px;padding:14px 16px;overflow-x:auto;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre code{background:none;padding:0}
+li.task{list-style:none;margin-left:-22px}li.task input{margin-right:6px;transform:translateY(1px)}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+footer{margin-top:48px;color:var(--text-3);font-size:12.5px}
+.mermaid-wrap{background:#fff;border:1px solid #d9dee4;border-radius:14px;padding:12px;margin:14px 0 22px;overflow:auto}
+.mermaid-wrap pre.mermaid{background:#fff;margin:0;padding:0;min-width:760px;white-space:pre;color:#1b2733}
+.mlegend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:#41505f;margin-bottom:10px}
+.mlegend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid #08324f;vertical-align:middle;margin-right:4px}
+.themebtn:focus-visible,nav.toc a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}nav.toc .links{display:none}main{padding:22px 16px 72px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Mục lục"><div class="doc">SoT builder</div><div class="links"><a href="#sec-2">Đọc theo thứ tự</a><a href="#sec-3">10 skill trong bộ</a><a href="#sec-4">Quy trình 8 bước với skill tương ứng</a><a href="#sec-5">Cài nhanh (đã có Git, GitHub CLI, Python)</a><a href="#sec-6">Cập nhật</a><a href="#sec-7">Góp ý và sửa skill</a><a href="#sec-8">Cấu trúc repo</a></div><button class="themebtn" type="button" id="themeBtn">Đổi sáng/tối</button></nav>
+<main>
+<h1 id="sec-1">SoT builder</h1>
+<p>Bộ skill cho Claude Code giúp designer <strong>dựng và giữ SoT (Source of Truth, nguồn sự thật) cho dự án design</strong>: một thư mục có chỉ mục, nơi người mới và AI cùng tìm được câu trả lời hiện hành, căn cứ của nó và những điều còn chưa chốt.</p>
+<p>Bộ skill đi theo quy trình 8 bước trong talk *&quot;SoT cho design bằng AI&quot;*. Mỗi skill gói một việc lặp lại để AI làm nhanh hơn. Quyền quyết định vẫn ở designer và người chốt sản phẩm.</p>
+<blockquote><strong>Bắt đầu nhỏ, giữ nguồn rõ.</strong> Một tính năng có nguồn và câu hỏi mở tốt hơn một kho file mà không ai biết tin bản nào.</blockquote>
+<h2 id="sec-2">Đọc theo thứ tự</h2>
+<ol><li><strong><a href="docs/1-cai-dat.html">Cài đặt</a></strong>: cài công cụ, đăng nhập GitHub, kết nối Figma, cài skill. Làm một lần mỗi máy.</li><li><strong><a href="docs/2-quy-trinh-du-an-moi.html">Quy trình dựng SoT cho dự án mới</a></strong>: dùng skill nào, theo thứ tự nào, với câu lệnh mẫu.</li><li><strong><a href="docs/3-cach-dung-tung-skill.html">Cách dùng từng skill</a></strong>: khi nào dùng, gọi thế nào, đầu vào, đầu ra.</li></ol>
+<h2 id="sec-3">10 skill trong bộ</h2>
+<div class="tablewrap"><table><thead><tr><th>Skill</th><th>Làm gì</th><th>Bước trong quy trình</th></tr></thead><tbody><tr><td><strong>sot-init</strong></td><td>Dựng SoT cho dự án: phỏng vấn, gom nguồn vào <code>sources.md</code>, tạo khung README / CLAUDE.md / decisions, Git + private repo</td><td>01 Gom · 02 Chọn · 03 Dựng · 07 Git</td></tr><tr><td><strong>sot-feature</strong></td><td>Làm trọn một tính năng: brief/AC, quyết định, câu hỏi mở, danh sách màn nối frame ↔ AC, flowchart, copy, handoff dev</td><td>04 Làm</td></tr><tr><td><strong>sot-audit</strong></td><td>Kiểm tra SoT: chấm 6 điều kiện Definition of Done, tìm link chết và mâu thuẫn, chạy thử một task AI</td><td>05 Thử · trước 08</td></tr><tr><td><strong>sot-sync</strong></td><td>Sau mỗi quyết định: tìm mọi file bị ảnh hưởng, lập checklist, sửa đồng loạt, commit</td><td>06 Giữ / chốt (hằng ngày)</td></tr><tr><td><strong>sot-handoff</strong></td><td>Bàn giao SoT cho designer khác, hoặc nhận bàn giao: clone, đọc lối vào, PR đầu tiên</td><td>08 Bàn giao</td></tr><tr><td>spec-review</td><td>Review doc PM, chốt doc và design trong khoảng 2 vòng</td><td>Hỗ trợ 02, 04</td></tr><tr><td>design-system-build</td><td>Audit Figma, dựng tài liệu design system (có chế độ tối thiểu cho phase 1)</td><td>Hỗ trợ 03</td></tr><tr><td>figma-design-rename</td><td>Đặt lại tên page / section / frame / layer trong Figma theo quy chuẩn</td><td>Hỗ trợ 01, 04</td></tr><tr><td>flowchart</td><td>Vẽ flowchart luồng tính năng (Mermaid + HTML)</td><td>Hỗ trợ 04</td></tr><tr><td>document-fullstack-v2</td><td>Viết AC dạng Gherkin, dò edge case</td><td>Hỗ trợ 04</td></tr></tbody></table></div>
+<p>5 skill in đậm là phần mới của bộ. 5 skill còn lại là skill có sẵn, đã được làm sạch và chỉnh lại để chạy được trong SoT.</p>
+<h2 id="sec-4">Quy trình 8 bước với skill tương ứng</h2>
+<div class="mermaid-wrap"><div class="mlegend"><span><i style="background:#0b3d61"></i>Màn / Terminator</span><span><i style="background:#e8f1fb;border-color:#1a6fb0"></i>API / hệ thống</span><span><i style="background:#fff7e6;border-color:#c67f1e"></i>Quyết định</span><span><i style="background:#fcecec;border-color:#c0392b"></i>Lỗi (retry)</span><span><i style="background:#f6d7d4;border-color:#b3261e"></i>Lỗi → thoát</span><span><i style="background:#eef0f2;border-color:#8a94a0"></i>Rẽ nhánh khác</span></div><pre class="mermaid">flowchart LR
+  A[&quot;01 Gom&lt;br/&gt;sources.md&quot;] --&gt; B[&quot;02 Chọn&lt;br/&gt;bản hiện hành&quot;] --&gt; C[&quot;03 Dựng&lt;br/&gt;README + folder&quot;] --&gt; D[&quot;04 Làm&lt;br/&gt;1 feature đủ sâu&quot;] --&gt; E[&quot;05 Thử&lt;br/&gt;1 task AI&quot;] --&gt; F[&quot;06 Giữ / chốt&lt;br/&gt;phase 1&quot;] --&gt; G[&quot;07 Git&lt;br/&gt;private repo&quot;] --&gt; H[&quot;08 Bàn giao&lt;br/&gt;clone + PR đầu&quot;]
+  A -.- I1([sot-init])
+  B -.- I1
+  C -.- I1
+  G -.- I1
+  D -.- I2([sot-feature])
+  E -.- I3([sot-audit])
+  F -.- I4([sot-sync])
+  H -.- I5([sot-handoff])</pre></div>
+<h2 id="sec-5">Cài nhanh (đã có Git, GitHub CLI, Python)</h2>
+<pre><code>gh repo clone ducndiKame/SoT-builder
+cd SoT-builder
+python3 install.py        # Windows: py install.py</code></pre>
+<p>Sau đó mở một phiên Claude Code mới và gõ <code>/</code> để thấy các skill. Chưa có công cụ nào thì làm theo <a href="docs/1-cai-dat.html">Cài đặt</a>.</p>
+<h2 id="sec-6">Cập nhật</h2>
+<pre><code>cd SoT-builder
+git pull
+python3 install.py        # chỉ cập nhật skill nào có thay đổi; bản cũ được sao lưu</code></pre>
+<h2 id="sec-7">Góp ý và sửa skill</h2>
+<ul><li>Sửa trong thư mục <code>skills/&lt;tên&gt;/</code> của repo này, không sửa bản đã cài trong <code>~/.claude/skills/</code>. Lần cài sau, bản đã cài sẽ bị ghi đè.</li><li>Tạo branch, sửa, mở pull request, ghi rõ tình huống thật khiến bạn muốn sửa. Skill tốt lên nhờ bài học từ dự án thật.</li><li>Mọi skill dùng thư viện chuẩn của Python 3, chạy được trên cả macOS và Windows. Đừng thêm script chỉ chạy được trên một hệ điều hành.</li></ul>
+<h2 id="sec-8">Cấu trúc repo</h2>
+<pre><code>SoT-builder/
+├── README.md                ← file này
+├── install.py               ← cài skill vào ~/.claude/skills
+├── docs/                    ← cài đặt, quy trình, cách dùng từng skill (.md + .html)
+├── skills/&lt;tên-skill&gt;/      ← mỗi skill: SKILL.md + scripts/ assets/ references/
+└── .claude-plugin/          ← để cài theo dạng plugin của Claude Code (tuỳ chọn)</code></pre>
+<footer>Sinh tự động từ <code>README.md</code> bằng <code>_tools/md_to_html.py</code>. Sửa file .md rồi chạy lại script, không sửa trực tiếp file .html.</footer>
+</main>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('themeBtn');try{var t=localStorage.getItem('doc-theme');if(t)r.setAttribute('data-theme',t);}catch(e){}
+b.addEventListener('click',function(){var c=r.getAttribute('data-theme');if(!c){c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('doc-theme',n);}catch(e){}});})();
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'default',flowchart:{curve:'basis',nodeSpacing:38,rankSpacing:42},securityLevel:'loose'});</script>
+</body>
+</html>

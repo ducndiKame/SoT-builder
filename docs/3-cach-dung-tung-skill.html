@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="sot-builder md_to_html">
+<title>Cách dùng từng skill</title>
+<style>
+:root{--bg:#FAF6F0;--surface:#FFFFFF;--surface-2:#F3EEE6;--text:#18191F;--text-2:#5F6063;--text-3:#707070;--line:#E7E0D5;--brand:#C4381F;--code:#F3EEE6;--quote:#8A5A00;--quote-bg:#FBEFD5;--shadow:0 4px 24px rgba(0,0,0,.05)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}}
+:root[data-theme="dark"]{--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--brand);word-break:break-word}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);max-width:1320px;margin:0 auto}
+nav.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 18px;border-right:1px solid var(--line)}
+nav.toc .doc{font-weight:700;font-size:15px;margin-bottom:14px;line-height:1.35}
+nav.toc a{display:block;color:var(--text-2);text-decoration:none;font-size:13.5px;padding:4px 8px;border-radius:8px;line-height:1.35}
+nav.toc a:hover{background:var(--surface-2);color:var(--text)}
+.themebtn{margin-top:18px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:20px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer;min-height:40px}
+main{padding:36px 44px 100px;min-width:0}
+h1{font-size:30px;line-height:1.25;margin:0 0 16px}
+h2{font-size:22px;margin:40px 0 12px;padding-top:8px;border-top:1px solid var(--line);scroll-margin-top:12px}
+h3{font-size:17px;margin:26px 0 8px}h4{font-size:15px;margin:20px 0 6px}
+p,li{max-width:84ch}
+blockquote{margin:14px 0;padding:12px 16px;border-left:4px solid var(--quote);background:var(--quote-bg);border-radius:0 12px 12px 0;font-size:14.5px}
+.tablewrap{overflow-x:auto;margin:12px 0 18px;border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--text-3);background:var(--surface-2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+code{font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:1px 6px;border-radius:6px;word-break:break-word}
+pre{background:var(--code);border-radius:14px;padding:14px 16px;overflow-x:auto;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre code{background:none;padding:0}
+li.task{list-style:none;margin-left:-22px}li.task input{margin-right:6px;transform:translateY(1px)}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+footer{margin-top:48px;color:var(--text-3);font-size:12.5px}
+.mermaid-wrap{background:#fff;border:1px solid #d9dee4;border-radius:14px;padding:12px;margin:14px 0 22px;overflow:auto}
+.mermaid-wrap pre.mermaid{background:#fff;margin:0;padding:0;min-width:760px;white-space:pre;color:#1b2733}
+.mlegend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:#41505f;margin-bottom:10px}
+.mlegend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid #08324f;vertical-align:middle;margin-right:4px}
+.themebtn:focus-visible,nav.toc a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}nav.toc .links{display:none}main{padding:22px 16px 72px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Mục lục"><div class="doc">Cách dùng từng skill</div><div class="links"><a href="#sec-2">sot-init: dựng SoT cho dự án</a><a href="#sec-3">sot-feature: làm trọn một tính năng</a><a href="#sec-4">sot-sync: đồng bộ sau mỗi quyết định</a><a href="#sec-5">sot-audit: kiểm tra SoT</a><a href="#sec-6">sot-handoff: bàn giao và tiếp nhận</a><a href="#sec-7">Skill hỗ trợ</a><a href="#sec-8">Script dùng chung trong mỗi dự án SoT</a></div><button class="themebtn" type="button" id="themeBtn">Đổi sáng/tối</button></nav>
+<main>
+<h1 id="sec-1">Cách dùng từng skill</h1>
+<p>Không cần gõ tên skill. Claude tự chọn skill phù hợp theo câu bạn nhắn. Muốn chắc chắn thì gõ <code>/</code> cộng tên skill, ví dụ <code>/sot-sync</code>. Nếu cài theo dạng plugin thì gõ <code>/sot-builder:sot-sync</code>.</p>
+<p>Mọi skill tuân theo 3 luật chung:</p>
+<ul><li><strong>Không tự chốt thay bạn.</strong> Phần suy ra được viết dạng câu hỏi. Chỉ ghi <strong>Đã chốt</strong> khi có người xác nhận.</li><li><strong>Hỏi trước khi làm việc khó hoàn tác hoặc ra bên ngoài:</strong> sửa nhiều file, sửa Figma, tạo repo, push, mời người.</li><li><strong>Ghi nguồn cho mọi ý</strong>, để người sau kiểm tra lại được.</li></ul>
+<hr>
+<h2 id="sec-2">sot-init: dựng SoT cho dự án</h2>
+<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Dùng khi</strong></td><td>Bắt đầu dự án mới; hoặc dự án đang chạy mà tài liệu rải rác, chưa có SoT</td></tr><tr><td><strong>Câu mẫu</strong></td><td>&quot;Dựng SoT cho dự án Meditation App, Figma &lt;link&gt;, doc PM &lt;link&gt;&quot; · &quot;Gom nguồn dự án này lại&quot; · &quot;Đưa SoT lên GitHub&quot;</td></tr><tr><td><strong>Đầu vào</strong></td><td>Tên dự án, link Figma, doc PM, ai chốt được gì, tệp user</td></tr><tr><td><strong>Đầu ra</strong></td><td><code>README.md</code>, <code>CLAUDE.md</code>, <code>sources.md</code>, <code>decisions.md</code>, <code>context/</code>, <code>design-system/README.md</code>, <code>features/README.md</code>, <code>_tools/</code>; commit nền + private repo (khi bạn đồng ý)</td></tr><tr><td><strong>Lưu ý</strong></td><td>Không tạo folder rỗng. Không di chuyển file cũ khi chưa hỏi. Mâu thuẫn giữa các nguồn được ghi vào bảng chờ chốt, không âm thầm chọn một phía</td></tr><tr><td><strong>Dùng tiếp</strong></td><td><code>sot-feature</code> cho một tính năng mẫu</td></tr></tbody></table></div>
+<h2 id="sec-3">sot-feature: làm trọn một tính năng</h2>
+<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Dùng khi</strong></td><td>Thêm một tính năng vào SoT; kiểm kê màn của một section Figma; chuẩn bị handoff dev</td></tr><tr><td><strong>Câu mẫu</strong></td><td>&quot;Làm tính năng water-tracker vào SoT, section Figma Water V1.0.0, doc &lt;link&gt;&quot; · &quot;Map frame của section Settings V1.0.1 với AC&quot; · &quot;Làm handoff dev cho reminders v1.0.1&quot;</td></tr><tr><td><strong>Đầu vào</strong></td><td>Tên tính năng, version theo Figma, section Figma, doc PM</td></tr><tr><td><strong>Đầu ra</strong></td><td><code>features/&lt;tên&gt;/</code>, gồm <code>CLAUDE.md</code>, <code>decisions.md</code>, <code>open-questions.md</code>, <code>brief/…-v&lt;x.y.z&gt;.md</code>, <code>design/screen-inventory.md</code> (frame ↔ AC ↔ quyết định), <code>design/&lt;tên&gt;-flow.mmd</code>, <code>copy/ui-copy.md</code>. Tới bước bàn giao thì thêm <code>handoff/handoff-v&lt;x.y.z&gt;.md</code></td></tr><tr><td><strong>Lưu ý</strong></td><td>Version trong tên file lấy đúng như Figma (section, nếu không có thì theo page). Ngày trong tên brief là ngày của bản doc. Đọc text trong frame, không tin tên frame. Frame chưa có AC thì ghi &quot;Chưa có AC riêng&quot;. Handoff chỉ làm khi bạn yêu cầu, không làm trong lần dựng đầu</td></tr><tr><td><strong>Gọi kèm</strong></td><td><code>figma-design-rename</code>, <code>spec-review</code>, <code>document-fullstack-v2</code>, <code>flowchart</code>, <code>design-system-build</code></td></tr></tbody></table></div>
+<h2 id="sec-4">sot-sync: đồng bộ sau mỗi quyết định</h2>
+<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Dùng khi</strong></td><td>PM trả lời câu hỏi; bạn chốt một điều; doc có bản mới; đổi version / tên file; tính năng chốt xong</td></tr><tr><td><strong>Câu mẫu</strong></td><td>&quot;PM chốt SET-12 theo (a)&quot; · &quot;Đã chốt goal nước 2,500 ml, bỏ 2,000&quot; · &quot;Doc Settings có bản 5 rồi&quot; · &quot;Tính năng reminders chốt xong, dọn review&quot;</td></tr><tr><td><strong>Đầu vào</strong></td><td>Thay đổi là gì, ai chốt, ngày nào, thay thế điều gì cũ</td></tr><tr><td><strong>Đầu ra</strong></td><td>Checklist <strong>File → Sửa gì → Vì sao</strong> để bạn xác nhận; sau đó sửa đồng loạt, chuyển bản cũ vào <code>_archive/</code>, sửa link, sinh lại HTML, commit</td></tr><tr><td><strong>Lưu ý</strong></td><td>Brief mới nhất thắng file phụ trợ. <code>decisions.md</code> chỉ thêm dòng, không xoá. Đảo quyết định thì ghi &quot;thay thế #N&quot;</td></tr><tr><td><strong>Đây là skill dùng nhiều nhất</strong></td><td>Mỗi quyết định thường chạm 4–6 file. Skill này để không sót file nào</td></tr></tbody></table></div>
+<h2 id="sec-5">sot-audit: kiểm tra SoT</h2>
+<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Dùng khi</strong></td><td>Sau khi làm xong tính năng mẫu; trước khi bàn giao; định kỳ; khi nghi SoT bị lệch</td></tr><tr><td><strong>Câu mẫu</strong></td><td>&quot;Audit SoT&quot; · &quot;SoT đã đủ để bàn giao chưa?&quot; · &quot;Chạy thử một task với SoT xem AI có dùng đúng nguồn không&quot;</td></tr><tr><td><strong>Đầu ra</strong></td><td><code>audits/YYYY-MM-DD_sot-audit.md</code> (+ <code>.html</code>), gồm: điểm DoD x/6, 3 vấn đề đáng sửa nhất, bảng mâu thuẫn, kết quả chạy thử task, danh sách đề xuất sửa</td></tr><tr><td><strong>Lưu ý</strong></td><td>Chỉ kiểm tra, không tự sửa. Sửa thì nhắn &quot;sửa theo báo cáo audit&quot;, việc đó đi qua <code>sot-sync</code></td></tr><tr><td><strong>Chạy riêng script</strong></td><td><code>python3 ~/.claude/skills/sot-audit/scripts/audit_sot.py &quot;&lt;thư mục dự án&gt;&quot;</code></td></tr></tbody></table></div>
+<h2 id="sec-6">sot-handoff: bàn giao và tiếp nhận</h2>
+<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Dùng khi</strong></td><td>Chuyển dự án cho designer khác, nghỉ dài ngày, onboard người mới</td></tr><tr><td><strong>Câu mẫu (giao)</strong></td><td>&quot;Bàn giao SoT cho Lan, GitHub lan-design&quot;</td></tr><tr><td><strong>Câu mẫu (nhận)</strong></td><td>&quot;Nhận bàn giao SoT từ repo ducndiKame/FitAgain-SoT&quot;</td></tr><tr><td><strong>Đầu ra</strong></td><td>Giao: <code>BAN-GIAO.md</code>, README / trạng thái đã cập nhật, commit bàn giao, tin nhắn soạn sẵn cho người nhận. Nhận: repo đã clone, danh sách quyền còn thiếu, pull request đầu tiên</td></tr><tr><td><strong>Lưu ý</strong></td><td>Không dùng cho bàn giao design → dev. Việc đó là file <code>handoff-v&lt;x.y.z&gt;.md</code> của <code>sot-feature</code></td></tr></tbody></table></div>
+<hr>
+<h2 id="sec-7">Skill hỗ trợ</h2>
+<div class="tablewrap"><table><thead><tr><th>Skill</th><th>Dùng khi</th><th>Câu mẫu</th><th>Ghi chú trong SoT</th></tr></thead><tbody><tr><td><strong>spec-review</strong></td><td>Có doc PM cần đọc, phản biện, đối chiếu với Figma</td><td>&quot;Review doc Settings &lt;link&gt;&quot; · &quot;PM vừa sửa doc, xem lại&quot;</td><td>File <code>brief/YYYY-MM-DD_spec-review-&lt;tn&gt;-v&lt;x.y.z&gt;[-rN].md</code>. Tham số dự án (cách đọc doc, xưng hô với PM) nằm trong <code>CLAUDE.md</code>, mục &quot;Spec review&quot;. Chốt xong thì chuyển sang <code>sot-sync</code></td></tr><tr><td><strong>design-system-build</strong></td><td>Cần tài liệu design system từ Figma</td><td>&quot;Dựng design system tối thiểu cho tính năng water&quot; · &quot;Audit design system đầy đủ&quot;</td><td><strong>Tối thiểu</strong>: ghi vào <code>design-system/README.md</code>. <strong>Đầy đủ</strong>: ghi vào <code>design-system/DesignSystem.md</code></td></tr><tr><td><strong>figma-design-rename</strong></td><td>Tên trong Figma lộn xộn</td><td>&quot;Đặt tên lại section Water theo chuẩn&quot;</td><td>Nên chạy trước khi kiểm kê màn, để <code>screen-inventory</code> dùng tên đúng</td></tr><tr><td><strong>flowchart</strong></td><td>Cần sơ đồ luồng</td><td>&quot;Vẽ flowchart tính năng water&quot;</td><td>Lưu ở <code>design/&lt;tn&gt;-flow.mmd</code>, chèn vào đầu brief</td></tr><tr><td><strong>document-fullstack-v2</strong></td><td>Cần viết AC Gherkin, dò edge case</td><td>&quot;Viết AC cho tính năng reminders&quot;</td><td>Lưu ở <code>brief/</code>, AC chưa duyệt thì ghi &quot;chờ PM xác nhận&quot;</td></tr></tbody></table></div>
+<h2 id="sec-8">Script dùng chung trong mỗi dự án SoT</h2>
+<p><code>sot-init</code> chép sẵn vào <code>_tools/</code> của dự án:</p>
+<div class="tablewrap"><table><thead><tr><th>Script</th><th>Dùng để</th></tr></thead><tbody><tr><td><code>python3 _tools/md_to_html.py &lt;file.md&gt; …</code></td><td>Sinh bản <code>.html</code> (có mục lục, sáng/tối, vẽ Mermaid) cho file <code>.md</code></td></tr><tr><td><code>python3 _tools/md_to_html.py --all features/</code></td><td>Sinh lại toàn bộ, bỏ qua <code>_archive/</code></td></tr><tr><td><code>python3 _tools/mmd_to_html.py &lt;flow.mmd&gt;</code></td><td>Sinh <code>.html</code> cho flowchart</td></tr></tbody></table></div>
+<p>Windows dùng <code>py</code> thay cho <code>python3</code>. Không sửa tay file <code>.html</code>: sửa file <code>.md</code> rồi chạy lại script.</p>
+<p>Dự án dựng trước khi có bộ skill này (chưa có <code>_tools/</code>): các skill tự dùng bản dự phòng trong skill <code>sot-init</code> và sẽ đề nghị chép <code>_tools/</code> vào dự án. Muốn chép ngay thì nhắn &quot;chép _tools của sot-init vào dự án này&quot;.</p>
+<footer>Sinh tự động từ <code>3-cach-dung-tung-skill.md</code> bằng <code>_tools/md_to_html.py</code>. Sửa file .md rồi chạy lại script, không sửa trực tiếp file .html.</footer>
+</main>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('themeBtn');try{var t=localStorage.getItem('doc-theme');if(t)r.setAttribute('data-theme',t);}catch(e){}
+b.addEventListener('click',function(){var c=r.getAttribute('data-theme');if(!c){c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('doc-theme',n);}catch(e){}});})();
+</script>
+</body>
+</html>

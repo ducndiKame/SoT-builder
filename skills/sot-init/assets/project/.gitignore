@@ -1,0 +1,18 @@
+# Hệ điều hành
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# File khoá tạm của Office (đang mở pptx/docx/xlsx)
+~$*
+
+# Thư viện cài theo máy
+node_modules/
+__pycache__/
+
+# Cấu hình Claude Code riêng từng máy
+.claude/settings.local.json
+
+# Không bao giờ commit token, mật khẩu, file .env
+.env
+*.env

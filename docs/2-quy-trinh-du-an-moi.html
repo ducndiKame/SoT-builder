@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="sot-builder md_to_html">
+<title>Quy trình dựng SoT cho dự án mới</title>
+<style>
+:root{--bg:#FAF6F0;--surface:#FFFFFF;--surface-2:#F3EEE6;--text:#18191F;--text-2:#5F6063;--text-3:#707070;--line:#E7E0D5;--brand:#C4381F;--code:#F3EEE6;--quote:#8A5A00;--quote-bg:#FBEFD5;--shadow:0 4px 24px rgba(0,0,0,.05)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}}
+:root[data-theme="dark"]{--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--brand);word-break:break-word}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);max-width:1320px;margin:0 auto}
+nav.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 18px;border-right:1px solid var(--line)}
+nav.toc .doc{font-weight:700;font-size:15px;margin-bottom:14px;line-height:1.35}
+nav.toc a{display:block;color:var(--text-2);text-decoration:none;font-size:13.5px;padding:4px 8px;border-radius:8px;line-height:1.35}
+nav.toc a:hover{background:var(--surface-2);color:var(--text)}
+.themebtn{margin-top:18px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:20px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer;min-height:40px}
+main{padding:36px 44px 100px;min-width:0}
+h1{font-size:30px;line-height:1.25;margin:0 0 16px}
+h2{font-size:22px;margin:40px 0 12px;padding-top:8px;border-top:1px solid var(--line);scroll-margin-top:12px}
+h3{font-size:17px;margin:26px 0 8px}h4{font-size:15px;margin:20px 0 6px}
+p,li{max-width:84ch}
+blockquote{margin:14px 0;padding:12px 16px;border-left:4px solid var(--quote);background:var(--quote-bg);border-radius:0 12px 12px 0;font-size:14.5px}
+.tablewrap{overflow-x:auto;margin:12px 0 18px;border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--text-3);background:var(--surface-2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+code{font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:1px 6px;border-radius:6px;word-break:break-word}
+pre{background:var(--code);border-radius:14px;padding:14px 16px;overflow-x:auto;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre code{background:none;padding:0}
+li.task{list-style:none;margin-left:-22px}li.task input{margin-right:6px;transform:translateY(1px)}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+footer{margin-top:48px;color:var(--text-3);font-size:12.5px}
+.mermaid-wrap{background:#fff;border:1px solid #d9dee4;border-radius:14px;padding:12px;margin:14px 0 22px;overflow:auto}
+.mermaid-wrap pre.mermaid{background:#fff;margin:0;padding:0;min-width:760px;white-space:pre;color:#1b2733}
+.mlegend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:#41505f;margin-bottom:10px}
+.mlegend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid #08324f;vertical-align:middle;margin-right:4px}
+.themebtn:focus-visible,nav.toc a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}nav.toc .links{display:none}main{padding:22px 16px 72px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Mục lục"><div class="doc">Quy trình dựng SoT cho dự án mới</div><div class="links"><a href="#sec-2">Tổng quan</a><a href="#sec-3">Chuẩn bị (5 phút)</a><a href="#sec-4">Chặng 1: Gom và chọn nguồn, dựng khung (<code>sot-init</code>)</a><a href="#sec-5">Chặng 2: Làm trọn một tính năng (<code>sot-feature</code>)</a><a href="#sec-6">Chặng 3: Chạy thử bằng một task AI (<code>sot-audit</code>)</a><a href="#sec-7">Chặng 4: Vá lỗ hổng, chốt phase 1, đưa lên Git (<code>sot-sync</code> + <code>sot-init</code>)</a><a href="#sec-8">Từ đây: nhịp làm việc hằng ngày</a><a href="#sec-9">Bàn giao (<code>sot-handoff</code>)</a><a href="#sec-10">30 phút đầu, nếu chỉ có 30 phút</a></div><button class="themebtn" type="button" id="themeBtn">Đổi sáng/tối</button></nav>
+<main>
+<h1 id="sec-1">Quy trình dựng SoT cho dự án mới</h1>
+<p>Tài liệu này đi từ một thư mục trống đến một SoT phase 1 đã nằm trên private repo, sẵn sàng bàn giao. Mỗi chặng ghi rõ: dùng skill nào, nhắn Claude câu gì, và đầu ra cần kiểm tra là gì.</p>
+<blockquote>Đo tiến độ bằng <strong>đầu ra mở ra kiểm tra được</strong>, không bằng số giờ viết tài liệu.</blockquote>
+<h2 id="sec-2">Tổng quan</h2>
+<div class="tablewrap"><table><thead><tr><th>Chặng</th><th>Bước</th><th>Skill</th><th>Đầu ra cần kiểm tra</th></tr></thead><tbody><tr><td>Nguồn</td><td>01 Gom · 02 Chọn</td><td><code>sot-init</code></td><td><code>sources.md</code> có link + owner; bảng mâu thuẫn có người chốt</td></tr><tr><td>Khung</td><td>03 Dựng</td><td><code>sot-init</code></td><td><code>README.md</code>, <code>CLAUDE.md</code> chỉ rõ thứ tự đọc</td></tr><tr><td>Phase 1</td><td>04 Làm</td><td><code>sot-feature</code> (+ <code>spec-review</code>, <code>figma-design-rename</code>, <code>flowchart</code>, <code>document-fullstack-v2</code>, <code>design-system-build</code>)</td><td>Một tính năng có quyết định, AC, danh sách màn, câu hỏi mở</td></tr><tr><td>Phase 1</td><td>05 Thử</td><td><code>sot-audit</code></td><td>Báo cáo chạy thử task + danh sách lỗ hổng</td></tr><tr><td>Phase 1</td><td>06 Giữ / chốt</td><td><code>sot-sync</code></td><td>Các file đồng bộ sau mỗi quyết định; đủ 6 điều kiện DoD</td></tr><tr><td>Git</td><td>07 Git</td><td><code>sot-init</code> (bước Git)</td><td>Commit nền trên private repo</td></tr><tr><td>Bàn giao</td><td>08 Bàn giao</td><td><code>sot-handoff</code></td><td><code>BAN-GIAO.md</code>, người nhận mở được PR đầu tiên</td></tr></tbody></table></div>
+<hr>
+<h2 id="sec-3">Chuẩn bị (5 phút)</h2>
+<ul><li>Đã cài xong theo <a href="1-cai-dat.html">Cài đặt</a>.</li><li>Chuẩn bị link: file Figma chính, doc PM (hoặc file spec), research nếu có.</li><li>Trong VS Code: <strong>File → Open Folder…</strong> và chọn thư mục cha nơi sẽ đặt dự án, ví dụ <code>~/Projects</code>. Mở cả thư mục thay vì mở từng file rời, để Claude thấy được cây file.</li></ul>
+<h2 id="sec-4">Chặng 1: Gom và chọn nguồn, dựng khung (<code>sot-init</code>)</h2>
+<p>Nhắn Claude:</p>
+<blockquote>Dựng SoT cho dự án mới tên &quot;Meditation App&quot;. Figma: &lt;link&gt;. Doc PM ở &lt;portal / link&gt;. Sản phẩm mới, iOS, thị trường US.</blockquote>
+<p>Claude sẽ:</p>
+<ol><li>Hỏi thêm vài câu: tệp user, ai chốt được gì, cách đọc doc PM... Trả lời ngắn. Chỗ nào chưa biết thì cứ nói chưa biết, Claude sẽ ghi &quot;Còn mở&quot; chứ không đoán.</li><li>Dựng khung thư mục. Không tạo folder rỗng.</li><li>Gom nguồn vào <code>sources.md</code>. Chưa kết luận nguồn nào đúng.</li><li>So sánh các nguồn trùng chủ đề, gắn nhãn <strong>Hiện hành / Cũ / Còn mở</strong>, và hỏi bạn ai chốt các chỗ mâu thuẫn.</li></ol>
+<p><strong>Bạn kiểm tra:</strong></p>
+<ul><li><code>README.md</code> có chỉ đúng thứ tự đọc không?</li><li><code>sources.md</code> có thiếu nguồn nào không? Owner có đúng không?</li><li>Có mâu thuẫn nào bạn chốt được ngay không? Chốt luôn thì Claude ghi vào <code>decisions.md</code>.</li></ul>
+<p>Lúc này chưa cần đưa lên Git. Để sang chặng 4.</p>
+<h2 id="sec-5">Chặng 2: Làm trọn một tính năng (<code>sot-feature</code>)</h2>
+<p>Chọn <strong>một</strong> tính năng nhỏ làm mẫu. Ví dụ FitAgain chọn Water Tracker. Đừng làm tất cả tính năng một lúc.</p>
+<blockquote>Làm tính năng water-tracker vào SoT. Section Figma &quot;Water V1.0.0&quot;, doc PM &lt;link&gt;.</blockquote>
+<p>Trong lúc làm, <code>sot-feature</code> sẽ đề nghị gọi các skill hỗ trợ khi cần:</p>
+<div class="tablewrap"><table><thead><tr><th>Gặp tình huống</th><th>Skill hỗ trợ</th></tr></thead><tbody><tr><td>Tên frame trong Figma lộn xộn (<code>Frame 427</code>, tên trùng)</td><td><code>figma-design-rename</code></td></tr><tr><td>Doc PM mới, mơ hồ, lệch với Figma</td><td><code>spec-review</code>: gửi PM danh sách câu hỏi có phương án (a)</td></tr><tr><td>Chưa có AC, hoặc AC không kiểm thử được</td><td><code>document-fullstack-v2</code></td></tr><tr><td>Cần sơ đồ luồng</td><td><code>flowchart</code></td></tr><tr><td>Chưa có design system</td><td><code>design-system-build</code>, <strong>chế độ tối thiểu</strong>: chỉ token và component tính năng này dùng</td></tr></tbody></table></div>
+<p><strong>Bạn kiểm tra</strong> &quot;đủ sâu&quot; theo 5 tiêu chí:</p>
+<ul><li>Có quyết định, kèm phương án đã loại.</li><li>Brief có hành vi và AC.</li><li><code>screen-inventory.md</code> nối được frame ↔ AC ↔ quyết định.</li><li>Câu hỏi mở có owner.</li><li>Trạng thái rõ ràng: Đã chốt / Đã vẽ / Còn mở.</li></ul>
+<h2 id="sec-6">Chặng 3: Chạy thử bằng một task AI (<code>sot-audit</code>)</h2>
+<blockquote>Audit SoT dự án này và chạy thử một task với tính năng water-tracker.</blockquote>
+<p>Claude chạy 3 tầng kiểm tra:</p>
+<ol><li>Script kiểm tra máy móc: link chết, placeholder chưa điền, bảng quyết định thiếu người chốt...</li><li>Đọc hiểu để rà mâu thuẫn: quyết định ↔ brief ↔ Figma.</li><li>Giao một task nhỏ cho một AI mới chỉ được đọc SoT, rồi chấm xem nó có dẫn đúng nguồn và tránh được phương án đã loại không.</li></ol>
+<p>Kết quả lưu ở <code>audits/YYYY-MM-DD_sot-audit.md</code>.</p>
+<p><strong>Bạn kiểm tra:</strong> đọc kết quả task chạy thử. Đừng chấm UI có đẹp không. Hãy hỏi: AI phải đoán ở chỗ nào? Mỗi chỗ phải đoán là một lỗ hổng cần vá trong SoT.</p>
+<h2 id="sec-7">Chặng 4: Vá lỗ hổng, chốt phase 1, đưa lên Git (<code>sot-sync</code> + <code>sot-init</code>)</h2>
+<p>Vá các lỗ hổng mà audit tìm ra:</p>
+<blockquote>Sửa các mục trong báo cáo audit mới nhất.</blockquote>
+<p><code>sot-sync</code> lập checklist (file nào, sửa gì, vì sao) và <strong>chờ bạn xác nhận</strong> rồi mới sửa.</p>
+<p>Lặp chặng 3 và 4 cho đến khi đủ <strong>6 điều kiện Definition of Done</strong>:</p>
+<ol><li>README chỉ lối vào và thứ tự đọc</li><li>Nguồn chính có owner, trạng thái, link</li><li>Một tính năng có quyết định, hành vi, AC và danh sách màn</li><li>Design system đủ token và component cho tính năng đó</li><li>Mâu thuẫn chưa chốt được ghi rõ</li><li>Đã chạy một task AI và designer đã review</li></ol>
+<p>Đủ 6 điều kiện thì đưa lên Git:</p>
+<blockquote>Đưa SoT này lên GitHub, repo private.</blockquote>
+<p>Claude quét bí mật (token, mật khẩu), tạo commit nền, <strong>hỏi bạn trước khi tạo repo</strong>, rồi push.</p>
+<h2 id="sec-8">Từ đây: nhịp làm việc hằng ngày</h2>
+<div class="tablewrap"><table><thead><tr><th>Khi</th><th>Nhắn Claude</th><th>Skill</th></tr></thead><tbody><tr><td>Bắt đầu buổi làm</td><td>&quot;pull repo&quot;</td><td>(Git)</td></tr><tr><td>PM gửi doc mới / doc sửa</td><td>&quot;PM vừa sửa doc &lt;tính năng&gt;, xem lại giúp&quot;</td><td><code>spec-review</code></td></tr><tr><td>PM trả lời, hoặc bạn chốt một điều</td><td>&quot;PM chốt SET-12 theo (a)&quot; / &quot;đã chốt goal 2,500 ml&quot;</td><td><code>sot-sync</code></td></tr><tr><td>Bắt đầu tính năng mới</td><td>&quot;Làm tính năng &lt;tên&gt; vào SoT, section Figma &lt;...&gt;&quot;</td><td><code>sot-feature</code></td></tr><tr><td>Tính năng chốt xong</td><td>&quot;Tính năng &lt;tên&gt; chốt xong rồi, dọn review&quot;</td><td><code>sot-sync</code></td></tr><tr><td>Trước khi bàn giao / định kỳ</td><td>&quot;Audit SoT&quot;</td><td><code>sot-audit</code></td></tr><tr><td>Kết thúc buổi làm</td><td>&quot;push lên repo&quot;</td><td>(Git)</td></tr></tbody></table></div>
+<p>Đổi máy: push ở máy cũ, <strong>pull ở máy mới trước khi sửa</strong>.</p>
+<h2 id="sec-9">Bàn giao (<code>sot-handoff</code>)</h2>
+<ul><li><strong>Người giao:</strong> &quot;Bàn giao SoT cho &lt;tên&gt;, GitHub &lt;username&gt;&quot;. Claude cập nhật README và trạng thái, chạy audit, viết <code>BAN-GIAO.md</code>, commit, push, và hỏi bạn trước khi mời người nhận vào repo.</li><li><strong>Người nhận:</strong> sau khi chấp nhận lời mời repo, nhắn &quot;Nhận bàn giao SoT từ repo &lt;owner&gt;/&lt;repo&gt;&quot;. Claude clone, đọc lối vào, kiểm tra quyền truy cập Figma / doc, làm một task nhỏ, rồi mở pull request đầu tiên để người giao review.</li></ul>
+<hr>
+<h2 id="sec-10">30 phút đầu, nếu chỉ có 30 phút</h2>
+<div class="tablewrap"><table><thead><tr><th>Thời gian</th><th>Làm gì</th><th>Skill</th></tr></thead><tbody><tr><td>10 phút</td><td>Mở folder trong VS Code. &quot;Dựng SoT cho dự án &lt;tên&gt;&quot;: có README + sources.md</td><td><code>sot-init</code></td></tr><tr><td>10 phút</td><td>Chọn một tính năng. &quot;Làm tính năng &lt;tên&gt; vào SoT&quot;: có Figma, doc, quyết định</td><td><code>sot-feature</code></td></tr><tr><td>10 phút</td><td>Đọc lại bản nháp, sửa chỗ sai, đánh dấu TBD</td><td>(bạn)</td></tr></tbody></table></div>
+<p>Đầu ra tối thiểu: <strong>1 lối vào + 1 bảng nguồn + 1 trang tính năng</strong>.</p>
+<footer>Sinh tự động từ <code>2-quy-trinh-du-an-moi.md</code> bằng <code>_tools/md_to_html.py</code>. Sửa file .md rồi chạy lại script, không sửa trực tiếp file .html.</footer>
+</main>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('themeBtn');try{var t=localStorage.getItem('doc-theme');if(t)r.setAttribute('data-theme',t);}catch(e){}
+b.addEventListener('click',function(){var c=r.getAttribute('data-theme');if(!c){c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('doc-theme',n);}catch(e){}});})();
+</script>
+</body>
+</html>

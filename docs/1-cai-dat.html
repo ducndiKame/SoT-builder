@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="sot-builder md_to_html">
+<title>Cài đặt SoT builder</title>
+<style>
+:root{--bg:#FAF6F0;--surface:#FFFFFF;--surface-2:#F3EEE6;--text:#18191F;--text-2:#5F6063;--text-3:#707070;--line:#E7E0D5;--brand:#C4381F;--code:#F3EEE6;--quote:#8A5A00;--quote-bg:#FBEFD5;--shadow:0 4px 24px rgba(0,0,0,.05)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}}
+:root[data-theme="dark"]{--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--brand);word-break:break-word}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);max-width:1320px;margin:0 auto}
+nav.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 18px;border-right:1px solid var(--line)}
+nav.toc .doc{font-weight:700;font-size:15px;margin-bottom:14px;line-height:1.35}
+nav.toc a{display:block;color:var(--text-2);text-decoration:none;font-size:13.5px;padding:4px 8px;border-radius:8px;line-height:1.35}
+nav.toc a:hover{background:var(--surface-2);color:var(--text)}
+.themebtn{margin-top:18px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:20px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer;min-height:40px}
+main{padding:36px 44px 100px;min-width:0}
+h1{font-size:30px;line-height:1.25;margin:0 0 16px}
+h2{font-size:22px;margin:40px 0 12px;padding-top:8px;border-top:1px solid var(--line);scroll-margin-top:12px}
+h3{font-size:17px;margin:26px 0 8px}h4{font-size:15px;margin:20px 0 6px}
+p,li{max-width:84ch}
+blockquote{margin:14px 0;padding:12px 16px;border-left:4px solid var(--quote);background:var(--quote-bg);border-radius:0 12px 12px 0;font-size:14.5px}
+.tablewrap{overflow-x:auto;margin:12px 0 18px;border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--text-3);background:var(--surface-2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+code{font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:1px 6px;border-radius:6px;word-break:break-word}
+pre{background:var(--code);border-radius:14px;padding:14px 16px;overflow-x:auto;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre code{background:none;padding:0}
+li.task{list-style:none;margin-left:-22px}li.task input{margin-right:6px;transform:translateY(1px)}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+footer{margin-top:48px;color:var(--text-3);font-size:12.5px}
+.mermaid-wrap{background:#fff;border:1px solid #d9dee4;border-radius:14px;padding:12px;margin:14px 0 22px;overflow:auto}
+.mermaid-wrap pre.mermaid{background:#fff;margin:0;padding:0;min-width:760px;white-space:pre;color:#1b2733}
+.mlegend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:#41505f;margin-bottom:10px}
+.mlegend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid #08324f;vertical-align:middle;margin-right:4px}
+.themebtn:focus-visible,nav.toc a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}nav.toc .links{display:none}main{padding:22px 16px 72px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Mục lục"><div class="doc">Cài đặt SoT builder</div><div class="links"><a href="#sec-2">Bước 1: VS Code và Claude Code</a><a href="#sec-3">Bước 2: Git, GitHub CLI, Python 3</a><a href="#sec-4">Bước 3: Đăng nhập GitHub</a><a href="#sec-5">Bước 4: Kết nối Figma MCP</a><a href="#sec-6">Bước 5: Cài skill</a><a href="#sec-9">Bước 6: Kiểm tra</a><a href="#sec-10">Lỗi thường gặp</a></div><button class="themebtn" type="button" id="themeBtn">Đổi sáng/tối</button></nav>
+<main>
+<h1 id="sec-1">Cài đặt SoT builder</h1>
+<p>Làm <strong>một lần mỗi máy</strong>, theo đúng thứ tự dưới đây. Mất khoảng 15–20 phút. Bạn không cần biết lập trình: mỗi bước là một vài lệnh copy–paste, hoặc nhờ Claude Code chạy giúp.</p>
+<p>Mở terminal:</p>
+<ul><li><strong>macOS:</strong> mở app <strong>Terminal</strong>, hoặc trong VS Code chọn Terminal → New Terminal.</li><li><strong>Windows:</strong> trong VS Code chọn Terminal → New Terminal (PowerShell).</li></ul>
+<h2 id="sec-2">Bước 1: VS Code và Claude Code</h2>
+<ol><li>Cài <strong>Visual Studio Code</strong>: <a href="https://code.visualstudio.com">https://code.visualstudio.com</a></li><li>Trong VS Code, mở Extensions (Cmd/Ctrl + Shift + X), tìm <strong>Claude Code</strong>, bấm Install.</li><li>Đăng nhập bằng tài khoản Claude của công ty khi extension hỏi.</li></ol>
+<p>Từ bước 2 trở đi, bạn có thể dán nguyên phần hướng dẫn của bước đó vào khung chat Claude Code và nhờ Claude làm. Khi cần bạn thao tác (bấm Yes, đăng nhập trên trình duyệt), Claude sẽ nói rõ.</p>
+<h2 id="sec-3">Bước 2: Git, GitHub CLI, Python 3</h2>
+<div class="tablewrap"><table><thead><tr><th>Công cụ</th><th>Dùng để</th><th>macOS</th><th>Windows</th></tr></thead><tbody><tr><td>Git</td><td>Lưu lịch sử SoT, đồng bộ giữa các máy</td><td><code>xcode-select --install</code></td><td><code>winget install --id Git.Git -e</code></td></tr><tr><td>GitHub CLI (<code>gh</code>)</td><td>Đăng nhập GitHub, tạo repo, clone</td><td><code>brew install gh</code></td><td><code>winget install --id GitHub.cli -e</code></td></tr><tr><td>Python 3</td><td>Chạy script của các skill (dựng khung, sinh HTML, audit)</td><td>Có sẵn sau <code>xcode-select --install</code></td><td><code>winget install --id Python.Python.3.13 -e</code></td></tr></tbody></table></div>
+<ul><li><strong>macOS</strong> chưa có Homebrew thì cài trước theo <a href="https://brew.sh.">https://brew.sh.</a></li><li><strong>Windows:</strong><ul><li>Nếu hộp thoại <strong>&quot;Do you want to allow this app to make changes&quot;</strong> hiện lên (có thể chỉ nhấp nháy dưới taskbar), bấm <strong>Yes</strong>.</li><li>Cài xong, <strong>đóng hẳn VS Code rồi mở lại</strong> để terminal nhận lệnh mới.</li><li>Lệnh Python trên Windows là <code>py</code> (hoặc <code>python</code>), trên Mac là <code>python3</code>.</li></ul>
+</li></ul>
+<p>Kiểm tra:</p>
+<pre><code>git --version
+gh --version
+python3 --version     # Windows: py --version</code></pre>
+<h2 id="sec-4">Bước 3: Đăng nhập GitHub</h2>
+<p>Cần có tài khoản GitHub. Repo SoT builder đang để <strong>private</strong>, nên hãy nhờ owner (ducndiKame) mời tài khoản của bạn, rồi <strong>chấp nhận lời mời</strong> trong email hoặc tại <a href="https://github.com/notifications.">https://github.com/notifications.</a></p>
+<pre><code>gh auth login -h github.com -p https -s workflow --web</code></pre>
+<ul><li>Terminal hiện một <strong>mã 8 ký tự</strong>. Mở <a href="https://github.com/login/device,">https://github.com/login/device,</a> kiểm tra góc trên phải trình duyệt có đúng tài khoản của bạn không, rồi nhập mã và bấm <strong>Authorize</strong>.</li><li>Sau đó chạy tiếp:</li></ul>
+<pre><code>  gh auth setup-git
+  git config --global user.name &quot;&lt;tên GitHub của bạn&gt;&quot;
+  git config --global user.email &quot;&lt;email công ty&gt;&quot;</code></pre>
+<ul><li>Thêm trên <strong>Windows</strong>:</li></ul>
+<pre><code>  git config --global core.longpaths true</code></pre>
+<p><code>gh auth setup-git</code> cho Git dùng chung lần đăng nhập này, nên sau này push / pull không phải nhập mật khẩu. <strong>Không bao giờ dán token hay mật khẩu vào chat với Claude.</strong></p>
+<h2 id="sec-5">Bước 4: Kết nối Figma MCP</h2>
+<p>Các skill đọc và sửa Figma qua <strong>Figma MCP chính thức</strong>: <code>sot-feature</code>, <code>sot-audit</code>, <code>spec-review</code>, <code>design-system-build</code> và <code>figma-design-rename</code>. Kết nối theo hướng dẫn của Figma cho Claude Code (help.figma.com, mục *Figma MCP server*), rồi kiểm tra bằng cách nhắn Claude:</p>
+<blockquote>Dùng Figma MCP gọi whoami</blockquote>
+<p>Claude trả về tài khoản Figma của bạn là đã kết nối. Chưa kết nối Figma thì các skill vẫn chạy được phần tài liệu. Phần nào cần đọc Figma, Claude sẽ báo thiếu chứ không đoán.</p>
+<p>Doc PM nằm trên portal nội bộ hoặc Google Docs thì cần thêm connector / MCP tương ứng. Ghi cách đọc doc vào <code>CLAUDE.md</code> của dự án (skill <code>sot-init</code> sẽ hỏi bạn).</p>
+<h2 id="sec-6">Bước 5: Cài skill</h2>
+<h3 id="sec-7">Cách A (khuyên dùng): clone repo và chạy script</h3>
+<pre><code>gh repo clone ducndiKame/SoT-builder
+cd SoT-builder
+python3 install.py          # Windows: py install.py</code></pre>
+<ul><li>Script chép 10 skill vào <code>~/.claude/skills/</code> (Windows: <code>C:\Users\&lt;bạn&gt;\.claude\skills\</code>), dùng được ở mọi dự án.</li><li>Máy đã có skill cùng tên (ví dụ <code>spec-review</code>) mà khác bản trong repo: bản cũ được <strong>sao lưu</strong> vào <code>~/.claude/skills/.backup-sot-builder/&lt;ngày-giờ&gt;/</code> trước khi ghi đè.</li><li>Các lệnh khác:</li></ul>
+<div class="tablewrap"><table><thead><tr><th>Lệnh</th><th>Tác dụng</th></tr></thead><tbody><tr><td><code>python3 install.py --list</code></td><td>Skill nào đã cài, bản nào cũ</td></tr><tr><td><code>python3 install.py --only sot-init,sot-sync</code></td><td>Chỉ cài vài skill</td></tr><tr><td><code>python3 install.py --dry-run</code></td><td>Xem trước, không cài</td></tr><tr><td><code>python3 install.py --uninstall</code></td><td>Gỡ</td></tr></tbody></table></div>
+<p>Tên skill khi gọi: <code>/sot-init</code>, <code>/sot-feature</code>...</p>
+<h3 id="sec-8">Cách B: cài theo dạng plugin</h3>
+<p>Trong khung chat Claude Code (VS Code), gõ <code>/plugins</code> để mở <strong>Manage plugins</strong>.</p>
+<ol><li>Tab <strong>Marketplaces</strong>: thêm <code>ducndiKame/SoT-builder</code>.</li><li>Tab <strong>Plugins</strong>: cài <code>sot-builder</code>, chọn phạm vi *Install for you*.</li></ol>
+<p>Lưu ý khi dùng cách B:</p>
+<ul><li>Máy chưa có SSH key cho GitHub thì phải đặt biến môi trường <code>CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1</code> trước, nếu không việc cài từ repo private sẽ lỗi. Cách A không cần bước này.</li><li>Tên skill có tiền tố: <code>/sot-builder:sot-init</code>.</li><li>Nếu đã cài cách A thì đừng cài thêm cách B (và ngược lại). Nếu cài cả hai, mỗi skill sẽ hiện hai lần.</li><li>Cập nhật: <code>/plugins</code> → Marketplaces → cập nhật <code>sot-builder</code>, rồi gõ <code>/reload-plugins</code>.</li></ul>
+<h2 id="sec-9">Bước 6: Kiểm tra</h2>
+<p>Mở một phiên Claude Code <strong>mới</strong> (hoặc gõ <code>/reload-skills</code>), rồi:</p>
+<ol><li>Gõ <code>/</code>: thấy <code>sot-init</code>, <code>sot-feature</code>, <code>sot-sync</code>, <code>sot-audit</code>, <code>sot-handoff</code>.</li><li>Nhắn Claude: *&quot;Liệt kê các skill sot-* đang có và mỗi skill dùng khi nào&quot;*.</li></ol>
+<p>Xong bước này thì chuyển sang <a href="2-quy-trinh-du-an-moi.html">Quy trình dựng SoT cho dự án mới</a>.</p>
+<h2 id="sec-10">Lỗi thường gặp</h2>
+<div class="tablewrap"><table><thead><tr><th>Hiện tượng</th><th>Cách xử lý</th></tr></thead><tbody><tr><td><code>git</code> / <code>gh</code> / <code>py</code>: command not found ngay sau khi cài (Windows)</td><td>Đóng hẳn VS Code rồi mở lại</td></tr><tr><td><code>python</code> mở Microsoft Store (Windows)</td><td>Dùng <code>py</code> thay cho <code>python</code></td></tr><tr><td><code>gh repo clone</code> báo không tìm thấy repo</td><td>Chưa được mời, hoặc chưa chấp nhận lời mời repo private</td></tr><tr><td>Gõ <code>/</code> không thấy skill</td><td>Mở phiên Claude Code mới, hoặc gõ <code>/reload-skills</code>; chạy <code>install.py --list</code> để kiểm tra</td></tr><tr><td>Push báo lỗi đăng nhập</td><td>Chạy lại <code>gh auth login --web</code> rồi <code>gh auth setup-git</code></td></tr><tr><td>Claude báo không đọc được Figma</td><td>Kiểm tra lại bước 4 (Figma MCP)</td></tr></tbody></table></div>
+<footer>Sinh tự động từ <code>1-cai-dat.md</code> bằng <code>_tools/md_to_html.py</code>. Sửa file .md rồi chạy lại script, không sửa trực tiếp file .html.</footer>
+</main>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('themeBtn');try{var t=localStorage.getItem('doc-theme');if(t)r.setAttribute('data-theme',t);}catch(e){}
+b.addEventListener('click',function(){var c=r.getAttribute('data-theme');if(!c){c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('doc-theme',n);}catch(e){}});})();
+</script>
+</body>
+</html>

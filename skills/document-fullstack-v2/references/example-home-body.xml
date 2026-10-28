@@ -1,0 +1,364 @@
+<p><ac:structured-macro ac:name="toc"><ac:parameter ac:name="maxLevel">3</ac:parameter></ac:structured-macro></p>
+
+<h1>System Requirement</h1>
+<p><strong>Link Figma</strong>: <a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-12529">Home – iOS English App</a></p>
+
+<h1>Flow</h1>
+<p>Home là entry point sau khi user hoàn tất Onboarding + Paywall. Hiển thị Learning Path dạng cuộn dọc, lesson cluster theo route, mỗi lesson là 1 node trên đường dây learning. User tap node hiện tại → Scenario Detail → Talk. Tap node cũ → Preview kết quả. Tap node tương lai (lock) → no-op.</p>
+
+<h1>Functional Requirement</h1>
+
+<h2>Acceptance Criteria 1: First-time vào Home (Welcome &amp; Adaptive Learning Path intro)</h2>
+<table>
+<tbody>
+<tr>
+  <th>Scenario</th><th>Given</th><th>When</th><th>Then</th><th>Note</th><th>Link UI</th><th>Updated Time</th>
+</tr>
+<tr>
+  <td><strong>1. First time vào Home — show Adaptive Learning Path bottomsheet</strong></td>
+  <td><ul><li>User vừa hoàn tất Onboarding + Paywall lần đầu.</li><li>LP đã được khởi tạo (30 bài fixed).</li></ul></td>
+  <td>App điều hướng user vào Home lần đầu.</td>
+  <td><ul><li>Home render full lesson list ở background.</li><li><strong>Bottomsheet "Adaptive Learning Path"</strong> tự động mở.</li><li>Nội dung: title, 3 bullet (AI listens / Path adjusts automatically / Always at your edge).</li><li>CTA primary "Got it — let's go".</li></ul></td>
+  <td>Chỉ hiển thị 1 lần duy nhất / user (flag local <code>has_seen_alp_intro</code>).</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-alp-bottomsheet.png"/></ac:image></p><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-13237">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>2. Tap "Got it — let's go"</strong></td>
+  <td>Bottomsheet ALP đang mở.</td>
+  <td>User tap CTA "Got it — let's go".</td>
+  <td><ul><li>Bottomsheet đóng.</li><li>Flag <code>has_seen_alp_intro = true</code>.</li><li>User ở lại Home default state.</li></ul></td>
+  <td>—</td>
+  <td><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-13237">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>3. Swipe đóng bottomsheet</strong></td>
+  <td>Bottomsheet ALP đang mở.</td>
+  <td>User swipe-down hoặc tap outside.</td>
+  <td>Bottomsheet đóng, flag <code>has_seen_alp_intro = true</code> (coi như đã xem).</td>
+  <td>—</td>
+  <td>—</td>
+  <td>19 May 2026</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Acceptance Criteria 2: Home default state — hiển thị Learning Path</h2>
+<table>
+<tbody>
+<tr><th>Scenario</th><th>Given</th><th>When</th><th>Then</th><th>Note</th><th>Link UI</th><th>Updated Time</th></tr>
+<tr>
+  <td><strong>1. Render Home default</strong></td>
+  <td><ul><li>User đã đóng bottomsheet ALP (hoặc đã xem trước đó).</li><li>LP có lesson chưa hoàn thành.</li></ul></td>
+  <td>User ở Home (từ bottom tab Home hoặc deep-link).</td>
+  <td><ul><li><strong>Header</strong>: "Home" + chip "Pro" (nếu sub) / "Free" (nếu free).</li><li><strong>Target card</strong>: icon đỏ + label "Target:" + target text (vd "Pass an English-speaking job interview") + nút edit (icon pencil).</li><li>Sub-line: "This week's target" + <code>{lessons_done}/{Lw} lessons</code> + info icon.</li><li><strong>Lesson path</strong>: list lesson hiển thị dạng đường zigzag, mỗi lesson 1 node tròn:<ul><li>✅ Lesson đã hoàn thành = circle xanh + check icon.</li><li>🟠 Lesson hiện tại (next to-do) = circle cam highlight + play icon + label "Fast track: 2x fluency speed starts here" (nếu áp dụng).</li><li>🔵 Lesson kế tiếp current = circle xanh dương + play icon.</li><li>🔒 Lesson tương lai = circle xám + lock icon (disabled).</li></ul></li><li>Mỗi node có meta: lesson title + cluster (vd "JOB HUNTING") + scenario (vd "HR Phone Screen").</li><li><strong>Personalizing for you card</strong> cuối list: icon sách + sub-copy "Upcoming lessons change based on how you speak — not a fixed course." + CTA "How we tailored your learning".</li><li><strong>Bottom tab</strong>: Home (active) / Explore / Report.</li></ul></td>
+  <td>Lw = lessons-per-week derived (xem NFR).</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-default.png"/></ac:image></p><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-12530">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>2. Tap edit target</strong></td>
+  <td>Home default đang hiển thị.</td>
+  <td>User tap icon pencil trên Target card.</td>
+  <td>Mở Edit Target sheet (xem spec Report/Target Edit).</td>
+  <td>Cross-link sang Profile/Report.</td>
+  <td>—</td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>3. Tap info icon "This week's target"</strong></td>
+  <td>Home default đang hiển thị.</td>
+  <td>User tap info icon cạnh <code>{x}/{Lw} lessons</code>.</td>
+  <td>Mở tooltip / bottomsheet giải thích cách tính Lw (link spec lessons-per-week-logic).</td>
+  <td>—</td>
+  <td>—</td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>4. Tap "How we tailored your learning"</strong></td>
+  <td>Home default đang hiển thị.</td>
+  <td>User tap CTA "How we tailored your learning" trong card cuối.</td>
+  <td>Mở lại bottomsheet "Adaptive Learning Path" (giống first-time).</td>
+  <td>Lần này KHÔNG set flag (đã true).</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-alp-bottomsheet.png"/></ac:image></p></td>
+  <td>19 May 2026</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Acceptance Criteria 3: Jump to current lesson</h2>
+<table>
+<tbody>
+<tr><th>Scenario</th><th>Given</th><th>When</th><th>Then</th><th>Note</th><th>Link UI</th><th>Updated Time</th></tr>
+<tr>
+  <td><strong>1. Hiển thị nút "Jump to current"</strong></td>
+  <td><ul><li>Home đang hiển thị.</li><li>User đã scroll khỏi vị trí lesson hiện tại (lesson active không còn trong viewport).</li></ul></td>
+  <td>User scroll lên hoặc xuống xa khỏi lesson active.</td>
+  <td><ul><li>Floating button "Jump to current" xuất hiện ở mép phải màn hình.</li><li>Hiển thị chỉ hướng (↑ nếu lesson active ở trên viewport, ↓ nếu dưới).</li></ul></td>
+  <td>Auto-hide khi lesson active back in viewport.</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-jump-to-current.png"/></ac:image></p><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=1600-13737">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>2. Tap "Jump to current"</strong></td>
+  <td>Nút "Jump to current" đang hiển thị.</td>
+  <td>User tap nút.</td>
+  <td><ul><li>Auto scroll mượt về vị trí lesson active (lesson active center viewport).</li><li>Nút "Jump to current" biến mất sau khi scroll xong.</li></ul></td>
+  <td>—</td>
+  <td>—</td>
+  <td>19 May 2026</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Acceptance Criteria 4: Tap lesson hiện tại (current) → vào Scenario Detail</h2>
+<table>
+<tbody>
+<tr><th>Scenario</th><th>Given</th><th>When</th><th>Then</th><th>Note</th><th>Link UI</th><th>Updated Time</th></tr>
+<tr>
+  <td><strong>1. Tap node lesson hiện tại</strong></td>
+  <td>Home đang hiển thị, lesson active highlight cam.</td>
+  <td>User tap vào node lesson active.</td>
+  <td>Điều hướng sang màn <strong>Scenario Detail</strong> của lesson đó.</td>
+  <td>Xem spec Scenario Detail.</td>
+  <td><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-13707">Link UI Scenario Detail</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>2. Tap node lesson kế tiếp (chưa unlock)</strong></td>
+  <td>Home đang hiển thị, có lesson lock 🔒 phía sau lesson active.</td>
+  <td>User tap node lock.</td>
+  <td><ul><li>No-op (không điều hướng).</li><li>Optionally: shake animation + toast "Complete current lesson to unlock".</li></ul></td>
+  <td>Sequential gate — không cho skip ([[learning-path]]).</td>
+  <td>—</td>
+  <td>19 May 2026</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Acceptance Criteria 5: Tap lesson cũ (đã hoàn thành) → Preview kết quả</h2>
+<table>
+<tbody>
+<tr><th>Scenario</th><th>Given</th><th>When</th><th>Then</th><th>Note</th><th>Link UI</th><th>Updated Time</th></tr>
+<tr>
+  <td><strong>1. Tap lesson cũ — score Good (L_score ≥ 80)</strong></td>
+  <td>User tap lesson đã hoàn thành với L_score ≥ 80.</td>
+  <td>—</td>
+  <td><ul><li>Inline card preview mở rộng ngay tại node:<ul><li>Title lesson + cluster + scenario.</li><li><strong>Score badge "80"</strong> tròn xanh.</li><li>Bar chart 6 Dimension: Pronunciation / Fluency / Grammar / Vocabulary / Task Completion / Register + score 0-100.</li></ul></li><li>Tap lesson khác = card đóng + mở card lesson đó.</li></ul></td>
+  <td>L_score = best-attempt max(Talk, Quiz) ([[ai-speaking-6dim-end-of-lesson-scoring]]).</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-old-lesson-good.png"/></ac:image></p><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-12706">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>2. Tap lesson cũ — score Okay (50 ≤ L_score &lt; 80)</strong></td>
+  <td>User tap lesson đã hoàn thành với 50 ≤ L_score &lt; 80.</td>
+  <td>—</td>
+  <td>Cùng UI AC5.1 nhưng score badge màu cam + bar chart màu cam.</td>
+  <td>—</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-old-lesson-okay.png"/></ac:image></p><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-12883">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>3. Tap lesson cũ — score Bad (L_score &lt; 50)</strong></td>
+  <td>User tap lesson fail (L_score &lt; 50).</td>
+  <td>—</td>
+  <td>Cùng UI AC5.1 nhưng score badge màu đỏ + bar chart màu đỏ. CTA gợi ý "Practice again" (nếu áp dụng).</td>
+  <td>Fail → có max 2 bài làm thêm ([[learning-path]]) — không hiển thị tại Home, chỉ trong flow LP next.</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-old-lesson-bad.png"/></ac:image></p><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-13060">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>4. Tap lesson cũ trong khi đang scroll ở vị trí khác</strong></td>
+  <td>User ở Home, scroll xuống dưới, tap 1 lesson cũ trên path.</td>
+  <td>—</td>
+  <td>Card preview expand ngay tại vị trí node đó, KHÔNG auto-scroll. Có thể overflow nửa trên/dưới — dùng scroll thủ công xem hết.</td>
+  <td>—</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-old-lesson-tap-below.png"/></ac:image></p><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=1321-9140">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>5. Đóng card preview</strong></td>
+  <td>Card preview đang mở.</td>
+  <td>User tap ngoài card hoặc tap lại chính node đó.</td>
+  <td>Card đóng, Home về default state.</td>
+  <td>—</td>
+  <td>—</td>
+  <td>19 May 2026</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Acceptance Criteria 6: Resume conversation từ session trước</h2>
+<table>
+<tbody>
+<tr><th>Scenario</th><th>Given</th><th>When</th><th>Then</th><th>Note</th><th>Link UI</th><th>Updated Time</th></tr>
+<tr>
+  <td><strong>1. Detect dangling lesson</strong></td>
+  <td><ul><li>User mở app, vào Home.</li><li>Có 1 lesson active đang dở (đã enter Talk + có ≥ 1 turn nhưng chưa kết thúc lesson).</li></ul></td>
+  <td>Home load xong.</td>
+  <td><ul><li><strong>Bottomsheet "Welcome back 👋"</strong> tự động mở.</li><li>Body: "You left {lesson_title} partway through. Want to pick up where you were or start fresh?"</li><li>2 CTA: <strong>Resume conversation</strong> (primary, gradient blue) + <strong>Start over</strong> (secondary, outline).</li></ul></td>
+  <td>Định nghĩa "partway": có session Talk + ≥1 user turn, chưa hit end-of-lesson scoring.</td>
+  <td><p><ac:image ac:width="220"><ri:attachment ri:filename="home-welcome-back.png"/></ac:image></p><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-13504">Link UI</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>2. Tap "Resume conversation"</strong></td>
+  <td>Bottomsheet Welcome back đang mở.</td>
+  <td>User tap "Resume conversation".</td>
+  <td><ul><li>Điều hướng thẳng vào màn <strong>Lesson Speaking</strong> với conversation context restored (toàn bộ history turn).</li><li>Bypass Scenario Detail intro.</li></ul></td>
+  <td>Backend restore từ <code>talk_session_id</code>.</td>
+  <td><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-13753">Link UI Lesson Speaking</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>3. Tap "Start over"</strong></td>
+  <td>Bottomsheet Welcome back đang mở.</td>
+  <td>User tap "Start over".</td>
+  <td><ul><li>Discard session dở (clear history turn).</li><li>Điều hướng sang <strong>Scenario Detail</strong> như flow lesson mới.</li></ul></td>
+  <td>Soft delete session cũ — log retain cho analytics.</td>
+  <td><p><a href="https://www.figma.com/design/FSbG2FIBhHsCxSv7wmGnwh/iOS-English-App?node-id=883-13707">Link UI Scenario Detail</a></p></td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>4. Swipe đóng bottomsheet Welcome back</strong></td>
+  <td>Bottomsheet Welcome back đang mở.</td>
+  <td>User swipe-down / tap outside.</td>
+  <td><ul><li>Bottomsheet đóng, KHÔNG discard session.</li><li>User ở Home, lesson active vẫn ở trạng thái "đang dở".</li><li>Lần mở app sau bottomsheet sẽ hiện lại đến khi user chọn Resume/Start over.</li></ul></td>
+  <td>—</td>
+  <td>—</td>
+  <td>19 May 2026</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Acceptance Criteria 7: Cảnh báo Lessons Per Week quá cao</h2>
+<table>
+<tbody>
+<tr><th>Scenario</th><th>Given</th><th>When</th><th>Then</th><th>Note</th><th>Link UI</th><th>Updated Time</th></tr>
+<tr>
+  <td><strong>1. Show CN khi Lw &gt; 18</strong></td>
+  <td><ul><li>User ở Home.</li><li>Cron 24h tính Lw = N_remaining ÷ weeks_remaining &gt; 18.</li></ul></td>
+  <td>Home load.</td>
+  <td><ul><li>Hiển thị <strong>box cố định</strong> trong Home (không phải banner overlay) với tone đồng hành.</li><li>1 suggestion từ LLM: <code>lower_target</code> hoặc <code>extend_deadline</code>.</li><li>CTA chấp nhận hoặc giữ nguyên.</li></ul></td>
+  <td>Logic chi tiết: [[lessons-per-week-logic]] (locked 2026-05-18). Tone tránh từ scary (quá/chậm/thất bại).</td>
+  <td>TBD (chờ Figma export — node 1815:27480)</td>
+  <td>19 May 2026</td>
+</tr>
+<tr>
+  <td><strong>2. Reject suggestion</strong></td>
+  <td>Box CN đang hiển thị.</td>
+  <td>User reject suggestion.</td>
+  <td>Box ẩn cho session hiện tại. Cron 24h lặp lại sau, không escalate.</td>
+  <td>—</td>
+  <td>—</td>
+  <td>19 May 2026</td>
+</tr>
+</tbody>
+</table>
+
+<h1>Validation Rules</h1>
+<table>
+<tbody>
+<tr><th>Tên</th><th>Validation Rules</th><th>Mô tả</th><th>UI</th></tr>
+<tr>
+  <td>Lesson node state</td>
+  <td>Chỉ 1 node = "current" tại 1 thời điểm. Các node phía sau current = lock.</td>
+  <td>Sequential gate.</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>Jump to current button</td>
+  <td>Chỉ hiện khi current node nằm ngoài viewport. Auto-hide khi in-viewport.</td>
+  <td>—</td>
+  <td><ac:image ac:width="180"><ri:attachment ri:filename="home-jump-to-current.png"/></ac:image></td>
+</tr>
+<tr>
+  <td>Score badge color</td>
+  <td>Xanh (≥80) / Cam (50-79) / Đỏ (&lt;50).</td>
+  <td>Match 3 state Good/Okay/Bad.</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>Welcome back trigger</td>
+  <td>talk_session có ≥1 user_turn + chưa có end_of_lesson_event.</td>
+  <td>Định nghĩa "lesson dở".</td>
+  <td>—</td>
+</tr>
+</tbody>
+</table>
+
+<h1>Non-functional Requirement</h1>
+
+<h2>Key remote bật/tắt feature</h2>
+<table>
+<tbody>
+<tr><th>Parameter Name (Key)</th><th>Data Type</th><th>Default Value</th><th>Description</th></tr>
+<tr>
+  <td><code>enable_jump_to_current</code></td><td>boolean</td><td>true</td>
+  <td><strong>True</strong>: Hiển thị floating button "Jump to current".<br/><strong>False</strong>: Ẩn nút, user tự scroll.</td>
+</tr>
+<tr>
+  <td><code>enable_welcome_back_resume</code></td><td>boolean</td><td>true</td>
+  <td><strong>True</strong>: Detect lesson dở và show bottomsheet Welcome back.<br/><strong>False</strong>: Mọi session dở bị treat như Start over (mất history).</td>
+</tr>
+<tr>
+  <td><code>enable_lw_warning</code></td><td>boolean</td><td>true</td>
+  <td><strong>True</strong>: Hiển thị box CN khi Lw &gt; threshold.<br/><strong>False</strong>: Ẩn warning.</td>
+</tr>
+<tr>
+  <td><code>lw_warning_threshold</code></td><td>integer</td><td>18</td>
+  <td>Ngưỡng Lessons-per-week để trigger CN. Mặc định 18 (theo nghiên cứu Duolingo + cognitive load).</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Key remote config nội dung Adaptive Learning Path bottomsheet</h2>
+<table>
+<tbody>
+<tr><th>Parameter Name (Key)</th><th>Data Type</th><th>Default Value</th><th>Description</th></tr>
+<tr>
+  <td><code>customize_alp_intro</code></td><td>json</td>
+  <td><pre>{
+  "title": "Adaptive Learning Path",
+  "subtitle": "Your lessons aren't fixed. They change based on how you actually speak.",
+  "bullets": [
+    {
+      "icon": "🎧",
+      "title": "Every session, AI listens",
+      "description": "Every session, AI tracks your accuracy, fluency, and response speed."
+    },
+    {
+      "icon": "🔀",
+      "title": "Path adjusts automatically",
+      "description": "Doing well → harder lessons. Struggling → targeted drills first. Content depends on how you do today."
+    },
+    {
+      "icon": "📊",
+      "title": "Always at your edge",
+      "description": "Not too easy, not too hard. The AI finds your sweet spot every session."
+    }
+  ],
+  "cta": "Got it — let's go 🚀"
+}</pre></td>
+  <td>Toàn bộ nội dung bottomsheet ALP intro (first time + tap "How we tailored your learning"). Cấu trúc: title / subtitle / array bullets {icon, title, description} / cta.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Key remote config nội dung Welcome Back bottomsheet</h2>
+<table>
+<tbody>
+<tr><th>Parameter Name (Key)</th><th>Data Type</th><th>Default Value</th><th>Description</th></tr>
+<tr>
+  <td><code>customize_welcome_back</code></td><td>json</td>
+  <td><pre>{
+  "title": "Welcome back 👋",
+  "body_template": "You left \"{lesson_title}\" partway through. Want to pick up where you were or start fresh?",
+  "cta_primary": "Resume conversation",
+  "cta_secondary": "Start over"
+}</pre></td>
+  <td>Nội dung bottomsheet hiện khi user có lesson dở. <code>{lesson_title}</code> được app interpolate runtime.</td>
+</tr>
+</tbody>
+</table>

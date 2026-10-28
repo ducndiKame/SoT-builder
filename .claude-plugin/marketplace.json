@@ -1,0 +1,12 @@
+{
+  "name": "sot-builder",
+  "owner": { "name": "ducndiKame" },
+  "description": "Marketplace nội bộ của SoT builder",
+  "plugins": [
+    {
+      "name": "sot-builder",
+      "source": "./",
+      "description": "10 skill dựng và duy trì SoT cho dự án design"
+    }
+  ]
+}
