@@ -83,7 +83,7 @@ Mục tiêu của vòng 1: sau vòng này, mọi vòng sau chỉ còn việc kh�
 
 Phạm vi xét lại từ vòng 2 trở đi chỉ gồm 4 việc:
 
-1. **Bảng trạng thái các câu vòng trước.** Mỗi mã có kết quả: ✅ đã xử lý · ◐ xử lý một nửa · ❌ chưa · ⚠️ xử lý nhưng sinh vấn đề. Cột **Text doc** và **Mock** tách riêng, kèm cột **Figma**.
+1. **Bảng trạng thái các câu vòng trước.** Mỗi mã có kết quả: ✅ đã xử lý · ◐ xử lý một nửa · ❌ chưa · ⚠️ xử lý nhưng sinh vấn đề. Cột **Text doc** và **Mock** tách riêng, kèm cột **Figma**. Bảng gồm cả các mã **Design đề xuất** của vòng trước: kiểm doc đã ghi đủ chưa; doc chưa ghi hoặc ghi thiếu thì đánh ◐ / ❌ và đưa vào **Doc cần sửa**, kèm câu viết sẵn.
 2. **Phần doc thay đổi:** đọc từng thay đổi và đối chiếu với các mục còn lại của doc. Lỗi hay gặp nhất là PM viết quy tắc mới ở một mục nhưng **quên sửa các câu cũ** ở mục khác và ở AC. Khi gặp, viết sẵn câu AC đã sửa.
 3. **Hệ quả của chính các quyết định mới:** quyết định vừa chốt có tạo case mới không? Chạy lại checklist **chỉ cho phần bị quyết định đó chạm tới**.
 4. **Quét hồi quy:** những chỗ đã sửa ở vòng trước có bị quay lại bản cũ không (tên, thứ tự, nhãn).
@@ -104,7 +104,7 @@ Mọi điểm tìm được đều rơi vào đúng một khối:
 |---|---|---|
 | **Câu hỏi cho PM** | Rule nghiệp vụ, dữ liệu, tiền, quyền, mục tiêu | PM |
 | **Doc cần sửa** | Mâu thuẫn câu chữ, câu cũ sót, đánh số, copy chưa ghi vào doc. Không cần quyết định mới | PM sửa, review viết sẵn câu mới |
-| **Design đề xuất** | Thuộc chuyên môn design: pattern, layout, state, copy UI | Hỏi người dùng xác nhận, rồi thông báo PM "design làm X" |
+| **Design đề xuất** | Thuộc chuyên môn design: pattern, layout, state, copy UI | Hỏi người dùng xác nhận, rồi thông báo PM "design làm X" **và đề nghị PM cân nhắc cập nhật doc cho khớp** (kèm chỗ trong doc và câu viết sẵn) |
 | **Ngoài phạm vi** | Kéo theo nhưng không thuộc lần này | Đề xuất tách |
 
 Mỗi câu trong khối Câu hỏi và Design đề xuất phải có thêm **một trong hai nhãn**:
@@ -160,7 +160,7 @@ Dùng template trong `references/templates.md`. Khung chung:
 3. **Trạng thái các câu vòng trước** (từ vòng 2).
 4. **Câu hỏi cho PM:** nhóm chặn design trước, nhóm không chặn sau.
 5. **Doc cần sửa:** kèm câu viết sẵn.
-6. **Design đề xuất:** những gì design đã làm hoặc sẽ làm, PM chỉ cần biết.
+6. **Design đề xuất:** những gì design đã làm hoặc sẽ làm. Mở đầu mục bằng câu đề nghị **PM cân nhắc cập nhật doc cho khớp**, để tránh trường hợp design đã sửa mà doc không ghi hoặc ghi thiếu. Mỗi dòng có cột **Doc cần cập nhật**: chỗ trong doc (mục / AC) và câu viết sẵn; dòng nào doc không cần đổi thì ghi rõ "Không cần".
 7. **Ngoài phạm vi.**
 8. **Figma:** đã sửa gì (bảng thay đổi → node), và sẽ sửa gì theo từng câu trả lời của PM.
 9. **Tin gửi PM:** khối copy nguyên được, xưng hô theo tham số dự án. Tin này **ngắn hơn file review** để PM trả lời được ngay trong một lần:

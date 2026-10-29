@@ -58,8 +58,14 @@ Các template dưới đây dùng tiếng Việt cho phần review, tiếng Anh 
 | Mã | Chỗ | Doc đang ghi | Đề xuất câu mới |
 |---|---|---|---|
 
-## 4. Design đề xuất (PM chỉ cần biết)
+## 4. Design đề xuất
 <Chỉ ghi những gì người dùng đã xác nhận.>
+
+PM cân nhắc cập nhật doc cho khớp các thay đổi design dưới đây, để doc và Figma không lệch nhau (design đã sửa mà doc không ghi, hoặc ghi thiếu). Câu viết sẵn ở cột cuối.
+
+| Mã | Design làm | Lý do | Doc cần cập nhật (chỗ · câu viết sẵn) |
+|---|---|---|---|
+| <TT>-20 | … | … | 2.2.7 Thành phần · "…" / Không cần |
 
 ## 5. Ngoài phạm vi
 
@@ -121,6 +127,7 @@ Giống vòng 1, thêm và đổi các phần sau:
 | Mã | Câu hỏi | Đề xuất | Người trả lời |
 
 ## 3. Doc cần sửa câu chữ
+<Gồm cả các Design đề xuất mà doc chưa ghi hoặc ghi thiếu.>
 | Mã | Chỗ | Câu mới |
 
 ## 4. Figma
@@ -149,6 +156,8 @@ Chào <cách gọi theo tham số dự án>, em đã xem doc <tên> bản <x>.
 - <TT>-12: <câu hỏi>? Em đang giả định là <…>.
 
 **Doc cần sửa câu:** <TT>-8, <TT>-9 (câu mới em ghi sẵn trong file review).
+
+**Design đề xuất:** <TT>-20, <TT>-21 — <một dòng tóm tắt>. Nhờ anh/chị cân nhắc cập nhật doc cho khớp (câu viết sẵn ở mục <X> của file), để doc và Figma không lệch nhau.
 
 Anh/chị chỉ cần trả lời theo mã + chữ cái, ví dụ "5a, 7b". File review: <link>.
 ```
