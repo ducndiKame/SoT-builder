@@ -37,7 +37,7 @@ python3 --version     # Windows: py --version
 
 ## Bước 3: Đăng nhập GitHub
 
-Cần có tài khoản GitHub. Repo SoT builder đang để **private**, nên hãy nhờ owner (ducndiKame) mời tài khoản của bạn, rồi **chấp nhận lời mời** trong email hoặc tại https://github.com/notifications.
+Cần có tài khoản GitHub. Repo SoT builder để **public**: ai cũng clone và cài được, không cần owner mời. Chỉ owner (ducndiKame) push được vào repo; muốn góp ý hay sửa thì fork rồi mở pull request.
 
 ```bash
 gh auth login -h github.com -p https -s workflow --web
@@ -97,7 +97,7 @@ Trong khung chat Claude Code (VS Code), gõ `/plugins` để mở **Manage plugi
 2. Tab **Plugins**: cài `sot-builder`, chọn phạm vi *Install for you*.
 
 Lưu ý khi dùng cách B:
-- Máy chưa có SSH key cho GitHub thì phải đặt biến môi trường `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` trước, nếu không việc cài từ repo private sẽ lỗi. Cách A không cần bước này.
+- Máy chưa có SSH key cho GitHub mà cài bị lỗi thì đặt biến môi trường `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` rồi cài lại. Cách A không cần bước này.
 - Tên skill có tiền tố: `/sot-builder:sot-init`.
 - Nếu đã cài cách A thì đừng cài thêm cách B (và ngược lại). Nếu cài cả hai, mỗi skill sẽ hiện hai lần.
 - Cập nhật: `/plugins` → Marketplaces → cập nhật `sot-builder`, rồi gõ `/reload-plugins`.
@@ -116,7 +116,7 @@ Xong bước này thì chuyển sang [Quy trình dựng SoT cho dự án mới](
 |---|---|
 | `git` / `gh` / `py`: command not found ngay sau khi cài (Windows) | Đóng hẳn VS Code rồi mở lại |
 | `python` mở Microsoft Store (Windows) | Dùng `py` thay cho `python` |
-| `gh repo clone` báo không tìm thấy repo | Chưa được mời, hoặc chưa chấp nhận lời mời repo private |
+| `gh repo clone` báo không tìm thấy repo | Kiểm tra lại tên `ducndiKame/SoT-builder`; nếu vẫn lỗi, mở https://github.com/ducndiKame/SoT-builder xem repo còn public không |
 | Gõ `/` không thấy skill | Mở phiên Claude Code mới, hoặc gõ `/reload-skills`; chạy `install.py --list` để kiểm tra |
 | Push báo lỗi đăng nhập | Chạy lại `gh auth login --web` rồi `gh auth setup-git` |
 | Claude báo không đọc được Figma | Kiểm tra lại bước 4 (Figma MCP) |

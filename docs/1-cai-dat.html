@@ -3,12 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="sot-builder md_to_html">
 <title>Cài đặt SoT builder</title>
 <style>
-:root{--bg:#FAF6F0;--surface:#FFFFFF;--surface-2:#F3EEE6;--text:#18191F;--text-2:#5F6063;--text-3:#707070;--line:#E7E0D5;--brand:#C4381F;--code:#F3EEE6;--quote:#8A5A00;--quote-bg:#FBEFD5;--shadow:0 4px 24px rgba(0,0,0,.05)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}}
-:root[data-theme="dark"]{--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}
+:root{--bg:#FAF6F0;--surface:#FFFFFF;--surface-2:#F3EEE6;--text:#18191F;--text-2:#5F6063;--text-3:#707070;--line:#E7E0D5;--brand:#C4381F;--brand-soft:#FFE3DB;--code:#F3EEE6;--quote:#8A5A00;--quote-bg:#FBEFD5;--shadow:0 4px 24px rgba(0,0,0,.05)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--brand-soft:#3A221D;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}}
+:root[data-theme="dark"]{--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--brand-soft:#3A221D;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--brand);word-break:break-word}
@@ -40,8 +39,7 @@ footer{margin-top:48px;color:var(--text-3);font-size:12.5px}
 .mlegend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:#41505f;margin-bottom:10px}
 .mlegend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid #08324f;vertical-align:middle;margin-right:4px}
 .themebtn:focus-visible,nav.toc a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
-@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}nav.toc .links{display:none}main{padding:22px 16px 72px}h1{font-size:25px}}
-</style>
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}nav.toc .links{display:none}main{padding:22px 16px 72px}h1{font-size:25px}}</style>
 </head>
 <body>
 <div class="layout">
@@ -63,7 +61,7 @@ footer{margin-top:48px;color:var(--text-3);font-size:12.5px}
 gh --version
 python3 --version     # Windows: py --version</code></pre>
 <h2 id="sec-4">Bước 3: Đăng nhập GitHub</h2>
-<p>Cần có tài khoản GitHub. Repo SoT builder đang để <strong>private</strong>, nên hãy nhờ owner (ducndiKame) mời tài khoản của bạn, rồi <strong>chấp nhận lời mời</strong> trong email hoặc tại <a href="https://github.com/notifications.">https://github.com/notifications.</a></p>
+<p>Cần có tài khoản GitHub. Repo SoT builder để <strong>public</strong>: ai cũng clone và cài được, không cần owner mời. Chỉ owner (ducndiKame) push được vào repo; muốn góp ý hay sửa thì fork rồi mở pull request.</p>
 <pre><code>gh auth login -h github.com -p https -s workflow --web</code></pre>
 <ul><li>Terminal hiện một <strong>mã 8 ký tự</strong>. Mở <a href="https://github.com/login/device,">https://github.com/login/device,</a> kiểm tra góc trên phải trình duyệt có đúng tài khoản của bạn không, rồi nhập mã và bấm <strong>Authorize</strong>.</li><li>Sau đó chạy tiếp:</li></ul>
 <pre><code>  gh auth setup-git
@@ -89,19 +87,18 @@ python3 install.py          # Windows: py install.py</code></pre>
 <p>Trong khung chat Claude Code (VS Code), gõ <code>/plugins</code> để mở <strong>Manage plugins</strong>.</p>
 <ol><li>Tab <strong>Marketplaces</strong>: thêm <code>ducndiKame/SoT-builder</code>.</li><li>Tab <strong>Plugins</strong>: cài <code>sot-builder</code>, chọn phạm vi *Install for you*.</li></ol>
 <p>Lưu ý khi dùng cách B:</p>
-<ul><li>Máy chưa có SSH key cho GitHub thì phải đặt biến môi trường <code>CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1</code> trước, nếu không việc cài từ repo private sẽ lỗi. Cách A không cần bước này.</li><li>Tên skill có tiền tố: <code>/sot-builder:sot-init</code>.</li><li>Nếu đã cài cách A thì đừng cài thêm cách B (và ngược lại). Nếu cài cả hai, mỗi skill sẽ hiện hai lần.</li><li>Cập nhật: <code>/plugins</code> → Marketplaces → cập nhật <code>sot-builder</code>, rồi gõ <code>/reload-plugins</code>.</li></ul>
+<ul><li>Máy chưa có SSH key cho GitHub mà cài bị lỗi thì đặt biến môi trường <code>CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1</code> rồi cài lại. Cách A không cần bước này.</li><li>Tên skill có tiền tố: <code>/sot-builder:sot-init</code>.</li><li>Nếu đã cài cách A thì đừng cài thêm cách B (và ngược lại). Nếu cài cả hai, mỗi skill sẽ hiện hai lần.</li><li>Cập nhật: <code>/plugins</code> → Marketplaces → cập nhật <code>sot-builder</code>, rồi gõ <code>/reload-plugins</code>.</li></ul>
 <h2 id="sec-9">Bước 6: Kiểm tra</h2>
 <p>Mở một phiên Claude Code <strong>mới</strong> (hoặc gõ <code>/reload-skills</code>), rồi:</p>
 <ol><li>Gõ <code>/</code>: thấy <code>sot-init</code>, <code>sot-feature</code>, <code>sot-sync</code>, <code>sot-audit</code>, <code>sot-handoff</code>.</li><li>Nhắn Claude: *&quot;Liệt kê các skill sot-* đang có và mỗi skill dùng khi nào&quot;*.</li></ol>
 <p>Xong bước này thì chuyển sang <a href="2-quy-trinh-du-an-moi.html">Quy trình dựng SoT cho dự án mới</a>.</p>
 <h2 id="sec-10">Lỗi thường gặp</h2>
-<div class="tablewrap"><table><thead><tr><th>Hiện tượng</th><th>Cách xử lý</th></tr></thead><tbody><tr><td><code>git</code> / <code>gh</code> / <code>py</code>: command not found ngay sau khi cài (Windows)</td><td>Đóng hẳn VS Code rồi mở lại</td></tr><tr><td><code>python</code> mở Microsoft Store (Windows)</td><td>Dùng <code>py</code> thay cho <code>python</code></td></tr><tr><td><code>gh repo clone</code> báo không tìm thấy repo</td><td>Chưa được mời, hoặc chưa chấp nhận lời mời repo private</td></tr><tr><td>Gõ <code>/</code> không thấy skill</td><td>Mở phiên Claude Code mới, hoặc gõ <code>/reload-skills</code>; chạy <code>install.py --list</code> để kiểm tra</td></tr><tr><td>Push báo lỗi đăng nhập</td><td>Chạy lại <code>gh auth login --web</code> rồi <code>gh auth setup-git</code></td></tr><tr><td>Claude báo không đọc được Figma</td><td>Kiểm tra lại bước 4 (Figma MCP)</td></tr></tbody></table></div>
-<footer>Sinh tự động từ <code>1-cai-dat.md</code> bằng <code>_tools/md_to_html.py</code>. Sửa file .md rồi chạy lại script, không sửa trực tiếp file .html.</footer>
+<div class="tablewrap"><table><thead><tr><th>Hiện tượng</th><th>Cách xử lý</th></tr></thead><tbody><tr><td><code>git</code> / <code>gh</code> / <code>py</code>: command not found ngay sau khi cài (Windows)</td><td>Đóng hẳn VS Code rồi mở lại</td></tr><tr><td><code>python</code> mở Microsoft Store (Windows)</td><td>Dùng <code>py</code> thay cho <code>python</code></td></tr><tr><td><code>gh repo clone</code> báo không tìm thấy repo</td><td>Kiểm tra lại tên <code>ducndiKame/SoT-builder</code>; nếu vẫn lỗi, mở <a href="https://github.com/ducndiKame/SoT-builder">https://github.com/ducndiKame/SoT-builder</a> xem repo còn public không</td></tr><tr><td>Gõ <code>/</code> không thấy skill</td><td>Mở phiên Claude Code mới, hoặc gõ <code>/reload-skills</code>; chạy <code>install.py --list</code> để kiểm tra</td></tr><tr><td>Push báo lỗi đăng nhập</td><td>Chạy lại <code>gh auth login --web</code> rồi <code>gh auth setup-git</code></td></tr><tr><td>Claude báo không đọc được Figma</td><td>Kiểm tra lại bước 4 (Figma MCP)</td></tr></tbody></table></div>
+<footer>Sinh tự động từ <code>1-cai-dat.md</code> bằng <code>_templates/md-to-html.ps1</code>. Sửa file .md rồi chạy lại script, không sửa trực tiếp file .html.</footer>
 </main>
 </div>
 <script>
 (function(){var r=document.documentElement,b=document.getElementById('themeBtn');try{var t=localStorage.getItem('doc-theme');if(t)r.setAttribute('data-theme',t);}catch(e){}
-b.addEventListener('click',function(){var c=r.getAttribute('data-theme');if(!c){c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('doc-theme',n);}catch(e){}});})();
-</script>
+b.addEventListener('click',function(){var c=r.getAttribute('data-theme');if(!c){c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('doc-theme',n);}catch(e){}});})();</script>
 </body>
 </html>
