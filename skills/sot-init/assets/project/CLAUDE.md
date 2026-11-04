@@ -59,5 +59,9 @@ Số liệu minh hoạ trong Figma không phải expected value. Ô "Chưa có A
 - Copy: UI copy do design đề xuất; copy notification / marketing do PM đề xuất
 - Tin gửi PM: {{PM_NAME_AND_TONE}}
 
+## Quy tắc chung (mọi dự án, bản gốc ở `~/.claude/CLAUDE.md`)
+- **Tạo component khi UI đã chốt final**: tạo component set (property có nghĩa như `State`, `Type`) cho element lặp lại; làm phần nhỏ trước (chip, bar, tile, field), rồi tới phần ghép (card, sheet). Thay bản vẽ tay trên màn bằng instance, giữ số liệu từng màn bằng override. Đang thử option thì chưa cần. Ghi danh sách component vào tài liệu tính năng.
+- **Không vẽ y hệt wireframe / mockup / ảnh app đối thủ trong doc**: chỉ lấy nội dung và logic; bố cục, UI element, hình ảnh, thứ bậc thông tin phải sáng tạo hơn, vẫn theo phong cách và design system của app. Giữ đủ logic, AC, business rule. Mỗi chỗ lệch doc ghi "lệch doc, cần PM đồng ý". Không chép nhận diện đối thủ.
+
 ## Đừng đọc
 - `_archive/`: bản cũ đã bị thay thế
