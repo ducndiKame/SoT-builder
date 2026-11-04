@@ -69,6 +69,7 @@ Mọi skill tuân theo 3 luật chung:
 | Skill | Dùng khi | Câu mẫu | Ghi chú trong SoT |
 |---|---|---|---|
 | **spec-review** | Có doc PM cần đọc, phản biện, đối chiếu với Figma | "Review doc Settings <link>" · "PM vừa sửa doc, xem lại" | File `brief/YYYY-MM-DD_spec-review-<tn>-v<x.y.z>[-rN].md`. Tham số dự án (cách đọc doc, xưng hô với PM) nằm trong `CLAUDE.md`, mục "Spec review". Chốt xong thì chuyển sang `sot-sync` |
+| **figma-style-builder** | File Figma mới, chưa có Variables / text style; hoặc đổi màu brand, font | "Tạo variables và text style cho file <link>, brand #2BB673, font Playfair Display + Inter" · "Đổi màu brand sang #E8566C rồi cập nhật token" | Lưu `design-system/tokens.json` + `tokens-report.md`; lệnh `build` đã chạy ghi vào `design-system/README.md`. Không chạy mù trên file đã có token: skill đọc file trước và hỏi |
 | **design-system-build** | Cần tài liệu design system từ Figma | "Dựng design system tối thiểu cho tính năng water" · "Audit design system đầy đủ" | **Tối thiểu**: ghi vào `design-system/README.md`. **Đầy đủ**: ghi vào `design-system/DesignSystem.md` |
 | **figma-design-rename** | Tên trong Figma lộn xộn | "Đặt tên lại section Water theo chuẩn" | Nên chạy trước khi kiểm kê màn, để `screen-inventory` dùng tên đúng |
 | **flowchart** | Cần sơ đồ luồng | "Vẽ flowchart tính năng water" | Lưu ở `design/<tn>-flow.mmd`, chèn vào đầu brief |

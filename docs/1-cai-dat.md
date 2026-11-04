@@ -59,7 +59,7 @@ gh auth login -h github.com -p https -s workflow --web
 
 ## Bước 4: Kết nối Figma MCP
 
-Các skill đọc và sửa Figma qua **Figma MCP chính thức**: `sot-feature`, `sot-audit`, `spec-review`, `design-system-build` và `figma-design-rename`. Kết nối theo hướng dẫn của Figma cho Claude Code (help.figma.com, mục *Figma MCP server*), rồi kiểm tra bằng cách nhắn Claude:
+Các skill đọc và sửa Figma qua **Figma MCP chính thức**: `sot-feature`, `sot-audit`, `spec-review`, `figma-style-builder`, `design-system-build` và `figma-design-rename`. Kết nối theo hướng dẫn của Figma cho Claude Code (help.figma.com, mục *Figma MCP server*), rồi kiểm tra bằng cách nhắn Claude:
 
 > Dùng Figma MCP gọi whoami
 
@@ -77,7 +77,7 @@ cd SoT-builder
 python3 install.py          # Windows: py install.py
 ```
 
-- Script chép 10 skill vào `~/.claude/skills/` (Windows: `C:\Users\<bạn>\.claude\skills\`), dùng được ở mọi dự án.
+- Script chép 11 skill vào `~/.claude/skills/` (Windows: `C:\Users\<bạn>\.claude\skills\`), dùng được ở mọi dự án.
 - Máy đã có skill cùng tên (ví dụ `spec-review`) mà khác bản trong repo: bản cũ được **sao lưu** vào `~/.claude/skills/.backup-sot-builder/<ngày-giờ>/` trước khi ghi đè.
 - Các lệnh khác:
 

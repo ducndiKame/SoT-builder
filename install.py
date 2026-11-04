@@ -26,6 +26,9 @@ SRC = os.path.join(REPO, "skills")
 DEST = os.path.join(os.path.expanduser("~"), ".claude", "skills")
 IGNORE = shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store")
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")  # console Windows (cp1252) không in được tiếng Việt
+
 
 def skill_names():
     return sorted(d for d in os.listdir(SRC) if os.path.isfile(os.path.join(SRC, d, "SKILL.md")))

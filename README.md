@@ -12,7 +12,7 @@ Bộ skill đi theo quy trình 8 bước trong talk *"SoT cho design bằng AI"*
 2. **[Quy trình dựng SoT cho dự án mới](docs/2-quy-trinh-du-an-moi.md)**: dùng skill nào, theo thứ tự nào, với câu lệnh mẫu.
 3. **[Cách dùng từng skill](docs/3-cach-dung-tung-skill.md)**: khi nào dùng, gọi thế nào, đầu vào, đầu ra.
 
-## 10 skill trong bộ
+## 11 skill trong bộ
 
 | Skill | Làm gì | Bước trong quy trình |
 |---|---|---|
@@ -22,12 +22,13 @@ Bộ skill đi theo quy trình 8 bước trong talk *"SoT cho design bằng AI"*
 | **sot-sync** | Sau mỗi quyết định: tìm mọi file bị ảnh hưởng, lập checklist, sửa đồng loạt, commit | 06 Giữ / chốt (hằng ngày) |
 | **sot-handoff** | Bàn giao SoT cho designer khác, hoặc nhận bàn giao: clone, đọc lối vào, PR đầu tiên | 08 Bàn giao |
 | spec-review | Review doc PM, chốt doc và design trong khoảng 2 vòng | Hỗ trợ 02, 04 |
+| figma-style-builder | Tạo Variables (Primitives → Semantic Light/Dark) và 51 text style trong file Figma mới theo khung FitAgain, có cổng contrast AA và page Foundations | Hỗ trợ 03 |
 | design-system-build | Audit Figma, dựng tài liệu design system (có chế độ tối thiểu cho phase 1) | Hỗ trợ 03 |
 | figma-design-rename | Đặt lại tên page / section / frame / layer trong Figma theo quy chuẩn | Hỗ trợ 01, 04 |
 | flowchart | Vẽ flowchart luồng tính năng (Mermaid + HTML) | Hỗ trợ 04 |
 | document-fullstack-v2 | Viết AC dạng Gherkin, dò edge case | Hỗ trợ 04 |
 
-5 skill in đậm là phần mới của bộ. 5 skill còn lại là skill có sẵn, đã được làm sạch và chỉnh lại để chạy được trong SoT.
+5 skill in đậm là phần mới của bộ. 6 skill còn lại là skill hỗ trợ: `figma-style-builder` được viết từ khung token của FitAgain; 5 skill kia là skill có sẵn, đã được làm sạch và chỉnh lại để chạy được trong SoT.
 
 ## Quy trình 8 bước với skill tương ứng
 

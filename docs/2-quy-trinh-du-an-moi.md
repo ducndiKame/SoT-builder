@@ -9,7 +9,7 @@ Tài liệu này đi từ một thư mục trống đến một SoT phase 1 đã
 | Chặng | Bước | Skill | Đầu ra cần kiểm tra |
 |---|---|---|---|
 | Nguồn | 01 Gom · 02 Chọn | `sot-init` | `sources.md` có link + owner; bảng mâu thuẫn có người chốt |
-| Khung | 03 Dựng | `sot-init` | `README.md`, `CLAUDE.md` chỉ rõ thứ tự đọc |
+| Khung | 03 Dựng | `sot-init` (+ `figma-style-builder` nếu file Figma còn trống) | `README.md`, `CLAUDE.md` chỉ rõ thứ tự đọc |
 | Phase 1 | 04 Làm | `sot-feature` (+ `spec-review`, `figma-design-rename`, `flowchart`, `document-fullstack-v2`, `design-system-build`) | Một tính năng có quyết định, AC, danh sách màn, câu hỏi mở |
 | Phase 1 | 05 Thử | `sot-audit` | Báo cáo chạy thử task + danh sách lỗ hổng |
 | Phase 1 | 06 Giữ / chốt | `sot-sync` | Các file đồng bộ sau mỗi quyết định; đủ 6 điều kiện DoD |
@@ -40,6 +40,14 @@ Claude sẽ:
 - `README.md` có chỉ đúng thứ tự đọc không?
 - `sources.md` có thiếu nguồn nào không? Owner có đúng không?
 - Có mâu thuẫn nào bạn chốt được ngay không? Chốt luôn thì Claude ghi vào `decisions.md`.
+
+**File Figma còn trống (chưa có Variables, chưa có text style)?** Dựng nền token trước khi vẽ màn, để mọi màn bind token ngay từ đầu:
+
+> Tạo variables và text style cho file Figma <link> theo khung FitAgain. Màu brand #2BB673, font tiêu đề Playfair Display, font giao diện Inter, có Dark mode.
+
+`figma-style-builder` sinh ramp màu từ màu brand, kiểm contrast, đưa bạn xem bảng **Dời bậc** và mục **Cần designer quyết**, rồi mới ghi vào Figma: 3 collection, 51 text style, page `02 Foundations`. Spec đã áp được lưu ở `design-system/tokens.json`.
+
+**Bạn kiểm tra:** báo cáo `design-system/tokens-report.md` không còn ❌ (hoặc mỗi ❌ đã có quyết định trong `decisions.md`); frame `Design Tokens / Dark` đổi màu thật.
 
 Lúc này chưa cần đưa lên Git. Để sang chặng 4.
 

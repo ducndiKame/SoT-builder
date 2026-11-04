@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="sot-builder md_to_html">
 <title>Cài đặt SoT builder</title>
 <style>
-:root{--bg:#FAF6F0;--surface:#FFFFFF;--surface-2:#F3EEE6;--text:#18191F;--text-2:#5F6063;--text-3:#707070;--line:#E7E0D5;--brand:#C4381F;--brand-soft:#FFE3DB;--code:#F3EEE6;--quote:#8A5A00;--quote-bg:#FBEFD5;--shadow:0 4px 24px rgba(0,0,0,.05)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--brand-soft:#3A221D;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}}
-:root[data-theme="dark"]{--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--brand-soft:#3A221D;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}
+:root{--bg:#FAF6F0;--surface:#FFFFFF;--surface-2:#F3EEE6;--text:#18191F;--text-2:#5F6063;--text-3:#707070;--line:#E7E0D5;--brand:#C4381F;--code:#F3EEE6;--quote:#8A5A00;--quote-bg:#FBEFD5;--shadow:0 4px 24px rgba(0,0,0,.05)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}}
+:root[data-theme="dark"]{--bg:#16161A;--surface:#1F1F25;--surface-2:#26262D;--text:#F2F0EC;--text-2:#B9B7B2;--text-3:#9A9893;--line:#34343C;--brand:#FF8A73;--code:#26262D;--quote:#F2C46B;--quote-bg:#352B17;--shadow:none}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--brand);word-break:break-word}
@@ -39,7 +40,8 @@ footer{margin-top:48px;color:var(--text-3);font-size:12.5px}
 .mlegend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:#41505f;margin-bottom:10px}
 .mlegend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid #08324f;vertical-align:middle;margin-right:4px}
 .themebtn:focus-visible,nav.toc a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
-@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}nav.toc .links{display:none}main{padding:22px 16px 72px}h1{font-size:25px}}</style>
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}nav.toc .links{display:none}main{padding:22px 16px 72px}h1{font-size:25px}}
+</style>
 </head>
 <body>
 <div class="layout">
@@ -71,7 +73,7 @@ python3 --version     # Windows: py --version</code></pre>
 <pre><code>  git config --global core.longpaths true</code></pre>
 <p><code>gh auth setup-git</code> cho Git dùng chung lần đăng nhập này, nên sau này push / pull không phải nhập mật khẩu. <strong>Không bao giờ dán token hay mật khẩu vào chat với Claude.</strong></p>
 <h2 id="sec-5">Bước 4: Kết nối Figma MCP</h2>
-<p>Các skill đọc và sửa Figma qua <strong>Figma MCP chính thức</strong>: <code>sot-feature</code>, <code>sot-audit</code>, <code>spec-review</code>, <code>design-system-build</code> và <code>figma-design-rename</code>. Kết nối theo hướng dẫn của Figma cho Claude Code (help.figma.com, mục *Figma MCP server*), rồi kiểm tra bằng cách nhắn Claude:</p>
+<p>Các skill đọc và sửa Figma qua <strong>Figma MCP chính thức</strong>: <code>sot-feature</code>, <code>sot-audit</code>, <code>spec-review</code>, <code>figma-style-builder</code>, <code>design-system-build</code> và <code>figma-design-rename</code>. Kết nối theo hướng dẫn của Figma cho Claude Code (help.figma.com, mục *Figma MCP server*), rồi kiểm tra bằng cách nhắn Claude:</p>
 <blockquote>Dùng Figma MCP gọi whoami</blockquote>
 <p>Claude trả về tài khoản Figma của bạn là đã kết nối. Chưa kết nối Figma thì các skill vẫn chạy được phần tài liệu. Phần nào cần đọc Figma, Claude sẽ báo thiếu chứ không đoán.</p>
 <p>Doc PM nằm trên portal nội bộ hoặc Google Docs thì cần thêm connector / MCP tương ứng. Ghi cách đọc doc vào <code>CLAUDE.md</code> của dự án (skill <code>sot-init</code> sẽ hỏi bạn).</p>
@@ -80,7 +82,7 @@ python3 --version     # Windows: py --version</code></pre>
 <pre><code>gh repo clone ducndiKame/SoT-builder
 cd SoT-builder
 python3 install.py          # Windows: py install.py</code></pre>
-<ul><li>Script chép 10 skill vào <code>~/.claude/skills/</code> (Windows: <code>C:\Users\&lt;bạn&gt;\.claude\skills\</code>), dùng được ở mọi dự án.</li><li>Máy đã có skill cùng tên (ví dụ <code>spec-review</code>) mà khác bản trong repo: bản cũ được <strong>sao lưu</strong> vào <code>~/.claude/skills/.backup-sot-builder/&lt;ngày-giờ&gt;/</code> trước khi ghi đè.</li><li>Các lệnh khác:</li></ul>
+<ul><li>Script chép 11 skill vào <code>~/.claude/skills/</code> (Windows: <code>C:\Users\&lt;bạn&gt;\.claude\skills\</code>), dùng được ở mọi dự án.</li><li>Máy đã có skill cùng tên (ví dụ <code>spec-review</code>) mà khác bản trong repo: bản cũ được <strong>sao lưu</strong> vào <code>~/.claude/skills/.backup-sot-builder/&lt;ngày-giờ&gt;/</code> trước khi ghi đè.</li><li>Các lệnh khác:</li></ul>
 <div class="tablewrap"><table><thead><tr><th>Lệnh</th><th>Tác dụng</th></tr></thead><tbody><tr><td><code>python3 install.py --list</code></td><td>Skill nào đã cài, bản nào cũ</td></tr><tr><td><code>python3 install.py --only sot-init,sot-sync</code></td><td>Chỉ cài vài skill</td></tr><tr><td><code>python3 install.py --dry-run</code></td><td>Xem trước, không cài</td></tr><tr><td><code>python3 install.py --uninstall</code></td><td>Gỡ</td></tr></tbody></table></div>
 <p>Tên skill khi gọi: <code>/sot-init</code>, <code>/sot-feature</code>...</p>
 <h3 id="sec-8">Cách B: cài theo dạng plugin</h3>
@@ -94,11 +96,12 @@ python3 install.py          # Windows: py install.py</code></pre>
 <p>Xong bước này thì chuyển sang <a href="2-quy-trinh-du-an-moi.html">Quy trình dựng SoT cho dự án mới</a>.</p>
 <h2 id="sec-10">Lỗi thường gặp</h2>
 <div class="tablewrap"><table><thead><tr><th>Hiện tượng</th><th>Cách xử lý</th></tr></thead><tbody><tr><td><code>git</code> / <code>gh</code> / <code>py</code>: command not found ngay sau khi cài (Windows)</td><td>Đóng hẳn VS Code rồi mở lại</td></tr><tr><td><code>python</code> mở Microsoft Store (Windows)</td><td>Dùng <code>py</code> thay cho <code>python</code></td></tr><tr><td><code>gh repo clone</code> báo không tìm thấy repo</td><td>Kiểm tra lại tên <code>ducndiKame/SoT-builder</code>; nếu vẫn lỗi, mở <a href="https://github.com/ducndiKame/SoT-builder">https://github.com/ducndiKame/SoT-builder</a> xem repo còn public không</td></tr><tr><td>Gõ <code>/</code> không thấy skill</td><td>Mở phiên Claude Code mới, hoặc gõ <code>/reload-skills</code>; chạy <code>install.py --list</code> để kiểm tra</td></tr><tr><td>Push báo lỗi đăng nhập</td><td>Chạy lại <code>gh auth login --web</code> rồi <code>gh auth setup-git</code></td></tr><tr><td>Claude báo không đọc được Figma</td><td>Kiểm tra lại bước 4 (Figma MCP)</td></tr></tbody></table></div>
-<footer>Sinh tự động từ <code>1-cai-dat.md</code> bằng <code>_templates/md-to-html.ps1</code>. Sửa file .md rồi chạy lại script, không sửa trực tiếp file .html.</footer>
+<footer>Sinh tự động từ <code>1-cai-dat.md</code> bằng <code>_tools/md_to_html.py</code>. Sửa file .md rồi chạy lại script, không sửa trực tiếp file .html.</footer>
 </main>
 </div>
 <script>
 (function(){var r=document.documentElement,b=document.getElementById('themeBtn');try{var t=localStorage.getItem('doc-theme');if(t)r.setAttribute('data-theme',t);}catch(e){}
-b.addEventListener('click',function(){var c=r.getAttribute('data-theme');if(!c){c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('doc-theme',n);}catch(e){}});})();</script>
+b.addEventListener('click',function(){var c=r.getAttribute('data-theme');if(!c){c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('doc-theme',n);}catch(e){}});})();
+</script>
 </body>
 </html>
