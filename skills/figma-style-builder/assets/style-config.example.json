@@ -1,0 +1,47 @@
+{
+  "_about": "Câu trả lời của designer cho figma-style-builder. Claude điền file này sau khi hỏi xong, designer xác nhận, rồi mới chạy build. Lưu ở design-system/style-config.json của dự án: đây là bản ghi 'dự án này chọn gì', chạy lại build với file này ra đúng kết quả cũ. Ví dụ dưới đây là cấu hình tái tạo FitAgain (2 font, không có secondary). Khoá bắt đầu bằng '_' là chú thích, script bỏ qua.",
+
+  "project": "FitAgain",
+
+  "colors": {
+    "_primary": "Bắt buộc. Một mã hex (script sinh ramp 50–900) hoặc danh sách đủ 10 mã nếu brand đã có ramp.",
+    "primary": "#9F85FF",
+    "_primaryOn": "Màu chữ/icon trên nút và nền primary: 'white' (mặc định) hoặc 'dark'.",
+    "primaryOn": "white",
+
+    "_secondary": "null = dự án không có màu secondary. Có thì: { hex: mã hex hoặc 10 mã, use: 'accent' | 'accent+button', on: 'white' | 'dark' }.",
+    "secondary": null,
+
+    "_status": "Tuỳ chọn. Màu trạng thái riêng của brand: { success | warning | error | info: hex hoặc 10 mã }. Bỏ trống = dùng ramp của khung.",
+    "status": {},
+
+    "_extra": "Tuỳ chọn. Ramp thêm chỉ vào Primitives (vd màu biểu đồ): { tên: hex hoặc 10 mã }.",
+    "extra": {}
+  },
+
+  "fonts": {
+    "_families": "1–3 font, theo thứ tự designer kể. F1 thường là font tiêu đề, F2 font giao diện, F3 font mono hoặc font số.",
+    "families": ["Lora", "Be Vietnam Pro"],
+
+    "_assign": "Nhóm style → font. Khoá là tên nhóm (Display, Heading, Body, Label, Caption, Overline, Link, Code) hoặc tiền tố cụ thể hơn (Heading/H4, Body/XSmall). Khoá dài hơn thắng. null = không tạo nhóm đó. Bỏ trống = theo font_presets trong baseline.json.",
+    "assign": {
+      "Display": "Lora", "Heading": "Lora",
+      "Body": "Be Vietnam Pro", "Label": "Be Vietnam Pro", "Caption": "Be Vietnam Pro",
+      "Overline": "Be Vietnam Pro", "Link": "Be Vietnam Pro", "Code": null
+    },
+
+    "_weights": "Tuỳ chọn. Font chỉ có / chỉ được dùng một số weight: { font: [Regular, Medium, SemiBold, Bold] }. Style biến thể theo weight (Body/Medium/Semi Bold) bị bỏ; style đơn (Heading/H4) đổi sang weight gần nhất.",
+    "weights": {},
+
+    "_rules": "Quy tắc dùng font của designer, ghi bằng lời. Được ghi vào báo cáo, design-system/README.md và frame Typography.",
+    "rules": []
+  },
+
+  "darkMode": true,
+  "dimension": true,
+
+  "_overrides": "Điền sau khi designer xem báo cáo. set: { 'token' hoặc 'token:Light': 'ramp/bậc' } (token này không bị cổng contrast dời nữa). keep: [token hoặc token:Mode] giữ nguyên dù chưa đạt contrast. fix: false = chỉ báo cáo, không tự dời.",
+  "set": {},
+  "keep": [],
+  "fix": true
+}

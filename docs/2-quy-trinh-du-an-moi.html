@@ -63,9 +63,12 @@ footer{margin-top:48px;color:var(--text-3);font-size:12.5px}
 <p><strong>Bạn kiểm tra:</strong></p>
 <ul><li><code>README.md</code> có chỉ đúng thứ tự đọc không?</li><li><code>sources.md</code> có thiếu nguồn nào không? Owner có đúng không?</li><li>Có mâu thuẫn nào bạn chốt được ngay không? Chốt luôn thì Claude ghi vào <code>decisions.md</code>.</li></ul>
 <p><strong>File Figma còn trống (chưa có Variables, chưa có text style)?</strong> Dựng nền token trước khi vẽ màn, để mọi màn bind token ngay từ đầu:</p>
-<blockquote>Tạo variables và text style cho file Figma &lt;link&gt; theo khung FitAgain. Màu brand #2BB673, font tiêu đề Playfair Display, font giao diện Inter, có Dark mode.</blockquote>
-<p><code>figma-style-builder</code> sinh ramp màu từ màu brand, kiểm contrast, đưa bạn xem bảng <strong>Dời bậc</strong> và mục <strong>Cần designer quyết</strong>, rồi mới ghi vào Figma: 3 collection, 51 text style, page <code>02 Foundations</code>. Spec đã áp được lưu ở <code>design-system/tokens.json</code>.</p>
-<p><strong>Bạn kiểm tra:</strong> báo cáo <code>design-system/tokens-report.md</code> không còn ❌ (hoặc mỗi ❌ đã có quyết định trong <code>decisions.md</code>); frame <code>Design Tokens / Dark</code> đổi màu thật.</p>
+<blockquote>Tạo variables và text style cho file Figma &lt;link&gt; theo khung FitAgain.</blockquote>
+<p><code>figma-style-builder</code> hỏi bạn trước khi dựng:</p>
+<ul><li>màu primary;</li><li>có màu secondary không, và dùng cho điểm nhấn hay cả nút phụ;</li><li>dùng 1, 2 hay 3 font, font nào cho nhóm chữ nào;</li><li>quy tắc dùng font (vd &quot;font tiêu đề chỉ tới H3&quot;, &quot;chỉ dùng Regular và Bold&quot;);</li><li>Dark mode, spacing / radius.</li></ul>
+<p>Câu trả lời được lưu ở <code>design-system/style-config.json</code>. Skill sinh ramp màu, kiểm contrast, đưa bạn xem báo cáo (cấu hình, <strong>Dời bậc</strong>, <strong>Cần designer quyết</strong>, bảng nhóm chữ → font). Bạn đồng ý thì skill mới ghi vào Figma: các collection, text style, page <code>02 Foundations</code>. Spec đã áp nằm ở <code>design-system/tokens.json</code>.</p>
+<p><strong>Bạn kiểm tra:</strong></p>
+<ul><li>Mục <strong>Cấu hình</strong> trong <code>design-system/tokens-report.md</code> đúng câu trả lời của bạn.</li><li>Báo cáo không còn ❌, hoặc mỗi ❌ đã có quyết định trong <code>decisions.md</code>.</li><li>Khối &quot;Font usage&quot; trên frame <code>Typography</code> đúng phân vai font.</li><li>Frame <code>Design Tokens / Dark</code> đổi màu thật.</li></ul>
 <p>Lúc này chưa cần đưa lên Git. Để sang chặng 4.</p>
 <h2 id="sec-5">Chặng 2: Làm trọn một tính năng (<code>sot-feature</code>)</h2>
 <p>Chọn <strong>một</strong> tính năng nhỏ làm mẫu. Ví dụ FitAgain chọn Water Tracker. Đừng làm tất cả tính năng một lúc.</p>

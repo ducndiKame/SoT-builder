@@ -74,6 +74,54 @@
     ["feedback/info/fg", "info/700", "info/300", "Info banner text and icon"]
   ],
 
+  "secondary": {
+    "_note": "Chỉ dùng khi dự án có màu secondary. Ramp tên 'secondary' nằm trong Primitives; token Semantic tên 'accent' vì chữ 'secondary' trong khung đã mang nghĩa thứ bậc (text/secondary = chữ phụ, action/secondary = nút phụ xám). use = 'accent': chỉ thêm nhóm accent. use = 'accent+button': thêm nhóm accent và chuyển action/secondary/* từ xám sang ramp secondary.",
+    "ramp": "secondary",
+    "accent": {
+      "semantic": [
+        ["bg/accent", "secondary/400", "secondary/500", "Accent-filled region (badge, highlight); text on it uses text/on-accent"],
+        ["bg/accent-subtle", "secondary/50", "secondary/900", "Tinted accent region, tag background"],
+        ["text/accent", "secondary/600", "secondary/300", "Accent-coloured text"],
+        ["text/on-accent", "white", "white", "Text on bg/accent"],
+        ["icon/accent", "secondary/500", "secondary/400", "Accent icon"],
+        ["border/accent", "secondary/400", "secondary/500", "Accent outline"]
+      ],
+      "gates": [
+        ["text/accent", "bg/primary", 4.5, "fg", []],
+        ["text/on-accent", "bg/accent", 4.5, "bg", []],
+        ["icon/accent", "bg/primary", 3.0, "fg", []]
+      ],
+      "distinct": []
+    },
+    "button": {
+      "semantic": [
+        ["action/secondary/default", "secondary/400", "secondary/400", "Secondary button fill"],
+        ["action/secondary/hover", "secondary/500", "secondary/300", "Secondary button hover"],
+        ["action/secondary/pressed", "secondary/600", "secondary/200", "Secondary button pressed"],
+        ["action/secondary/disabled", "secondary/200", "secondary/800", "Secondary button disabled"],
+        ["action/secondary/foreground", "white", "white", "Label and icon on secondary button"]
+      ],
+      "gates": [
+        ["action/secondary/foreground", "action/secondary/default", 4.5, "bg", ["action/secondary/hover", "action/secondary/pressed"]]
+      ],
+      "distinct": [["action/secondary/default", "action/secondary/hover", "action/secondary/pressed"]]
+    }
+  },
+
+  "anchor": {
+    "_note": "Token mang đúng màu brand. Khung trỏ chúng vào bậc 400 (FitAgain: brand nằm ở 400). Khi màu brand sinh ra rơi vào bậc khác (brand sáng như vàng → 200, brand đậm như navy → 700), các token này dời cùng số bậc để nút và nền brand đúng màu brand. Chỉ áp cho ramp sinh từ một mã hex, và chỉ dời giá trị đang trỏ vào chính ramp đó.",
+    "step": 400,
+    "primary": ["bg/brand", "border/brand", "border/focus", "action/primary/default", "action/primary/hover", "action/primary/pressed", "action/primary/disabled"],
+    "secondary": ["bg/accent", "border/accent", "action/secondary/default", "action/secondary/hover", "action/secondary/pressed", "action/secondary/disabled"]
+  },
+
+  "on_color": {
+    "_note": "Màu chữ/icon trên nền màu brand. 'white' (mặc định, như FitAgain) hoặc 'dark' (neutral/900, cho brand sáng như vàng, xanh mint). Token bị đổi theo từng màu brand.",
+    "primary": ["text/on-brand", "action/primary/foreground"],
+    "secondary": ["text/on-accent", "action/secondary/foreground"],
+    "dark": "neutral/900"
+  },
+
   "scopes": [
     ["action/*/foreground", ["TEXT_FILL", "SHAPE_FILL", "STROKE_COLOR"]],
     ["action/*", ["FRAME_FILL", "SHAPE_FILL"]],
@@ -127,70 +175,82 @@
   },
 
   "dimension": {
-    "_note": "Tuỳ chọn (--dimension). FitAgain chưa có collection này; spacing/radius chỉ nằm trong DesignSystem.md. Tên theo px để không mơ hồ giữa các dự án.",
+    "_note": "Tuỳ chọn (style-config.json → dimension). FitAgain chưa có collection này; spacing/radius chỉ nằm trong DesignSystem.md. Tên theo px để không mơ hồ giữa các dự án.",
     "spacing": [0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64],
     "radius": [["none", 0], ["xs", 4], ["sm", 8], ["md", 12], ["lg", 16], ["xl", 24], ["2xl", 32], ["full", 999]]
   },
 
   "text_styles": {
-    "_note": "[tên, vai trò font, weight, size, line-height px, letter-spacing %, textCase, decoration]. Vai trò: display = font nhận diện (FitAgain: Lora), body = font giao diện (FitAgain: Be Vietnam Pro), mono = font code. Weight là tên chuẩn; script tự dò tên style thật của font (SemiBold / Semi Bold / Semibold…).",
+    "_note": "[tên, weight, size, line-height px, letter-spacing %, textCase, decoration]. Font không nằm ở đây: mỗi dự án gán font cho từng nhóm (Display, Heading, Body…) trong style-config.json → fonts.assign. Weight là tên chuẩn (Regular 400, Medium 500, SemiBold 600, Bold 700); script Figma tự dò tên style thật của font (SemiBold / Semi Bold / Semibold…).",
     "list": [
-      ["Display/Large", "display", "Bold", 72, 80, -2, "ORIGINAL", "NONE"],
-      ["Display/Medium", "display", "Bold", 56, 64, -2, "ORIGINAL", "NONE"],
-      ["Display/Small", "display", "SemiBold", 44, 52, -1, "ORIGINAL", "NONE"],
-      ["Heading/H1", "display", "Bold", 36, 44, -1, "ORIGINAL", "NONE"],
-      ["Heading/H2", "display", "SemiBold", 30, 38, -1, "ORIGINAL", "NONE"],
-      ["Heading/H3", "display", "SemiBold", 24, 32, 0, "ORIGINAL", "NONE"],
-      ["Heading/H4", "display", "Medium", 20, 28, 0, "ORIGINAL", "NONE"],
-      ["Heading/H5", "display", "Medium", 18, 26, 0, "ORIGINAL", "NONE"],
-      ["Heading/H6", "display", "Medium", 16, 24, 0, "ORIGINAL", "NONE"],
-      ["Body/XLarge/Regular", "body", "Regular", 20, 32, 0, "ORIGINAL", "NONE"],
-      ["Body/XLarge/Medium", "body", "Medium", 20, 32, 0, "ORIGINAL", "NONE"],
-      ["Body/XLarge/Semi Bold", "body", "SemiBold", 20, 32, 0, "ORIGINAL", "NONE"],
-      ["Body/XLarge/Bold", "body", "Bold", 20, 32, 0, "ORIGINAL", "NONE"],
-      ["Body/Large/Regular", "body", "Regular", 18, 28, 0, "ORIGINAL", "NONE"],
-      ["Body/Large/Medium", "body", "Medium", 18, 28, 0, "ORIGINAL", "NONE"],
-      ["Body/Large/Semi Bold", "body", "SemiBold", 18, 28, 0, "ORIGINAL", "NONE"],
-      ["Body/Large/Bold", "body", "Bold", 18, 28, 0, "ORIGINAL", "NONE"],
-      ["Body/Medium/Regular", "body", "Regular", 16, 24, 0, "ORIGINAL", "NONE"],
-      ["Body/Medium/Medium", "body", "Medium", 16, 24, 0, "ORIGINAL", "NONE"],
-      ["Body/Medium/Semi Bold", "body", "SemiBold", 16, 24, 0, "ORIGINAL", "NONE"],
-      ["Body/Medium/Bold", "body", "Bold", 16, 24, 0, "ORIGINAL", "NONE"],
-      ["Body/Small/Regular", "body", "Regular", 14, 22, 0, "ORIGINAL", "NONE"],
-      ["Body/Small/Medium", "body", "Medium", 14, 22, 0, "ORIGINAL", "NONE"],
-      ["Body/Small/Semi Bold", "body", "SemiBold", 14, 22, 0, "ORIGINAL", "NONE"],
-      ["Body/Small/Bold", "body", "Bold", 14, 22, 0, "ORIGINAL", "NONE"],
-      ["Body/XSmall/Regular", "body", "Regular", 12, 18, 0, "ORIGINAL", "NONE"],
-      ["Body/XSmall/Medium", "body", "Medium", 12, 18, 0, "ORIGINAL", "NONE"],
-      ["Body/XSmall/Semi Bold", "body", "SemiBold", 12, 18, 0, "ORIGINAL", "NONE"],
-      ["Label/Large/Regular", "body", "Regular", 16, 24, 1, "ORIGINAL", "NONE"],
-      ["Label/Large/Medium", "body", "Medium", 16, 24, 1, "ORIGINAL", "NONE"],
-      ["Label/Large/Semi Bold", "body", "SemiBold", 16, 24, 1, "ORIGINAL", "NONE"],
-      ["Label/Large/Bold", "body", "Bold", 16, 24, 1, "ORIGINAL", "NONE"],
-      ["Label/Medium/Regular", "body", "Regular", 14, 20, 1, "ORIGINAL", "NONE"],
-      ["Label/Medium/Medium", "body", "Medium", 14, 20, 1, "ORIGINAL", "NONE"],
-      ["Label/Medium/Semi Bold", "body", "SemiBold", 14, 20, 1, "ORIGINAL", "NONE"],
-      ["Label/Medium/Bold", "body", "Bold", 14, 20, 1, "ORIGINAL", "NONE"],
-      ["Label/Small/Regular", "body", "Regular", 12, 16, 1, "ORIGINAL", "NONE"],
-      ["Label/Small/Medium", "body", "Medium", 12, 16, 1, "ORIGINAL", "NONE"],
-      ["Label/Small/Semi Bold", "body", "SemiBold", 12, 16, 1, "ORIGINAL", "NONE"],
-      ["Caption/Regular", "body", "Regular", 12, 16, 0, "ORIGINAL", "NONE"],
-      ["Caption/Medium", "body", "Medium", 12, 16, 0, "ORIGINAL", "NONE"],
-      ["Caption/Semi Bold", "body", "SemiBold", 12, 16, 0, "ORIGINAL", "NONE"],
-      ["Caption/Small/Regular", "body", "Regular", 10, 14, 1, "ORIGINAL", "NONE"],
-      ["Caption/Small/Medium", "body", "Medium", 10, 14, 1, "ORIGINAL", "NONE"],
-      ["Overline/Large", "body", "SemiBold", 14, 20, 8, "UPPER", "NONE"],
-      ["Overline/Medium", "body", "SemiBold", 12, 16, 8, "UPPER", "NONE"],
-      ["Overline/Small", "body", "Medium", 10, 14, 8, "UPPER", "NONE"],
-      ["Link/Medium", "body", "Medium", 16, 24, 0, "ORIGINAL", "UNDERLINE"],
-      ["Link/Small", "body", "Medium", 14, 22, 0, "ORIGINAL", "UNDERLINE"],
-      ["Code/Block", "mono", "Regular", 14, 22, 0, "ORIGINAL", "NONE"],
-      ["Code/Inline", "mono", "Regular", 14, 22, 0, "ORIGINAL", "NONE"]
+      ["Display/Large", "Bold", 72, 80, -2, "ORIGINAL", "NONE"],
+      ["Display/Medium", "Bold", 56, 64, -2, "ORIGINAL", "NONE"],
+      ["Display/Small", "SemiBold", 44, 52, -1, "ORIGINAL", "NONE"],
+      ["Heading/H1", "Bold", 36, 44, -1, "ORIGINAL", "NONE"],
+      ["Heading/H2", "SemiBold", 30, 38, -1, "ORIGINAL", "NONE"],
+      ["Heading/H3", "SemiBold", 24, 32, 0, "ORIGINAL", "NONE"],
+      ["Heading/H4", "Medium", 20, 28, 0, "ORIGINAL", "NONE"],
+      ["Heading/H5", "Medium", 18, 26, 0, "ORIGINAL", "NONE"],
+      ["Heading/H6", "Medium", 16, 24, 0, "ORIGINAL", "NONE"],
+      ["Body/XLarge/Regular", "Regular", 20, 32, 0, "ORIGINAL", "NONE"],
+      ["Body/XLarge/Medium", "Medium", 20, 32, 0, "ORIGINAL", "NONE"],
+      ["Body/XLarge/Semi Bold", "SemiBold", 20, 32, 0, "ORIGINAL", "NONE"],
+      ["Body/XLarge/Bold", "Bold", 20, 32, 0, "ORIGINAL", "NONE"],
+      ["Body/Large/Regular", "Regular", 18, 28, 0, "ORIGINAL", "NONE"],
+      ["Body/Large/Medium", "Medium", 18, 28, 0, "ORIGINAL", "NONE"],
+      ["Body/Large/Semi Bold", "SemiBold", 18, 28, 0, "ORIGINAL", "NONE"],
+      ["Body/Large/Bold", "Bold", 18, 28, 0, "ORIGINAL", "NONE"],
+      ["Body/Medium/Regular", "Regular", 16, 24, 0, "ORIGINAL", "NONE"],
+      ["Body/Medium/Medium", "Medium", 16, 24, 0, "ORIGINAL", "NONE"],
+      ["Body/Medium/Semi Bold", "SemiBold", 16, 24, 0, "ORIGINAL", "NONE"],
+      ["Body/Medium/Bold", "Bold", 16, 24, 0, "ORIGINAL", "NONE"],
+      ["Body/Small/Regular", "Regular", 14, 22, 0, "ORIGINAL", "NONE"],
+      ["Body/Small/Medium", "Medium", 14, 22, 0, "ORIGINAL", "NONE"],
+      ["Body/Small/Semi Bold", "SemiBold", 14, 22, 0, "ORIGINAL", "NONE"],
+      ["Body/Small/Bold", "Bold", 14, 22, 0, "ORIGINAL", "NONE"],
+      ["Body/XSmall/Regular", "Regular", 12, 18, 0, "ORIGINAL", "NONE"],
+      ["Body/XSmall/Medium", "Medium", 12, 18, 0, "ORIGINAL", "NONE"],
+      ["Body/XSmall/Semi Bold", "SemiBold", 12, 18, 0, "ORIGINAL", "NONE"],
+      ["Label/Large/Regular", "Regular", 16, 24, 1, "ORIGINAL", "NONE"],
+      ["Label/Large/Medium", "Medium", 16, 24, 1, "ORIGINAL", "NONE"],
+      ["Label/Large/Semi Bold", "SemiBold", 16, 24, 1, "ORIGINAL", "NONE"],
+      ["Label/Large/Bold", "Bold", 16, 24, 1, "ORIGINAL", "NONE"],
+      ["Label/Medium/Regular", "Regular", 14, 20, 1, "ORIGINAL", "NONE"],
+      ["Label/Medium/Medium", "Medium", 14, 20, 1, "ORIGINAL", "NONE"],
+      ["Label/Medium/Semi Bold", "SemiBold", 14, 20, 1, "ORIGINAL", "NONE"],
+      ["Label/Medium/Bold", "Bold", 14, 20, 1, "ORIGINAL", "NONE"],
+      ["Label/Small/Regular", "Regular", 12, 16, 1, "ORIGINAL", "NONE"],
+      ["Label/Small/Medium", "Medium", 12, 16, 1, "ORIGINAL", "NONE"],
+      ["Label/Small/Semi Bold", "SemiBold", 12, 16, 1, "ORIGINAL", "NONE"],
+      ["Caption/Regular", "Regular", 12, 16, 0, "ORIGINAL", "NONE"],
+      ["Caption/Medium", "Medium", 12, 16, 0, "ORIGINAL", "NONE"],
+      ["Caption/Semi Bold", "SemiBold", 12, 16, 0, "ORIGINAL", "NONE"],
+      ["Caption/Small/Regular", "Regular", 10, 14, 1, "ORIGINAL", "NONE"],
+      ["Caption/Small/Medium", "Medium", 10, 14, 1, "ORIGINAL", "NONE"],
+      ["Overline/Large", "SemiBold", 14, 20, 8, "UPPER", "NONE"],
+      ["Overline/Medium", "SemiBold", 12, 16, 8, "UPPER", "NONE"],
+      ["Overline/Small", "Medium", 10, 14, 8, "UPPER", "NONE"],
+      ["Link/Medium", "Medium", 16, 24, 0, "ORIGINAL", "UNDERLINE"],
+      ["Link/Small", "Medium", 14, 22, 0, "ORIGINAL", "UNDERLINE"],
+      ["Code/Block", "Regular", 14, 22, 0, "ORIGINAL", "NONE"],
+      ["Code/Inline", "Regular", 14, 22, 0, "ORIGINAL", "NONE"]
     ],
-    "role_usage": {
-      "display": "Display, Heading và số liệu lớn",
-      "body": "Body, Label, Caption, Overline, Link, button, input",
-      "mono": "Code (bỏ qua nếu dự án không hiển thị code)"
+    "groups": {
+      "_note": "Nhóm style → dùng cho gì. Câu này được ghi vào description của text style trong Figma.",
+      "Display": "Hero titles and large numbers (timer, totals)",
+      "Heading": "Screen, section and card titles",
+      "Body": "Paragraphs and general UI text",
+      "Label": "Buttons, inputs, chips, tabs",
+      "Caption": "Helper text, metadata, timestamps",
+      "Overline": "Eyebrow labels above titles (uppercase)",
+      "Link": "Inline text links",
+      "Code": "Code snippets"
+    },
+    "font_presets": {
+      "_note": "Phân vai mặc định theo số font, chỉ là điểm khởi đầu để hỏi designer. F1, F2, F3 = font thứ 1, 2, 3 designer khai báo. null = không tạo nhóm đó.",
+      "1": { "Display": "F1", "Heading": "F1", "Body": "F1", "Label": "F1", "Caption": "F1", "Overline": "F1", "Link": "F1", "Code": null },
+      "2": { "Display": "F1", "Heading": "F1", "Body": "F2", "Label": "F2", "Caption": "F2", "Overline": "F2", "Link": "F2", "Code": null },
+      "3": { "Display": "F1", "Heading": "F1", "Body": "F2", "Label": "F2", "Caption": "F2", "Overline": "F2", "Link": "F2", "Code": "F3" }
     }
   },
 

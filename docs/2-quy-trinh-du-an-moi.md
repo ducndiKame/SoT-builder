@@ -43,11 +43,24 @@ Claude sẽ:
 
 **File Figma còn trống (chưa có Variables, chưa có text style)?** Dựng nền token trước khi vẽ màn, để mọi màn bind token ngay từ đầu:
 
-> Tạo variables và text style cho file Figma <link> theo khung FitAgain. Màu brand #2BB673, font tiêu đề Playfair Display, font giao diện Inter, có Dark mode.
+> Tạo variables và text style cho file Figma <link> theo khung FitAgain.
 
-`figma-style-builder` sinh ramp màu từ màu brand, kiểm contrast, đưa bạn xem bảng **Dời bậc** và mục **Cần designer quyết**, rồi mới ghi vào Figma: 3 collection, 51 text style, page `02 Foundations`. Spec đã áp được lưu ở `design-system/tokens.json`.
+`figma-style-builder` hỏi bạn trước khi dựng:
 
-**Bạn kiểm tra:** báo cáo `design-system/tokens-report.md` không còn ❌ (hoặc mỗi ❌ đã có quyết định trong `decisions.md`); frame `Design Tokens / Dark` đổi màu thật.
+- màu primary;
+- có màu secondary không, và dùng cho điểm nhấn hay cả nút phụ;
+- dùng 1, 2 hay 3 font, font nào cho nhóm chữ nào;
+- quy tắc dùng font (vd "font tiêu đề chỉ tới H3", "chỉ dùng Regular và Bold");
+- Dark mode, spacing / radius.
+
+Câu trả lời được lưu ở `design-system/style-config.json`. Skill sinh ramp màu, kiểm contrast, đưa bạn xem báo cáo (cấu hình, **Dời bậc**, **Cần designer quyết**, bảng nhóm chữ → font). Bạn đồng ý thì skill mới ghi vào Figma: các collection, text style, page `02 Foundations`. Spec đã áp nằm ở `design-system/tokens.json`.
+
+**Bạn kiểm tra:**
+
+- Mục **Cấu hình** trong `design-system/tokens-report.md` đúng câu trả lời của bạn.
+- Báo cáo không còn ❌, hoặc mỗi ❌ đã có quyết định trong `decisions.md`.
+- Khối "Font usage" trên frame `Typography` đúng phân vai font.
+- Frame `Design Tokens / Dark` đổi màu thật.
 
 Lúc này chưa cần đưa lên Git. Để sang chặng 4.
 

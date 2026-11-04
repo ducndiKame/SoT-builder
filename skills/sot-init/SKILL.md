@@ -99,7 +99,7 @@ So sánh sâu từng tính năng (doc PM với Figma, từng AC) là việc củ
 
 - `context/brand-and-audience.md` và `context/stakeholders.md`: điền từ phỏng vấn và nguồn. Mỗi ý ghi nguồn.
 - `design-system/README.md`: ở phase 1 chỉ cần đủ cho feature mẫu. Nếu file Figma có Variables hoặc style, đề xuất chạy skill `design-system-build` ở **chế độ tối thiểu**: chỉ lấy token và component mà feature mẫu dùng. Bản đầy đủ để dành khi dự án lớn hơn.
-- File Figma còn trống (chưa có Variables, chưa có text style): đề xuất chạy `figma-style-builder` trước khi vẽ màn, để dự án có cùng khung token và thang chữ với các dự án khác. Spec ghi vào `design-system/tokens.json`.
+- File Figma còn trống (chưa có Variables, chưa có text style): đề xuất chạy `figma-style-builder` trước khi vẽ màn, để dự án có cùng khung token và thang chữ với các dự án khác. Skill hỏi designer màu primary, có secondary không, 1/2/3 font và quy tắc dùng font trước khi dựng; câu trả lời ghi vào `design-system/style-config.json`, spec ghi vào `design-system/tokens.json`.
 
 ## Bước 6: Sinh bản HTML
 

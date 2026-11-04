@@ -3,14 +3,17 @@
 build_tokens.py: dựng bộ token + text style theo khung FitAgain cho một dự án mới, rồi sinh script use_figma.
 
 Hai lệnh:
-  build  Tạo tokens.json (spec đầy đủ, designer đọc và sửa được) + báo cáo contrast.
+  build  Đọc style-config.json (câu trả lời của designer: màu primary, có secondary không, 1–3 font,
+         phân vai font, quy tắc dùng font…), tạo tokens.json + báo cáo contrast.
   emit   Đọc tokens.json, sinh 3 file .js để dán vào use_figma:
          01-variables.js, 02-text-styles.js, 03-foundations.js
 
 Ví dụ:
-  py build_tokens.py build --primary "#2BB673" --display-font "Playfair Display" \
-      --body-font "Inter" --out design-system/tokens.json --report design-system/tokens-report.md
+  py build_tokens.py build --config design-system/style-config.json \
+      --out design-system/tokens.json --report design-system/tokens-report.md
   py build_tokens.py emit --spec design-system/tokens.json --out-dir <scratchpad>/figma
+
+Mẫu config: ../assets/style-config.example.json
 
 Chỉ dùng thư viện chuẩn của Python 3.8+. Chạy được trên macOS và Windows.
 """
@@ -26,8 +29,9 @@ BASELINE = os.path.join(HERE, "..", "assets", "baseline.json")
 TEMPLATES = os.path.join(HERE, "templates")
 USE_FIGMA_LIMIT = 50000
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")  # console Windows (cp1252) không in được tiếng Việt
 
 
 # ---------- màu ----------
@@ -202,70 +206,154 @@ def scope_for(name, rules):
     return []
 
 
-def parse_kv(items, what):
-    out = {}
-    for it in items or []:
-        if "=" not in it:
-            sys.exit("%s phải có dạng tên=giá trị: %s" % (what, it))
-        k, v = it.split("=", 1)
-        out[k.strip()] = v.strip()
-    return out
+WEIGHT_VALUE = {"Regular": 400, "Medium": 500, "SemiBold": 600, "Bold": 700}
+
+
+def strip_notes(x):
+    """Bỏ các khoá chú thích ('_…') của file config."""
+    if isinstance(x, dict):
+        return {k: strip_notes(v) for k, v in x.items() if not k.startswith("_")}
+    if isinstance(x, list):
+        return [strip_notes(v) for v in x]
+    return x
+
+
+def check_hex(val, where):
+    vals = val if isinstance(val, list) else [val]
+    for h in vals:
+        try:
+            hex_to_rgb(h)
+        except (ValueError, AttributeError):
+            sys.exit("%s: mã màu không hợp lệ: %r" % (where, h))
+
+
+def make_ramp(name, val, steps, profile, ramps, generated, order, where):
+    """val là một mã hex (sinh ramp) hoặc danh sách đủ số bậc (nhập tay)."""
+    check_hex(val, where)
+    if isinstance(val, list):
+        if len(val) != len(steps):
+            sys.exit("%s: cần đúng %d mã màu cho ramp %s" % (where, len(steps), name))
+        ramps[name] = [rgb_to_hex(hex_to_rgb(h)) for h in val]
+        generated.pop(name, None)
+    else:
+        ramps[name], k = generate_ramp(val, profile)
+        generated[name] = (val.upper(), steps[k])
+    if name not in order:
+        order.append(name)
+
+
+def merge_rows(rows, new_rows):
+    """Thêm token mới ngay sau token cuối cùng cùng nhóm; token trùng tên thì thay giá trị tại chỗ."""
+    names = [r[0] for r in rows]
+    for r in new_rows:
+        if r[0] in names:
+            rows[names.index(r[0])] = list(r)
+        else:
+            group = r[0].split("/")[0]
+            idx = max((i for i, n in enumerate(names) if n.split("/")[0] == group), default=len(rows) - 1)
+            rows.insert(idx + 1, list(r))
+        names = [x[0] for x in rows]
+
+
+def merge_gates(gates, new_gates):
+    for g in new_gates:
+        gates[:] = [x for x in gates if (x[0], x[1]) != (g[0], g[1])] + [list(g)]
+
+
+def resolve_font(name, assign):
+    keys = [k for k in assign if name == k or name.startswith(k + "/")]
+    if not keys:
+        return False
+    return assign[max(keys, key=len)]
 
 
 def cmd_build(a):
     with open(BASELINE, encoding="utf-8") as f:
         bl = json.load(f)
+    with open(a.config, encoding="utf-8") as f:
+        cfg = strip_notes(json.load(f))
     steps = bl["steps"]
     ramps = {k: list(v) for k, v in bl["ramps"].items()}
     profile = bl["ramps"][bl["ramp_profile"]]
-    generated = {}
+    generated, order = {}, list(bl["ramp_order"])
+    colors = cfg.get("colors") or {}
 
-    manual = parse_kv(a.ramp_hex, "--ramp-hex")
-    seeds = parse_kv(a.ramp, "--ramp")
-    extra = parse_kv(a.add_ramp, "--add-ramp")
-    if a.primary:
-        seeds["primary"] = a.primary
-    if "primary" not in seeds and "primary" not in manual:
-        sys.exit("Cần --primary <hex> hoặc --ramp-hex primary=<10 mã>")
-    order = list(bl["ramp_order"])
-    for name, seed in list(seeds.items()) + list(extra.items()):
-        ramps[name], k = generate_ramp(seed, profile)
-        generated[name] = (seed.upper(), steps[k])
-        if name not in order:
-            order.append(name)
-    for name, vals in manual.items():
-        hexes = [v.strip() for v in vals.split(",")]
-        if len(hexes) != len(steps):
-            sys.exit("--ramp-hex %s cần đúng %d mã màu" % (name, len(steps)))
-        ramps[name] = [rgb_to_hex(hex_to_rgb(h)) for h in hexes]
-        generated.pop(name, None)
-        if name not in order:
-            order.append(name)
+    # --- màu ---
+    if not colors.get("primary"):
+        sys.exit("style-config: thiếu colors.primary (mã hex hoặc 10 mã)")
+    make_ramp("primary", colors["primary"], steps, profile, ramps, generated, order, "colors.primary")
+    for name, val in (colors.get("status") or {}).items():
+        if name not in ("success", "warning", "error", "info"):
+            sys.exit("colors.status: chỉ nhận success, warning, error, info (có %s)" % name)
+        make_ramp(name, val, steps, profile, ramps, generated, order, "colors.status." + name)
+    for name, val in (colors.get("extra") or {}).items():
+        make_ramp(name, val, steps, profile, ramps, generated, order, "colors.extra." + name)
 
-    modes = ["Light", "Dark"] if a.modes == "light,dark" else ["Light"]
+    rows = [list(r) for r in bl["semantic"]]
+    gates = [list(g) for g in bl["gates"]["list"]]
+    distinct = [list(d) for d in bl["gates"]["distinct"]]
+    sec, sec_tokens = colors.get("secondary"), set()
+    if sec:
+        bsec = bl["secondary"]
+        if not sec.get("hex"):
+            sys.exit("colors.secondary: thiếu hex (hoặc đặt secondary = null nếu dự án không có màu secondary)")
+        use = sec.get("use", "accent")
+        if use not in ("accent", "accent+button"):
+            sys.exit("colors.secondary.use: 'accent' hoặc 'accent+button' (có %r)" % use)
+        make_ramp(bsec["ramp"], sec["hex"], steps, profile, ramps, generated, order, "colors.secondary.hex")
+        for part in ["accent"] + (["button"] if use == "accent+button" else []):
+            merge_rows(rows, bsec[part]["semantic"])
+            merge_gates(gates, bsec[part]["gates"])
+            distinct += bsec[part]["distinct"]
+            sec_tokens |= {r[0] for r in bsec[part]["semantic"]}
+
+    modes = ["Light", "Dark"] if cfg.get("darkMode", True) else ["Light"]
     pal = Palette(steps, ramps, bl["base"])
-    baseline_sem = {n: {"Light": l, "Dark": d} for n, l, d, _ in bl["semantic"]}
-    sem = {n: dict(v) for n, v in baseline_sem.items()}
-    for item in a.set or []:
-        if "=" not in item:
-            sys.exit("--set phải có dạng token[:Mode]=ramp/bậc: " + item)
-        tok, ref = item.split("=", 1)
-        tok, _, only = tok.partition(":")
+    sem = {n: {"Light": l, "Dark": d} for n, l, d, _ in rows}
+    on_dark = bl["on_color"]["dark"]
+    ons = {"primary": colors.get("primaryOn", "white"), "secondary": (sec or {}).get("on", "white")}
+    for which, on in ons.items():
+        if on not in ("white", "dark"):
+            sys.exit("Màu chữ trên nền %s chỉ nhận 'white' hoặc 'dark' (có %r)" % (which, on))
+        if on == "dark":
+            for tok in bl["on_color"][which]:
+                if tok in sem and (which == "primary" or tok in sec_tokens):
+                    sem[tok] = {"Light": on_dark, "Dark": on_dark}
+    anchor_changes = []
+    anchor = strip_notes(bl["anchor"])
+    for ramp_name, toks in anchor.items():
+        if ramp_name not in generated:
+            continue
+        k = steps.index(generated[ramp_name][1])
+        delta = k - steps.index(anchor["step"])
+        if not delta or not isinstance(toks, list):
+            continue
+        for tok in toks:
+            for m in (modes if tok in sem else []):
+                ref = sem[tok][m]
+                if not ref.startswith(ramp_name + "/"):
+                    continue
+                i = max(0, min(len(steps) - 1, steps.index(int(ref.split("/")[1])) + delta))
+                new = "%s/%d" % (ramp_name, steps[i])
+                if new != ref:
+                    anchor_changes.append((tok, m, ref, new, "neo theo màu brand (bậc %d)" % steps[k]))
+                    sem[tok][m] = new
+    baseline_sem = {n: dict(v) for n, v in sem.items()}
+    keep = set(cfg.get("keep") or [])
+    for key, ref in (cfg.get("set") or {}).items():
+        tok, _, only = key.partition(":")
         if tok not in sem:
-            sys.exit("--set: không có token " + tok)
+            sys.exit("set: không có token " + tok)
         try:
             pal.hex(ref)
         except (KeyError, ValueError):
-            sys.exit("--set: không có màu " + ref)
+            sys.exit("set: không có màu " + ref)
         for m in ([only] if only else modes):
             sem[tok][m] = ref
-    keep_set = set(a.keep or [])
-    for item in a.set or []:
-        keep_set.add(item.split("=", 1)[0])
-    desc = {n: d for n, _, _, d in bl["semantic"]}
-    gates = bl["gates"]["list"]
-    keep = keep_set
-    changes, blocked = run_gates(pal, sem, modes, gates, keep, not a.no_fix, bl["gates"]["distinct"])
+        keep.add(key)
+    desc = {r[0]: r[3] for r in rows}
+    changes, blocked = run_gates(pal, sem, modes, gates, keep, cfg.get("fix", True), distinct)
+    changes = anchor_changes + changes
 
     rules = bl["scopes"]
     prim_vars = [{"name": n, "type": "COLOR", "values": {"Default": h}, "scopes": [], "description": ""}
@@ -276,12 +364,12 @@ def cmd_build(a):
                               "scopes": [], "description": ""})
     sem_vars = [{"name": n, "type": "COLOR",
                  "values": {m: "@Primitives:" + sem[n][m] for m in modes},
-                 "scopes": scope_for(n, rules), "description": desc[n]} for n, _, _, _ in bl["semantic"]]
+                 "scopes": scope_for(n, rules), "description": desc[n]} for n, _, _, _ in rows]
     collections = [
         {"name": "Primitives", "modes": ["Default"], "hiddenFromPublishing": True, "variables": prim_vars},
         {"name": "Semantic", "modes": modes, "hiddenFromPublishing": False, "variables": sem_vars},
     ]
-    if a.dimension:
+    if cfg.get("dimension", True):
         dim = bl["dimension"]
         dvars = [{"name": "spacing/%d" % v, "type": "FLOAT", "values": {"Default": v},
                   "scopes": scope_for("spacing/x", rules), "description": ""} for v in dim["spacing"]]
@@ -290,22 +378,64 @@ def cmd_build(a):
         collections.append({"name": "Dimension", "modes": ["Default"], "hiddenFromPublishing": False,
                             "variables": dvars})
 
-    fonts = {"display": a.display_font, "body": a.body_font, "mono": a.mono_font or None}
-    styles, skipped = [], []
-    for n, role, w, size, lh, ls, case, dec in bl["text_styles"]["list"]:
-        if not fonts.get(role):
+    # --- font ---
+    fcfg = cfg.get("fonts") or {}
+    fams = fcfg.get("families") or []
+    if not 1 <= len(fams) <= 3:
+        sys.exit("fonts.families cần 1–3 font (có %d)" % len(fams))
+    assign, preset_used = fcfg.get("assign"), False
+    if not assign:
+        preset = strip_notes(bl["text_styles"]["font_presets"])[str(len(fams))]
+        assign = {g: (fams[int(v[1]) - 1] if v else None) for g, v in preset.items()}
+        preset_used = True
+    for k, v in assign.items():
+        if v is not None and v not in fams:
+            sys.exit("fonts.assign: %s trỏ tới font %r, không có trong fonts.families" % (k, v))
+    weights = fcfg.get("weights") or {}
+    for fam, ws in weights.items():
+        if fam not in fams:
+            sys.exit("fonts.weights: font %r không có trong fonts.families" % fam)
+        bad = [w for w in ws if w not in WEIGHT_VALUE]
+        if bad or not ws:
+            sys.exit("fonts.weights.%s: chỉ nhận %s (có %s)" % (fam, ", ".join(WEIGHT_VALUE), ws))
+    unassigned = sorted({n.split("/")[0] for n, *_ in bl["text_styles"]["list"] if resolve_font(n, assign) is False})
+    if unassigned:
+        sys.exit("fonts.assign chưa gán font (hoặc null) cho nhóm: " + ", ".join(unassigned))
+
+    group_desc = strip_notes(bl["text_styles"]["groups"])
+    base_list = bl["text_styles"]["list"]
+    # Biến thể theo weight = cùng nhánh có style khác cùng cỡ, khác weight (Body/Medium/Regular · …/Bold).
+    # Link/Medium, Display/Medium là bậc cỡ chữ, không phải biến thể weight.
+    variants = {n for n, w, size, *_ in base_list
+                if any(o != n and o.rsplit("/", 1)[0] == n.rsplit("/", 1)[0] and os_ == size and ow != w
+                       for o, ow, os_, *_ in base_list)}
+    styles, skipped, dropped, remapped = [], [], [], []
+    for n, w, size, lh, ls, case, dec in base_list:
+        fam = resolve_font(n, assign)
+        if fam is None:
             skipped.append(n)
             continue
-        styles.append({"name": n, "role": role, "weight": w, "size": size, "lineHeight": lh,
-                       "letterSpacing": ls, "textCase": case, "decoration": dec})
+        allowed = weights.get(fam)
+        if allowed and w not in allowed:
+            if n in variants:
+                dropped.append((n, fam, w))
+                continue
+            nw = min(allowed, key=lambda x: (abs(WEIGHT_VALUE[x] - WEIGHT_VALUE[w]), -WEIGHT_VALUE[x]))
+            remapped.append((n, fam, w, nw))
+            w = nw
+        styles.append({"name": n, "font": fam, "weight": w, "size": size, "lineHeight": lh,
+                       "letterSpacing": ls, "textCase": case, "decoration": dec,
+                       "description": group_desc.get(n.split("/")[0], "")})
+    kept_parents = {s["name"].rsplit("/", 1)[0] for s in styles}
+    emptied = sorted({n.rsplit("/", 1)[0] for n, _, _ in dropped} - kept_parents)
+    unused = [f for f in fams if f not in {s["font"] for s in styles}]
+    font_rules = list(fcfg.get("rules") or [])
 
     spec = {
         "meta": {"generator": "figma-style-builder", "baseline": "FitAgain 2026-11-04",
-                 "project": a.project or "", "created": datetime.date.today().isoformat(),
-                 "inputs": {"primary": a.primary, "ramp": seeds, "rampHex": list(manual), "addRamp": extra,
-                            "modes": modes, "dimension": bool(a.dimension), "keep": sorted(keep),
-                            "noFix": bool(a.no_fix)}},
-        "fonts": fonts,
+                 "project": cfg.get("project", ""), "created": datetime.date.today().isoformat(),
+                 "config": cfg},
+        "fonts": {"families": fams, "assign": assign, "weights": weights, "rules": font_rules},
         "codeSyntax": {k: v for k, v in bl["code_syntax"].items() if not k.startswith("_")},
         "collections": collections,
         "textStyles": styles,
@@ -315,8 +445,12 @@ def cmd_build(a):
         json.dump(spec, f, ensure_ascii=False, indent=2)
         f.write("\n")
 
-    report = build_report(a, bl, pal, order, generated, baseline_sem, sem, modes, gates, keep, changes,
-                          blocked, styles, skipped, fonts)
+    ctx = dict(cfg=cfg, bl=bl, pal=pal, order=order, generated=generated, baseline_sem=baseline_sem, sem=sem,
+               modes=modes, gates=gates, keep=keep, changes=changes, blocked=blocked, distinct=distinct,
+               styles=styles, skipped=skipped, dropped=dropped, remapped=remapped, emptied=emptied,
+               unused=unused, fams=fams, assign=assign, preset_used=preset_used, weights=weights,
+               font_rules=font_rules, ons=ons, sec=sec, sec_tokens=sec_tokens)
+    report = build_report(ctx)
     if a.report:
         with open(a.report, "w", encoding="utf-8", newline="\n") as f:
             f.write(report)
@@ -324,51 +458,90 @@ def cmd_build(a):
     print("Đã ghi: " + a.out + ((" + " + a.report) if a.report else ""))
     print("Biến: %d Primitives · %d Semantic (%s)%s · Text style: %d (bỏ %d)" % (
         len(prim_vars), len(sem_vars), "/".join(modes),
-        (" · %d Dimension" % len(collections[2]["variables"])) if a.dimension else "", len(styles), len(skipped)))
-    print("Dời bậc so với khung: %d · Cặp contrast chưa đạt: %d" % (len(changes), fails))
+        (" · %d Dimension" % len(collections[2]["variables"])) if len(collections) > 2 else "",
+        len(styles), len(skipped) + len(dropped)))
+    print("Font: %s · Secondary: %s" % (" + ".join(fams), (sec or {}).get("use", "không có")))
+    print("Dời bậc so với khung: %d · Cặp contrast chưa đạt: %d · Cần designer quyết: %d" % (
+        len(changes), fails, len(blocked)))
     if not a.report:
         print(report)
 
 
-def build_report(a, bl, pal, order, generated, baseline_sem, sem, modes, gates, keep, changes, blocked,
-                 styles, skipped, fonts):
-    L = ["# Báo cáo token — %s" % (a.project or "dự án mới"), "",
-         "Sinh bởi `figma-style-builder` ngày %s, khung FitAgain. Đọc bảng **Dời bậc** và **Contrast** trước "
-         "khi ghi vào Figma." % datetime.date.today().isoformat(), ""]
+def build_report(c):
+    cfg, bl, pal, sem, modes, keep = c["cfg"], c["bl"], c["pal"], c["sem"], c["modes"], c["keep"]
+    sec, ons = c["sec"], c["ons"]
+    project = cfg.get("project") or "dự án mới"
+    L = ["# Báo cáo token — %s" % project, "",
+         "Sinh bởi `figma-style-builder` ngày %s, khung FitAgain, từ `style-config.json`. Đọc mục **Cấu hình**, "
+         "**Dời bậc** và **Cần designer quyết** trước khi ghi vào Figma." % datetime.date.today().isoformat(), ""]
+
+    # cấu hình
+    prim = cfg["colors"]["primary"]
+    if sec:
+        sec_txt = "`%s`, dùng cho %s, chữ trên nền: %s" % (
+            sec["hex"] if isinstance(sec["hex"], str) else "ramp nhập tay",
+            "điểm nhấn (nhóm `accent`)" if sec.get("use", "accent") == "accent"
+            else "điểm nhấn (nhóm `accent`) + nút phụ (`action/secondary/*`)", ons["secondary"])
+    else:
+        sec_txt = "không có (nhóm `accent` không được tạo, nút phụ dùng xám)"
+    L += ["## Cấu hình (câu trả lời của designer)", "", "| Mục | Giá trị |", "|---|---|",
+          "| Primary | `%s`, chữ trên nền: %s |" % (prim if isinstance(prim, str) else "ramp nhập tay", ons["primary"]),
+          "| Secondary | %s |" % sec_txt,
+          "| Màu trạng thái riêng | %s |" % (", ".join(sorted((cfg["colors"].get("status") or {}))) or "không, dùng ramp của khung"),
+          "| Ramp thêm | %s |" % (", ".join(sorted((cfg["colors"].get("extra") or {}))) or "không"),
+          "| Số font | %d: %s |" % (len(c["fams"]), ", ".join(c["fams"])),
+          "| Dark mode | %s |" % ("có" if "Dark" in modes else "không"),
+          "| Dimension (spacing, radius) | %s |" % ("có" if cfg.get("dimension", True) else "không"), ""]
+
     L += ["## Ramp", "", "| Ramp | Nguồn | " + " | ".join(str(s) for s in pal.steps) + " |",
           "|---|---|" + "---|" * len(pal.steps)]
-    for r in order:
-        src = ("sinh từ %s (đặt ở bậc %d)" % generated[r]) if r in generated else "khung FitAgain" \
+    for r in c["order"]:
+        src = ("sinh từ %s (đặt ở bậc %d)" % c["generated"][r]) if r in c["generated"] else "khung FitAgain" \
             if r in bl["ramps"] and pal.ramps[r] == bl["ramps"][r] else "nhập tay"
         L.append("| %s | %s | %s |" % (r, src, " | ".join("`%s`" % h for h in pal.ramps[r])))
-    L += ["", "Chữ trắng trên từng bậc của ramp primary (cần ≥ 4.5 cho nút có chữ):", "",
-          "| " + " | ".join(str(s) for s in pal.steps) + " |", "|" + "---|" * len(pal.steps),
-          "| " + " | ".join("%.2f" % contrast("#FFFFFF", h) for h in pal.ramps["primary"]) + " |", ""]
+    dark = pal.hex(bl["on_color"]["dark"])
+    brand = [("primary", "primaryOn")] + ([("secondary", "secondary.on")] if sec else [])
+    L += ["", "Contrast chữ trên từng bậc của ramp brand (nút có chữ cần ≥ 4.5):", "",
+          "| Ramp | Chữ | " + " | ".join(str(s) for s in pal.steps) + " |", "|---|---|" + "---|" * len(pal.steps)]
+    for r, _ in brand:
+        for label, fg in (("trắng", "#FFFFFF"), ("neutral/900", dark)):
+            L.append("| %s | %s | %s |" % (r, label, " | ".join("%.2f" % contrast(fg, h) for h in pal.ramps[r])))
+    for r, key in brand:
+        if r in c["generated"]:
+            seed = c["generated"][r][0]
+            on = ons["primary" if r == "primary" else "secondary"]
+            if on == "white" and contrast("#FFFFFF", seed) < 4.5 <= contrast(dark, seed):
+                L += ["", "**Gợi ý:** `%s` là màu sáng, chữ trắng trên nó chỉ đạt %.2f:1 nên cổng sẽ dời nền nút sang bậc "
+                      "tối hơn (nút không còn đúng màu brand). Chữ neutral/900 đạt %.2f:1. Muốn giữ đúng màu brand trên "
+                      "nút thì đặt `%s: \"dark\"` trong config." % (seed, contrast("#FFFFFF", seed),
+                                                                    contrast(dark, seed), key)]
+    L.append("")
 
     L += ["## Dời bậc so với khung FitAgain", ""]
-    if changes:
+    if c["changes"]:
         L += ["| Token | Mode | Khung | Sau cổng contrast | Lý do |", "|---|---|---|---|---|"]
-        for t, m, old, new, why in changes:
+        for t, m, old, new, why in c["changes"]:
             L.append("| `%s` | %s | `%s` | `%s` | %s |" % (t, m, old, new, why))
-        L += ["", "Muốn giữ màu của khung cho token nào thì chạy lại `build` với `--keep <token>` "
-              "(hoặc `--keep <token>:Dark`) và ghi ngoại lệ vào `open-questions.md`.", ""]
+        L += ["", "Muốn giữ màu của khung cho token nào thì thêm `\"<token>\"` (hoặc `\"<token>:Dark\"`) vào `keep` "
+              "trong `style-config.json`, chạy lại `build`, và ghi ngoại lệ vào `open-questions.md`.", ""]
     else:
         L += ["Không có token nào phải dời.", ""]
 
     L += ["## Contrast (WCAG 2.2 AA)", "", "| Cặp | Mode | Đo được | Ngưỡng | Kết quả |", "|---|---|---|---|---|"]
-    for fg, bg, need, _, _ in gates:
+    for fg, bg, need, _, _ in c["gates"]:
         for m in modes:
             r = contrast(pal.hex(sem[fg][m]), pal.hex(sem[bg][m]))
-            mark = "✅" if r >= need else ("❌ giữ theo --keep" if (fg in keep or bg in keep) else "❌")
+            mark = "✅" if r >= need else ("❌ giữ theo keep" if (fg in keep or bg in keep) else "❌")
             L.append("| `%s` / `%s` | %s | %.2f | %.1f | %s |" % (fg, bg, m, r, need, mark))
-    if blocked:
+    if c["blocked"]:
         L += ["", "**Cần designer quyết** (cổng không tự sửa được mà không phá thứ bậc):", ""]
-        for (t, m), why in blocked.items():
-            L.append("- `%s` (%s): %s. Chọn một: (a) dời token cùng nhóm thêm một bậc bằng "
-                     "`--set <token>:%s=<ramp/bậc>` rồi chạy lại; (b) giới hạn token này ở nền đạt chuẩn và ghi luật "
-                     "vào design system; (c) `--keep %s:%s` và ghi ngoại lệ vào `open-questions.md`." % (t, m, why, m, t, m))
+        for (t, m), why in c["blocked"].items():
+            L.append("- `%s` (%s): %s. Chọn một: (a) dời token cùng nhóm thêm một bậc: thêm "
+                     "`\"<token>:%s\": \"<ramp/bậc>\"` vào `set` rồi chạy lại; (b) giới hạn token này ở nền đạt chuẩn và "
+                     "ghi luật vào design system; (c) thêm `\"%s:%s\"` vào `keep` và ghi ngoại lệ vào `open-questions.md`."
+                     % (t, m, why, m, t, m))
     warn = []
-    for group in bl["gates"]["distinct"]:
+    for group in c["distinct"]:
         for m in modes:
             refs = [sem[t][m] for t in group]
             if len(set(refs)) < len(refs):
@@ -378,12 +551,39 @@ def build_report(a, bl, pal, order, generated, baseline_sem, sem, modes, gates, 
     L += ["", "Miễn cổng: token `disabled` (WCAG 1.4.3 miễn cho thành phần vô hiệu), `border/default`, "
           "`border/subtle` (trang trí), nền và surface.", ""]
 
-    L += ["## Text style", "",
-          "| Vai trò | Font | Dùng cho |", "|---|---|---|"]
-    for role, use in bl["text_styles"]["role_usage"].items():
-        L.append("| %s | %s | %s |" % (role, fonts.get(role) or "— (bỏ qua)", use))
-    L += ["", "%d style sẽ được tạo%s." % (len(styles), (", bỏ %d style vì chưa chọn font: %s" % (
-        len(skipped), ", ".join("`%s`" % s for s in skipped))) if skipped else ""), ""]
+    # text style
+    L += ["## Text style", ""]
+    if c["preset_used"]:
+        L += ["⚠️ `fonts.assign` để trống nên đang dùng phân vai mặc định cho %d font. Hỏi designer xác nhận trước khi "
+              "ghi vào Figma." % len(c["fams"]), ""]
+    groups = [g for g in strip_notes(bl["text_styles"]["groups"])]
+    L += ["| Nhóm | Font | Số style | Dùng cho |", "|---|---|---|---|"]
+    by_group = {}
+    for s in c["styles"]:
+        by_group.setdefault(s["name"].split("/")[0], []).append(s)
+    for g in groups:
+        items = by_group.get(g, [])
+        fonts = sorted({s["font"] for s in items})
+        if len(fonts) > 1:
+            font_txt = "; ".join("%s (%s)" % (f, ", ".join(s["name"].split("/", 1)[1] for s in items if s["font"] == f))
+                                 for f in fonts)
+        else:
+            font_txt = fonts[0] if fonts else "— không tạo"
+        L.append("| %s | %s | %d | %s |" % (g, font_txt, len(items), bl["text_styles"]["groups"][g]))
+    L += ["", "Tổng: %d style." % len(c["styles"]), ""]
+    if c["weights"]:
+        L += ["Weight được dùng: " + "; ".join("%s: %s" % (f, ", ".join(ws)) for f, ws in c["weights"].items()) + ".", ""]
+    if c["dropped"]:
+        L += ["Bỏ vì font không dùng weight đó: " + ", ".join("`%s` (%s %s)" % d for d in c["dropped"]) + ".", ""]
+    if c["remapped"]:
+        L += ["Đổi weight: " + ", ".join("`%s` %s → %s" % (n, w, nw) for n, _, w, nw in c["remapped"]) + ".", ""]
+    if c["emptied"]:
+        L += ["⚠️ Nhóm mất hết style sau khi lọc weight: " + ", ".join("`%s`" % e for e in c["emptied"])
+              + ". Hỏi designer có cần nhóm này không; nếu cần thì thêm weight vào `fonts.weights`.", ""]
+    if c["unused"]:
+        L += ["⚠️ Font khai báo nhưng không được gán cho nhóm nào: " + ", ".join(c["unused"]) + ".", ""]
+    L += ["**Quy tắc dùng font của dự án:**", ""]
+    L += (["- " + r for r in c["font_rules"]] if c["font_rules"] else ["- (designer không đặt quy tắc riêng)"]) + [""]
     L += ["## Lệch so với FitAgain (cố ý)", ""] + ["- " + d for d in bl["deviations_from_fitagain"]] + [""]
     return "\n".join(L)
 
@@ -399,10 +599,18 @@ def cmd_emit(a):
          "vars": [[v["name"], v["type"], [v["values"][m] for m in c["modes"]], v["scopes"], v["description"]]
                   for v in c["variables"]]}
         for c in spec["collections"]]}
-    text_spec = {"fonts": spec["fonts"], "styles": [
-        [s["name"], s["role"], s["weight"], s["size"], s["lineHeight"], s["letterSpacing"], s["textCase"],
-         s["decoration"]] for s in spec["textStyles"]]}
-    found_spec = {"page": a.page, "replace": bool(a.replace), "title": spec["meta"].get("project") or ""}
+    text_spec = {"styles": [
+        [s["name"], s["font"], s["weight"], s["size"], s["lineHeight"], s["letterSpacing"], s["textCase"],
+         s["decoration"], s.get("description", "")] for s in spec["textStyles"]]}
+    usage = {}
+    for s in spec["textStyles"]:
+        g = s["name"].split("/")[0]
+        groups = usage.setdefault(s["font"], [])
+        if g not in groups:
+            groups.append(g)
+    found_spec = {"page": a.page, "replace": bool(a.replace), "title": spec["meta"].get("project") or "",
+                  "fonts": [[f, usage.get(f, [])] for f in spec["fonts"]["families"]],
+                  "rules": spec["fonts"].get("rules", [])}
     jobs = [("01-variables.js", var_spec), ("02-text-styles.js", text_spec), ("03-foundations.js", found_spec)]
     for fname, data in jobs:
         with open(os.path.join(TEMPLATES, fname), encoding="utf-8") as f:
@@ -418,25 +626,9 @@ def cmd_emit(a):
 def main():
     ap = argparse.ArgumentParser(description="Dựng Variables + Text style theo khung FitAgain")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    b = sub.add_parser("build", help="tạo tokens.json + báo cáo contrast")
-    b.add_argument("--project", help="tên dự án, ghi vào báo cáo và tiêu đề page Foundations")
-    b.add_argument("--primary", help="màu brand chính, vd #9F85FF; sinh ramp primary 50–900")
-    b.add_argument("--ramp", action="append", metavar="TÊN=#HEX",
-                   help="sinh lại một ramp có sẵn từ màu gốc, vd success=#22C55E")
-    b.add_argument("--ramp-hex", action="append", metavar="TÊN=HEX,…",
-                   help="nhập tay đủ 10 bậc cho một ramp, vd primary=#F3F0FF,…,#2A1964")
-    b.add_argument("--add-ramp", action="append", metavar="TÊN=#HEX",
-                   help="thêm ramp mới (chỉ vào Primitives), vd accent=#FF7A59")
-    b.add_argument("--display-font", required=True, help="font nhận diện cho Display/Heading")
-    b.add_argument("--body-font", required=True, help="font giao diện cho Body/Label/Caption…")
-    b.add_argument("--mono-font", help="font mono cho Code/*; bỏ trống thì không tạo Code/*")
-    b.add_argument("--modes", choices=["light", "light,dark"], default="light,dark")
-    b.add_argument("--dimension", action="store_true", help="thêm collection Dimension (spacing, radius)")
-    b.add_argument("--set", action="append", metavar="TOKEN[:MODE]=RAMP/BẬC",
-                   help="trỏ một token Semantic sang bậc khác, vd text/secondary:Light=neutral/700 (token này không bị cổng dời nữa)")
-    b.add_argument("--keep", action="append", metavar="TOKEN[:MODE]",
-                   help="không tự dời token này dù chưa đạt contrast")
-    b.add_argument("--no-fix", action="store_true", help="chỉ báo cáo, không tự dời bậc")
+    b = sub.add_parser("build", help="đọc style-config.json, tạo tokens.json + báo cáo contrast")
+    b.add_argument("--config", required=True,
+                   help="style-config.json: câu trả lời của designer (mẫu: assets/style-config.example.json)")
     b.add_argument("--out", required=True, help="đường dẫn tokens.json")
     b.add_argument("--report", help="đường dẫn báo cáo .md (bỏ trống thì in ra màn hình)")
     e = sub.add_parser("emit", help="sinh script use_figma từ tokens.json")

@@ -11,9 +11,18 @@ const dimCol = cols.find(c => c.name === 'Dimension');
 if (!semCol || !primCol) return { error: 'Chưa có collection Primitives / Semantic. Chạy 01-variables.js trước.' };
 const styles = await figma.getLocalTextStylesAsync();
 const ST = Object.fromEntries(styles.map(s => [s.name, s]));
-const NEED = ['Heading/H1', 'Heading/H4', 'Heading/H5', 'Body/Small/Regular', 'Body/Small/Medium', 'Caption/Regular', 'Label/Medium/Semi Bold'];
-const missingStyles = NEED.filter(n => !ST[n]);
-if (missingStyles.length) return { error: 'Chưa có text style. Chạy 02-text-styles.js trước.', missing: missingStyles };
+if (!styles.length) return { error: 'Chưa có text style. Chạy 02-text-styles.js trước.' };
+// Dự án có thể bỏ nhóm hoặc weight (fonts.assign = null, fonts.weights): lấy style gần nhất cùng nhánh tên.
+const pick = name => {
+  const parts = name.split('/');
+  for (let i = parts.length; i > 0; i--) {
+    const pre = parts.slice(0, i).join('/');
+    const hit = ST[pre] || styles.find(s => s.name.startsWith(pre + '/'));
+    if (hit) return hit.name;
+  }
+  return styles[0].name;
+};
+for (const n of ['Heading/H1', 'Heading/H4', 'Heading/H5', 'Body/Small/Regular', 'Body/Small/Medium', 'Caption/Regular', 'Label/Medium/Semi Bold']) ST[n] = ST[pick(n)];
 
 let page = figma.root.children.find(p => p.name === SPEC.page);
 if (!page) { page = figma.createPage(); page.name = SPEC.page; }
@@ -116,7 +125,8 @@ async function semanticTiles(root) {
     for (const v of vars) {
       let sw;
       if (has(v, 'TEXT_FILL') && !has(v, 'FRAME_FILL')) {
-        const back = /inverse/.test(v.name) ? V['bg/inverse'] : /on-brand/.test(v.name) ? V['bg/brand'] : V['surface/default'];
+        const on = v.name.match(/\/on-([\w-]+)$/);
+        const back = /inverse/.test(v.name) ? V['bg/inverse'] : (on && V[`bg/${on[1]}`]) || V['surface/default'];
         sw = centered(v.name, 160, 64, back, 12);
         sw.strokes = [paint(V['border/default'])]; sw.strokeWeight = 1;
         sw.appendChild(await text('Aa', 'Heading/H4', v));
@@ -213,6 +223,13 @@ const typo = rootFrame('Typography', startX);
 typo.setExplicitVariableModeForCollection(semCol, lightMode.modeId);
 typo.appendChild(await text('Typography', 'Heading/H1', V['text/primary']));
 typo.appendChild(await text(`${styles.length} text styles. Size / line height in px, letter spacing in %.`, 'Body/Small/Regular', V['text/secondary']));
+const usage = box('VERTICAL', 'Font usage', 8);
+typo.appendChild(usage); usage.layoutSizingHorizontal = 'FILL';
+usage.appendChild(await text('Font usage', 'Heading/H5', V['text/primary']));
+for (const [fam, groups] of SPEC.fonts || []) {
+  fixedText(usage, await text(`${fam} — ${groups.length ? groups.join(', ') : 'not assigned'}`, 'Body/Small/Medium', V['text/primary']), 1112);
+}
+for (const r of SPEC.rules || []) fixedText(usage, await text(`• ${r}`, 'Body/Small/Regular', V['text/secondary']), 1112);
 const list = box('VERTICAL', 'Styles', 24);
 typo.appendChild(list); list.layoutSizingHorizontal = 'FILL';
 for (const s of styles) {

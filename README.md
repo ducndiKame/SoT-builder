@@ -22,7 +22,7 @@ Bộ skill đi theo quy trình 8 bước trong talk *"SoT cho design bằng AI"*
 | **sot-sync** | Sau mỗi quyết định: tìm mọi file bị ảnh hưởng, lập checklist, sửa đồng loạt, commit | 06 Giữ / chốt (hằng ngày) |
 | **sot-handoff** | Bàn giao SoT cho designer khác, hoặc nhận bàn giao: clone, đọc lối vào, PR đầu tiên | 08 Bàn giao |
 | spec-review | Review doc PM, chốt doc và design trong khoảng 2 vòng | Hỗ trợ 02, 04 |
-| figma-style-builder | Tạo Variables (Primitives → Semantic Light/Dark) và 51 text style trong file Figma mới theo khung FitAgain, có cổng contrast AA và page Foundations | Hỗ trợ 03 |
+| figma-style-builder | Hỏi designer (màu primary, có secondary không, 1/2/3 font, quy tắc dùng font) rồi tạo Variables (Primitives → Semantic Light/Dark) và text style trong file Figma mới theo khung FitAgain, có cổng contrast AA và page Foundations | Hỗ trợ 03 |
 | design-system-build | Audit Figma, dựng tài liệu design system (có chế độ tối thiểu cho phase 1) | Hỗ trợ 03 |
 | figma-design-rename | Đặt lại tên page / section / frame / layer trong Figma theo quy chuẩn | Hỗ trợ 01, 04 |
 | flowchart | Vẽ flowchart luồng tính năng (Mermaid + HTML) | Hỗ trợ 04 |
