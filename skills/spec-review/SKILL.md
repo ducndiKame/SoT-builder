@@ -1,13 +1,13 @@
 ---
 name: spec-review
-description: Review và phản biện tài liệu yêu cầu của PM (spec, PRD, user story, ticket, doc portal) trước và trong lúc thiết kế, với mục tiêu chốt doc và design trong khoảng 2 vòng. Vòng 1 quét đủ edge case theo checklist. Từ vòng 2 chỉ xét phần doc thay đổi và quét hồi quy. Mỗi câu hỏi gắn nhãn chặn design / không chặn design, có phương án (a) đề xuất, và design được chốt ngay khi hết câu chặn design. Kèm đồng bộ Figma với doc và xuất bản tin gửi PM. Dùng skill này mỗi khi người dùng đưa link hoặc file tài liệu yêu cầu và muốn đọc, review, kiểm tra, đối chiếu với design, hoặc hỏi "PM vừa sửa doc, xem lại giúp", "doc đã chốt chưa", "còn case nào thiếu", "design có khớp doc không", "viết câu hỏi gửi PM", kể cả khi họ không nói chữ "review". Thay thế skill pm-spec-review cũ. KHÔNG dùng cho câu hỏi thiết kế chung không kèm tài liệu yêu cầu, hoặc khi chỉ cần viết spec mới từ đầu.
+description: Review và phản biện tài liệu yêu cầu của PM (spec, PRD, user story, ticket, doc portal) trước và trong lúc thiết kế, với mục tiêu chốt doc và design trong khoảng 2 vòng. Vòng 1 quét đủ edge case theo checklist. Từ vòng 2 chỉ xét phần doc thay đổi và quét hồi quy. Mỗi câu hỏi gắn nhãn chặn design / không chặn design, có phương án (a) đề xuất. Design chỉ chốt khi PM đã trả lời hết câu chặn design; trong lúc chờ có thể dựng trước theo (a) kèm ⚠️ để dự phòng. Kèm đồng bộ Figma với doc và xuất bản tin gửi PM. Dùng skill này mỗi khi người dùng đưa link hoặc file tài liệu yêu cầu và muốn đọc, review, kiểm tra, đối chiếu với design, hoặc hỏi "PM vừa sửa doc, xem lại giúp", "doc đã chốt chưa", "còn case nào thiếu", "design có khớp doc không", "viết câu hỏi gửi PM", kể cả khi họ không nói chữ "review". Thay thế skill pm-spec-review cũ. KHÔNG dùng cho câu hỏi thiết kế chung không kèm tài liệu yêu cầu, hoặc khi chỉ cần viết spec mới từ đầu.
 ---
 
 # Spec Review
 
 Mục tiêu: **chốt doc và design trong 2 vòng**.
 - **Vòng 1** tìm đủ vấn đề và gửi PM một danh sách gọn, PM trả lời được ngay.
-- **Vòng 2** khép lại: kiểm câu trả lời, sửa Figma, rồi xuất bản cuối.
+- **Vòng 2** khép lại: kiểm câu trả lời, sửa Figma, rồi xuất bản cuối. Nếu còn câu chặn design PM chưa trả lời thì design **chưa chốt**: giữ câu đó trong file và tin gửi PM, dựng trước theo (a) kèm ⚠️ chỉ để dự phòng.
 
 Chỉ mở vòng 3 khi PM đổi phạm vi hoặc ra quyết định mới sinh thêm câu chặn design. Khi đó nói rõ với người dùng lý do phải có thêm vòng.
 
@@ -211,17 +211,27 @@ Hết một đợt làm việc dài, hoặc khi người dùng sắp chuyển co
 
 ## Tiêu chí chốt design
 
-Design của tính năng được chốt khi **không còn câu nào mang nhãn chặn design**.
+Design của tính năng chỉ được chốt khi **không còn câu nào mang nhãn chặn design**, nghĩa là PM đã trả lời hết các câu đó.
 
-**Ở vòng 2, mặc định là chốt.** Câu chặn design PM chưa trả lời thì dựng theo (a), gắn ⚠️. Câu mới phát sinh mà không chặn design thì chuyển sang danh sách cho dev. Chỉ không chốt khi câu trả lời của PM sinh thêm câu chặn design mới; khi đó nói rõ đó là câu nào và vì sao.
+**Câu chặn design luôn chờ PM trả lời, ở bất kỳ vòng nào.**
+- Mọi câu chặn design còn mở phải nằm trong file review và tin gửi PM.
+- Kết luận của file ghi **"chưa chốt design"** và nêu rõ còn những mã nào.
+- Không viết "design chốt được", "không cần chờ PM" hay "dựng được ngay" khi vẫn còn câu chặn design.
 
-Khi chốt:
+**Dựng trước theo (a) chỉ là phương án dự phòng.** Mục đích là không trễ tiến độ khi PM trả lời muộn, không phải để thay câu trả lời của PM.
+- Trong lúc chờ, có thể dựng các frame liên quan theo phương án (a), gắn ⚠️ kèm mã câu hỏi ngay trên frame.
+- Ghi trong file review là "dựng trước, chờ PM xác nhận". Kèm bảng "Nếu PM chọn khác (a) thì sửa gì", để khi PM trả lời chỉ phải sửa đúng các frame đó.
+- Tin gửi PM nói rõ: design đang dựng trước theo (a) để không trễ tiến độ, và anh/chị chọn khác thì design sửa lại.
 
-1. Viết **bản review cuối**: "Design đã chốt theo các đề xuất sau" + "Câu hỏi logic cho PM / dev (không mở lại vòng design)".
-2. Câu không chặn design chuyển sang open-questions cho dev / PM.
-3. Nếu còn 1–2 câu chặn design mà PM chậm trả lời: đề nghị người dùng dựng theo (a), gắn ⚠️, rồi chốt. Nếu PM chọn khác thì chỉ sửa các frame liên quan.
+Câu mới phát sinh mà không chặn design thì chuyển sang danh sách cho dev / PM. Chúng không giữ design lại.
 
-Mỗi vòng, nói rõ cho người dùng biết còn bao nhiêu câu chặn design, để họ biết còn cách chốt bao xa.
+Khi PM đã trả lời hết câu chặn design:
+
+1. Viết **bản review cuối**: "Design đã chốt theo các quyết định sau" + "Câu hỏi logic cho PM / dev (không mở lại vòng design)".
+2. Bỏ ⚠️ trên các frame đã dựng trước. Frame nào PM chọn khác (a) thì sửa theo bảng đã ghi.
+3. Câu không chặn design chuyển sang open-questions cho dev / PM.
+
+Mỗi vòng, nói rõ cho người dùng biết còn bao nhiêu câu chặn design đang chờ PM, để họ biết còn cách chốt bao xa.
 
 ---
 
