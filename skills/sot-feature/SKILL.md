@@ -64,6 +64,7 @@ Script tạo `CLAUDE.md`, `decisions.md`, `open-questions.md`, `design/screen-in
 - **Doc PM đã có flowchart:** giữ nguyên flowchart đó trong brief, vì đó là nội dung của PM. Flowchart của design (bước 6) vẽ theo Figma, đặt ở khối FLOWCHART đầu brief. Hai sơ đồ lệch nhau ở bước nào thì ghi bước đó vào `open-questions.md`. Không âm thầm sửa sơ đồ của PM.
 - **Doc cần phản biện** (doc mới, còn mơ hồ, mâu thuẫn với Figma): chạy skill `spec-review`. Kết quả review nằm trong `brief/`, các câu hỏi đi vào `open-questions.md`.
 - **Chưa có AC, hoặc AC chưa kiểm thử được**: dùng skill `document-fullstack-v2` để viết AC dạng Gherkin. Đánh dấu rõ AC nào do design viết và đang chờ PM xác nhận.
+- **Doc PM và design đã chốt → viết doc chính thức của tính năng bằng `document-fullstack-v2` + `flowchart`.** Bắt buộc có flowchart của luồng (skill `flowchart`) nhúng vào mục Flow và **ảnh UI cắt từ Figma** đính vào doc (không chỉ link). File `brief/YYYY-MM-DD_ac-<tính-năng>-v<x.y.z>.xml` + `.html` + thư mục `_assets/` là nguồn duy nhất cho tính năng, thay brief / spec Markdown cũ (chuyển vào `_archive/`). Không viết spec chốt bằng Markdown thủ công.
 
 ## Bước 5: Nối frame ↔ AC ↔ quyết định
 

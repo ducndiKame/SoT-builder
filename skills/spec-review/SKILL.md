@@ -230,6 +230,7 @@ Khi PM đã trả lời hết câu chặn design:
 1. Viết **bản review cuối**: "Design đã chốt theo các quyết định sau" + "Câu hỏi logic cho PM / dev (không mở lại vòng design)".
 2. Bỏ ⚠️ trên các frame đã dựng trước. Frame nào PM chọn khác (a) thì sửa theo bảng đã ghi.
 3. Câu không chặn design chuyển sang open-questions cho dev / PM.
+4. **Viết doc chính thức của tính năng bằng skill `document-fullstack-v2`**, kèm flowchart từ skill `flowchart` và ảnh UI cắt từ Figma đính vào doc. Không viết spec chốt bằng Markdown thủ công. Dự án SoT: doc này thay brief / spec cũ, rồi chạy `sot-sync` để dọn file phụ trợ và xoá review.
 
 Mỗi vòng, nói rõ cho người dùng biết còn bao nhiêu câu chặn design đang chờ PM, để họ biết còn cách chốt bao xa.
 

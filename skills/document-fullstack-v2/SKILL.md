@@ -51,17 +51,28 @@ Dùng `mcp__figma__get_metadata` hoặc một script `use_figma` đọc-only đ�
 ### 2. Lấy context & copy từng frame
 Với mỗi frame cần đưa vào spec: gọi `mcp__figma__get_design_context` (context + screenshot) và, nếu cần bảng Copy riêng, thêm 1 lệnh `use_figma` extract text như ở bảng trên.
 
+### 2b. Flowchart (BẮT BUỘC, v2.2)
+Gọi skill `flowchart` để vẽ luồng của tính năng theo Figma + doc (mỗi bước là màn, tách nhánh, retry). Lưu `.mmd` + `.html` theo skill đó (dự án SoT: `design/<tính-năng>-flow.mmd`). Nhúng **nguyên văn** sơ đồ vào mục Flow của doc (xem `references/xhtml-snippets.md` → "Flowchart mermaid"), bọc giữa `<!-- FLOWCHART:START -->` / `<!-- FLOWCHART:END -->`. Sửa `.mmd` thì sửa luôn khối này.
+
+### 2c. Chụp UI từ Figma thành ảnh (BẮT BUỘC, v2.2)
+Doc phải có **ảnh UI thật**, không chỉ link:
+1. Mỗi frame xuất hiện ở cột Link UI → `mcp__figma__get_screenshot` (`maxDimension` 800, không bật base64) lấy URL ảnh.
+2. Tải ảnh về bằng `curl -f -L -o <slug>.png "<url>"` vào thư mục `<tên-doc>_assets/` cạnh file `.xml` (URL chỉ sống ngắn hạn, tải ngay). `slug` kebab-case theo state, ví dụ `fasting-running.png`.
+3. Cột Link UI: `<ac:image ac:width="220"><ri:attachment ri:filename="<slug>.png"/></ac:image>` rồi tới hyperlink Figma. Frame có popup / sheet thì chụp frame chứa popup / sheet đó.
+4. Kiểm tra: không còn ô Link UI nào chỉ có link (trừ scenario thuần logic, ghi "—").
+
 ### 3. Build storage XHTML AC Gherkin
 Dùng template `references/xhtml-template.xml` (hoặc `references/example-home-body.xml` làm mẫu) + fill các AC table. Cấu trúc bắt buộc theo `references/format-spec.md`:
 - TOC macro
+- Version History
 - System Requirement (Figma link)
-- Flow (mô tả ngắn, optional diagram)
-- Functional Requirement → nhiều AC (mỗi AC 1 table 7 cột)
+- Flow (2–3 câu + **flowchart mermaid từ bước 2b**)
+- Functional Requirement → nhiều AC (mỗi AC 1 table 7 cột, cột Link UI có **ảnh** từ bước 2c)
 - Validation Rules (nếu có form input)
 - Non-functional Requirement (key remote bật/tắt + key remote config JSON)
 
-### 4. Lưu file local
-Ghi nội dung XHTML ra file tại `output_path` (mặc định `spec-<feature-slug>.xml` trong thư mục làm việc). Đây là deliverable cuối — nếu người dùng muốn đưa lên Confluence, họ tự dán nội dung này vào "Edit source" của trang Confluence theo cách thủ công; skill không tự gọi API publish.
+### 4. Lưu file local + bản HTML
+Ghi nội dung XHTML ra file tại `output_path` (mặc định `spec-<feature-slug>.xml` trong thư mục làm việc). Sau đó chạy `python scripts/xhtml_to_html.py <file>.xml` để sinh `<file>.html` tự chứa: ảnh nhúng base64 và flowchart được render, gửi file đi vẫn xem được. Script báo ảnh thiếu thì tải bổ sung rồi chạy lại. Muốn đưa lên Confluence: dán XHTML vào "Edit source" và upload thư mục `_assets` làm attachment; skill không tự gọi API publish.
 
 ## Format AC table — 7 cột bắt buộc
 
@@ -70,7 +81,7 @@ Ghi nội dung XHTML ra file tại `output_path` (mặc định `spec-<feature-s
 - **Scenario**: số thứ tự + tên ngắn (`1. Tap "Resume conversation"`)
 - **Given/When/Then**: bullet list, business-readable
 - **Note**: business rule phụ / cross-link memory `[[xxx]]`
-- **Link UI**: hyperlink thẳng tới frame trên Figma (`https://figma.com/design/{fileKey}?node-id={nodeId}`) — không còn `<ac:image>`/attachment vì không tự upload lên Confluence nữa
+- **Link UI**: **ảnh chụp frame** (`<ac:image>` + attachment trong `<tên-doc>_assets/`, bước 2c) **và** hyperlink tới frame Figma (`https://figma.com/design/{fileKey}?node-id={nodeId}`). Chỉ có link là thiếu (v2.2)
 - **Updated Time**: `DD MMM YYYY`
 
 ## Quy tắc nội dung
@@ -124,10 +135,13 @@ Ghi nội dung XHTML ra file tại `output_path` (mặc định `spec-<feature-s
 
 ## Trong dự án SoT
 
-Nếu dự án có `CLAUDE.md` chứa `<!-- FEATURES -->` (dựng bằng `sot-init`), mặc định `output_path` là `features/<tính-năng>/brief/YYYY-MM-DD_ac-<tính-năng>-v<x.y.z>.xml`, version lấy theo tên section Figma. Ghi thêm một dòng trỏ tới file này trong `CLAUDE.md` của tính năng, và điền cột "AC liên quan" trong `design/screen-inventory.md` theo mã AC vừa viết. AC do design viết, chưa có PM duyệt thì đánh dấu "chờ PM xác nhận".
+Nếu dự án có `CLAUDE.md` chứa `<!-- FEATURES -->` (dựng bằng `sot-init`), mặc định `output_path` là `features/<tính-năng>/brief/YYYY-MM-DD_ac-<tính-năng>-v<x.y.z>.xml`, version lấy theo tên section Figma. Ảnh UI ở `brief/YYYY-MM-DD_ac-<tính-năng>-v<x.y.z>_assets/`, flowchart ở `design/<tính-năng>-flow.mmd` (+ `.html`). Ghi thêm một dòng trỏ tới file này trong `CLAUDE.md` của tính năng, và điền cột "AC liên quan" trong `design/screen-inventory.md` theo mã AC vừa viết. AC do design viết, chưa có PM duyệt thì đánh dấu "chờ PM xác nhận".
+
+**Khi doc PM và design của tính năng đã chốt**, doc chính thức của tính năng trong SoT **luôn** viết bằng skill này (kèm flowchart từ skill `flowchart` và ảnh UI cắt từ Figma), không viết spec Markdown thủ công. Doc này thay hoàn toàn brief / spec cũ của cùng version: chuyển bản cũ vào `_archive/`, sửa link, rồi chạy `sot-sync` để dọn handoff, ui-copy, doc-vs-design và flowchart.
 
 ## Changelog
 
+- **v2.2** — Doc bắt buộc có **flowchart** (gọi skill `flowchart`, nhúng mermaid vào mục Flow) và **ảnh UI chụp từ Figma** trong cột Link UI (`get_screenshot` → tải PNG vào `_assets/` → `<ac:image>`), không chỉ link. Thêm `scripts/xhtml_to_html.py` sinh HTML tự chứa (ảnh base64, render mermaid). Quy tắc SoT: doc PM + design chốt → doc tính năng viết bằng skill này.
 - **v2.1** — Bỏ nhánh Confluence (script `confluence_publish.py`, 3 biến `CONFLUENCE_USER/PAT/BASE`, bước publish/upload attachment) và bỏ MCP `figma-talk`/script `figma_export.py` (yêu cầu `FIGMA_PAT`). Toàn bộ truy cập Figma chuyển sang MCP `figma` chính thức (OAuth, đã kết nối sẵn). Cột "Link UI" đổi từ `<ac:image>` + attachment sang hyperlink thẳng tới frame Figma. Deliverable là file XHTML lưu local, không tự publish.
 - **v2.0** — Thêm phase **Edge-Case Discovery** trước khi viết AC table (path-tracer đọc code + taxonomy 5 nhóm cho spec/Figma), fold self-contained vào `references/edge-case-method.md`; thêm bước 4 vào pre-write checklist; mở rộng description để trigger cả "dò edge case". Nguồn method: gộp `bmad-review-edge-case-hunter` (path enumeration) + `deliver-edge-cases` (taxonomy + recovery + priority).
 - **v1.0** — Pipeline Figma → PNG → Confluence → AC Gherkin 7 cột.

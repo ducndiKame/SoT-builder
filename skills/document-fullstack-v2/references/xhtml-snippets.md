@@ -63,3 +63,25 @@ Types: `info`, `note`, `warning`, `tip`.
 - `<` → `&lt;`
 - `>` → `&gt;`
 - Trong code/pre: vẫn cần escape
+
+## Flowchart mermaid (v2.2)
+Nhúng nguyên văn sơ đồ do skill `flowchart` tạo vào mục Flow. CDATA giữ nguyên ký tự `<`, `>`, `&`, `"` trong sơ đồ.
+```xml
+<!-- FLOWCHART:START -->
+<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">mermaid</ac:parameter>
+  <ac:plain-text-body><![CDATA[flowchart TD
+  A(["Màn A"]) -->|"Tap X"| B(["Màn B"])
+]]></ac:plain-text-body>
+</ac:structured-macro>
+<!-- FLOWCHART:END -->
+```
+
+## Ảnh UI trong cột Link UI (v2.2)
+```xml
+<td>
+  <p><ac:image ac:width="220"><ri:attachment ri:filename="fasting-running.png"/></ac:image></p>
+  <p><a href="https://www.figma.com/design/{KEY}/...?node-id={ID}">Link UI</a></p>
+</td>
+```
+Ảnh nằm trong `<tên-doc>_assets/`; `scripts/xhtml_to_html.py` nhúng base64 vào bản HTML.
