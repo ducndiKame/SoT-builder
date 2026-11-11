@@ -35,7 +35,7 @@ Chia thành nhiều `<h2>Acceptance Criteria N: {tên nhóm}</h2>`. Mỗi AC = 1
   <td><ul><li>{outcome 1}</li><li>{outcome 2}</li></ul></td>
   <td>{business rule phụ / cross-link memory}</td>
   <td>
-    <p><ac:image ac:width="360"><ri:attachment ri:filename="{slug}.png"/></ac:image></p>
+    <p><ac:image ac:width="240"><ri:attachment ri:filename="{slug}.png"/></ac:image></p>
     <p><a href="{FIGMA_URL}">Link UI</a></p>
   </td>
   <td>DD MMM YYYY</td>

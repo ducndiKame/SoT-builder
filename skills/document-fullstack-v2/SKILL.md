@@ -58,7 +58,7 @@ Gọi skill `flowchart` để vẽ luồng của tính năng theo Figma + doc (m
 Doc phải có **ảnh UI thật**, không chỉ link:
 1. Mỗi frame xuất hiện ở cột Link UI → `mcp__figma__get_screenshot` (`maxDimension` 800, không bật base64) lấy URL ảnh.
 2. Tải ảnh về bằng `curl -f -L -o <slug>.png "<url>"` vào thư mục `<tên-doc>_assets/` cạnh file `.xml` (URL chỉ sống ngắn hạn, tải ngay). `slug` kebab-case theo state, ví dụ `fasting-running.png`.
-3. Cột Link UI: `<ac:image ac:width="360"><ri:attachment ri:filename="<slug>.png"/></ac:image>` rồi tới hyperlink Figma. **Kích thước chuẩn (v2.4, user chốt 11/11/2026):** ảnh màn điện thoại `ac:width="360"`; ảnh cắt component ngang (card, banner) `ac:width="560"`. Không dùng ảnh nhỏ hơn: ảnh phải đọc được chữ khi đặt cạnh cột context. Frame có popup / sheet thì chụp frame chứa popup / sheet đó.
+3. Cột Link UI: `<ac:image ac:width="240"><ri:attachment ri:filename="<slug>.png"/></ac:image>` rồi tới hyperlink Figma. **Kích thước chuẩn (v2.4, user chốt 11/11/2026):** ảnh màn điện thoại `ac:width="240"`; ảnh cắt component ngang (card, banner) `ac:width="373"`. Ảnh phải đọc được chữ khi đặt cạnh cột context; 360 là quá to, 180–220 là quá nhỏ. Frame có popup / sheet thì chụp frame chứa popup / sheet đó.
 4. Kiểm tra: không còn ô Link UI nào chỉ có link (trừ scenario thuần logic, ghi "—").
 
 ### 3. Build storage XHTML AC Gherkin
@@ -153,7 +153,7 @@ Nếu dự án có `CLAUDE.md` chứa `<!-- FEATURES -->` (dựng bằng `sot-in
 
 ## Changelog
 
-- **v2.4** — Ảnh UI to gấp đôi: màn điện thoại `ac:width="360"`, component ngang `560` (trước là 180–220). Flowchart trong HTML bấm được để mở toàn màn hình, zoom (＋/－, cuộn chuột, nhấp đúp), kéo để di chuyển, Vừa khung / 100%, Esc để đóng. Phần này nằm sẵn trong `scripts/xhtml_to_html.py` (khối FLOWZOOM), không cần làm tay.
+- **v2.4** — Ảnh UI chuẩn: màn điện thoại `ac:width="240"`, component ngang `373` (user thử 360 thấy quá to, chốt 2/3 của 360; trước là 180–220). Flowchart trong HTML bấm được để mở toàn màn hình, zoom (＋/－, cuộn chuột, nhấp đúp), kéo để di chuyển, Vừa khung / 100%, Esc để đóng. Phần này nằm sẵn trong `scripts/xhtml_to_html.py` (khối FLOWZOOM), không cần làm tay.
 - **v2.3** — Doc AC phải đủ thông tin như doc PM: thêm 3 mục bắt buộc **Phạm vi**, **UI Copy** (nguyên văn Figma + PRD, đủ biến thể), **Tham chiếu tính toán** (công thức, bảng mức, ví dụ tính); thêm bước 3b tự đối chiếu từng mục doc PM bằng script tìm chuỗi trước khi báo xong. Happy case không có mục riêng (đã nằm trong AC).
 - **v2.2** — Doc bắt buộc có **flowchart** (gọi skill `flowchart`, nhúng mermaid vào mục Flow) và **ảnh UI chụp từ Figma** trong cột Link UI (`get_screenshot` → tải PNG vào `_assets/` → `<ac:image>`), không chỉ link. Thêm `scripts/xhtml_to_html.py` sinh HTML tự chứa (ảnh base64, render mermaid). Quy tắc SoT: doc PM + design chốt → doc tính năng viết bằng skill này.
 - **v2.1** — Bỏ nhánh Confluence (script `confluence_publish.py`, 3 biến `CONFLUENCE_USER/PAT/BASE`, bước publish/upload attachment) và bỏ MCP `figma-talk`/script `figma_export.py` (yêu cầu `FIGMA_PAT`). Toàn bộ truy cập Figma chuyển sang MCP `figma` chính thức (OAuth, đã kết nối sẵn). Cột "Link UI" đổi từ `<ac:image>` + attachment sang hyperlink thẳng tới frame Figma. Deliverable là file XHTML lưu local, không tự publish.

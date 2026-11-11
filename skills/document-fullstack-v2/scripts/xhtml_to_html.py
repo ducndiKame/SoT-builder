@@ -46,7 +46,7 @@ body = re.sub(r'<ac:structured-macro ac:name="code">\s*<ac:parameter ac:name="la
 # 3. images -> base64
 missing = []
 def img(m):
-    width = m.group(1) or "360"
+    width = m.group(1) or "240"
     fn = m.group(2)
     p = os.path.join(assets, fn)
     if not os.path.isfile(p):
