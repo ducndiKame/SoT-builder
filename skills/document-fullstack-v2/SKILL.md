@@ -1,10 +1,10 @@
 ---
 name: document-fullstack-v2
 description: Viết spec feature theo format AC Gherkin (Apero standard), lấy dữ liệu Figma qua MCP `figma` chính thức, kèm Edge-Case Discovery (đọc code / spec để dò edge case chưa handle trước khi viết AC). Xuất kết quả ra file XHTML/HTML local (không tự publish). Dùng khi user yêu cầu "viết spec", "tạo doc AC Gherkin", "dò edge case cho feature" cho feature mới hoặc rewrite feature cũ. Default skill cho IIP506 và mọi app Apero sau này.
-version: "2.1"
+version: "2.3"
 ---
 
-# AC Gherkin Doc Skill (v2.1)
+# AC Gherkin Doc Skill (v2.3)
 
 Pipeline tự động: **Edge-Case Discovery → đọc Figma (qua MCP `figma`) → AC Gherkin storage XHTML → lưu file local**.
 
@@ -66,10 +66,22 @@ Dùng template `references/xhtml-template.xml` (hoặc `references/example-home-
 - TOC macro
 - Version History
 - System Requirement (Figma link)
+- **Phạm vi** (v2.3, bắt buộc): có / không có trong bản này, dữ liệu lưu ở đâu, thay đổi so với bản trước (bảng cũ → mới nếu doc PM có)
 - Flow (2–3 câu + **flowchart mermaid từ bước 2b**)
 - Functional Requirement → nhiều AC (mỗi AC 1 table 7 cột, cột Link UI có **ảnh** từ bước 2c)
+- **UI Copy** (v2.3, bắt buộc): bảng `Màn / thành phần | Copy (EN) | Biến thể / điều kiện | Ghi chú`, chép **nguyên văn** từ Figma (`use_figma` lấy `.characters`) và doc PM, đủ mọi biến thể (theo trạng thái, theo mục tiêu, lỗi, toast, popup, push). Copy Figma lệch doc PM thì ghi cả hai ở cột Ghi chú, không tự chọn
+- **Tham chiếu tính toán** (v2.3, bắt buộc khi doc PM có công thức / bảng mức / ví dụ): công thức, bảng ngưỡng, định nghĩa chỉ số, ví dụ tính của PM giữ đủ số liệu. Không chép lại business rule đã nằm ở cột Note
 - Validation Rules (nếu có form input)
 - Non-functional Requirement (key remote bật/tắt + key remote config JSON)
+
+Thứ tự H1: Version History › System Requirement › Phạm vi › Flow › Functional Requirement › UI Copy › Tham chiếu tính toán › Validation Rules › NFR.
+
+### 3b. Tự đối chiếu với doc PM (BẮT BUỘC, v2.3)
+Doc AC phải **đủ thông tin như doc PM**: quy tắc "không mô tả UI bằng chữ" chỉ áp cho cột Then, không được làm mất copy, phạm vi, công thức hay ví dụ tính. Trước khi báo xong:
+1. Liệt kê từng mục / ý của doc PM (business rule, edge case, copy, phạm vi, công thức, ví dụ, thay đổi so với bản trước) kèm một chuỗi đặc trưng của mục đó.
+2. Chạy script tìm chuỗi (chuẩn hoá khoảng trắng, entity, dấu nháy, chữ thường) trên file `.xml` và in `N/M có trong doc AC` + danh sách THIẾU.
+3. Bổ sung mọi mục thiếu, chạy lại tới khi đủ (mục chỉ khác tiêu đề thì ghi rõ trong báo cáo).
+Happy case **không** cần mục riêng: đã nằm trong các bảng AC.
 
 ### 4. Lưu file local + bản HTML
 Ghi nội dung XHTML ra file tại `output_path` (mặc định `spec-<feature-slug>.xml` trong thư mục làm việc). Sau đó chạy `python scripts/xhtml_to_html.py <file>.xml` để sinh `<file>.html` tự chứa: ảnh nhúng base64 và flowchart được render, gửi file đi vẫn xem được. Script báo ảnh thiếu thì tải bổ sung rồi chạy lại. Muốn đưa lên Confluence: dán XHTML vào "Edit source" và upload thư mục `_assets` làm attachment; skill không tự gọi API publish.
@@ -141,6 +153,7 @@ Nếu dự án có `CLAUDE.md` chứa `<!-- FEATURES -->` (dựng bằng `sot-in
 
 ## Changelog
 
+- **v2.3** — Doc AC phải đủ thông tin như doc PM: thêm 3 mục bắt buộc **Phạm vi**, **UI Copy** (nguyên văn Figma + PRD, đủ biến thể), **Tham chiếu tính toán** (công thức, bảng mức, ví dụ tính); thêm bước 3b tự đối chiếu từng mục doc PM bằng script tìm chuỗi trước khi báo xong. Happy case không có mục riêng (đã nằm trong AC).
 - **v2.2** — Doc bắt buộc có **flowchart** (gọi skill `flowchart`, nhúng mermaid vào mục Flow) và **ảnh UI chụp từ Figma** trong cột Link UI (`get_screenshot` → tải PNG vào `_assets/` → `<ac:image>`), không chỉ link. Thêm `scripts/xhtml_to_html.py` sinh HTML tự chứa (ảnh base64, render mermaid). Quy tắc SoT: doc PM + design chốt → doc tính năng viết bằng skill này.
 - **v2.1** — Bỏ nhánh Confluence (script `confluence_publish.py`, 3 biến `CONFLUENCE_USER/PAT/BASE`, bước publish/upload attachment) và bỏ MCP `figma-talk`/script `figma_export.py` (yêu cầu `FIGMA_PAT`). Toàn bộ truy cập Figma chuyển sang MCP `figma` chính thức (OAuth, đã kết nối sẵn). Cột "Link UI" đổi từ `<ac:image>` + attachment sang hyperlink thẳng tới frame Figma. Deliverable là file XHTML lưu local, không tự publish.
 - **v2.0** — Thêm phase **Edge-Case Discovery** trước khi viết AC table (path-tracer đọc code + taxonomy 5 nhóm cho spec/Figma), fold self-contained vào `references/edge-case-method.md`; thêm bước 4 vào pre-write checklist; mở rộng description để trigger cả "dò edge case". Nguồn method: gộp `bmad-review-edge-case-hunter` (path enumeration) + `deliver-edge-cases` (taxonomy + recovery + priority).

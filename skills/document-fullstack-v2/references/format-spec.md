@@ -52,6 +52,15 @@ Rules:
 - Note: business rule phụ, cross-link `[[memory-name]]` khi cần
 - Link UI: image embed + hyperlink Figma node
 
+### 4a. Phạm vi (bắt buộc, v2.3 — đặt trước Flow)
+Bullet "Có trong bản này" / "Không có trong bản này" (kèm bản nào làm), dữ liệu lưu ở đâu, bảng "Thay đổi so với bản trước" (cũ → mới) nếu doc PM có.
+
+### 4b. UI Copy (bắt buộc, v2.3 — đặt sau Functional Requirement)
+Table 4 cột: `Màn / thành phần | Copy (EN) | Biến thể / điều kiện | Ghi chú`. Copy chép nguyên văn từ Figma + doc PM, đủ mọi biến thể (trạng thái, mục tiêu, lỗi, toast, popup, push). Figma lệch doc PM → ghi cả hai ở Ghi chú.
+
+### 4c. Tham chiếu tính toán (bắt buộc khi doc PM có công thức / bảng mức / ví dụ, v2.3)
+Công thức, bảng ngưỡng, định nghĩa chỉ số, ví dụ tính giữ đủ số liệu. Đây là dữ liệu tham chiếu, không phải "Business Rules section": rule hành vi vẫn ở cột Note.
+
 ### 5. Validation Rules (chỉ khi feature có form input)
 Table 4 cột: `Tên | Validation Rules | Mô tả | UI`
 
