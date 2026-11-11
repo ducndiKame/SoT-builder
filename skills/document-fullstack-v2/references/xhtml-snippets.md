@@ -9,7 +9,7 @@
 
 ## Image attachment embed
 ```xml
-<ac:image ac:width="220">
+<ac:image ac:width="360">
   <ri:attachment ri:filename="screen.png"/>
 </ac:image>
 ```
@@ -80,7 +80,7 @@ Nhúng nguyên văn sơ đồ do skill `flowchart` tạo vào mục Flow. CDATA 
 ## Ảnh UI trong cột Link UI (v2.2)
 ```xml
 <td>
-  <p><ac:image ac:width="220"><ri:attachment ri:filename="fasting-running.png"/></ac:image></p>
+  <p><ac:image ac:width="360"><ri:attachment ri:filename="fasting-running.png"/></ac:image></p>
   <p><a href="https://www.figma.com/design/{KEY}/...?node-id={ID}">Link UI</a></p>
 </td>
 ```

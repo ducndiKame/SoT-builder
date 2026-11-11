@@ -31,7 +31,7 @@ Sinh **file diagram Mermaid** (`.mmd`) + **HTML render** cho một luồng app/t
 | File | Vai trò |
 |---|---|
 | `mermaid-conventions.md` | **Đọc trước khi viết .mmd** — node types, bảng màu classDef, quy ước nhánh ✅/❌, mã lỗi, retry, terminator/decision |
-| `render.py` | `.mmd` → `.html` self-contained (Mermaid CDN + legend). Optional: nhúng bảng tra mã lỗi |
+| `render.py` | `.mmd` → `.html` self-contained (Mermaid CDN + legend). Optional: nhúng bảng tra mã lỗi. HTML có sẵn bộ xem tương tác (khối FLOWZOOM): bấm sơ đồ để mở toàn màn hình, zoom ＋/－ / cuộn chuột / nhấp đúp, kéo để di chuyển, Vừa khung, 100%, Esc để đóng. Mọi renderer có mermaid (`xhtml_to_html.py`, `_tools/mmd_to_html.py`, `_tools/md_to_html.py`) dùng cùng khối này |
 | `examples/languoso-lipe-flow-to-speaking.mmd` (+ `.html`) | Ví dụ mẫu đầy đủ: luồng Languoso LIPE learning → AI Speaking, 3 phân đoạn (Scenario detail / LIPE learning / AI Speaking) gói trong subgraph, gate remote-config 2 key, nhánh ✅/❌ kèm mã lỗi (ERR107/108/17), retry `-.->`, node hide/kill per-screen |
 
 ## Mức chi tiết (tùy yêu cầu)
