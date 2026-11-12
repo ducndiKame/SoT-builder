@@ -181,6 +181,7 @@ Mục tiêu là doc và Figma không mâu thuẫn ở bất kỳ thời điểm 
 - Câu đã chốt → bỏ ⚠️, đổi note sang quy tắc đã chốt. Chỉ giữ note thật cần thiết.
 - Text doc thay đổi (headline, option, copy) → sửa Figma theo **text**, không theo mock.
 - Kiểm tra cả số liệu minh hoạ trong cùng một luồng: số giữa các màn phải khớp nhau, dù không phải expected value.
+- Mỗi thang / trạng thái nhiều giá trị trong doc (hạng, cấp độ, gói, trạng thái) phải có đủ state trên Figma ở **mọi** chỗ hiển thị, không chỉ một giá trị mẫu (checklist mục 19).
 - Trước khi sửa bố cục mà người dùng đã tự sắp, hỏi họ trước.
 - Ghi lại danh sách frame / node đã đổi vào file review và vào danh sách màn của tính năng.
 

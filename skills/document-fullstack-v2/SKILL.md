@@ -81,6 +81,8 @@ Doc AC phải **đủ thông tin như doc PM**: quy tắc "không mô tả UI b�
 1. Liệt kê từng mục / ý của doc PM (business rule, edge case, copy, phạm vi, công thức, ví dụ, thay đổi so với bản trước) kèm một chuỗi đặc trưng của mục đó.
 2. Chạy script tìm chuỗi (chuẩn hoá khoảng trắng, entity, dấu nháy, chữ thường) trên file `.xml` và in `N/M có trong doc AC` + danh sách THIẾU.
 3. Bổ sung mọi mục thiếu, chạy lại tới khi đủ (mục chỉ khác tiêu đề thì ghi rõ trong báo cáo).
+4. Đối chiếu **state trên Figma**: với mỗi thang / trạng thái nhiều giá trị trong doc PM (hạng, cấp độ, gói, trạng thái), liệt kê giá trị × chỗ hiển thị và kiểm Figma có frame hoặc variant cho từng ô. Ô nào thiếu thì báo user trước khi đóng doc, không coi `N/M` chuỗi là đủ.
+
 Happy case **không** cần mục riêng: đã nằm trong các bảng AC.
 
 ### 4. Lưu file local + bản HTML

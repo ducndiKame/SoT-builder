@@ -23,6 +23,7 @@ Nhóm **★** là những nhóm từng bị phát hiện muộn (vòng 2–5) d�
 16. Copy, thị trường, claim
 17. Phạm vi ngầm
 18. Lỗi do chính design để lại
+19. ★ Mỗi giá trị của thang / trạng thái đều có hình
 
 ---
 
@@ -171,3 +172,12 @@ Với mỗi màn:
 - Nhãn hoặc annotation sót khi clone connector, PM chép vào doc thành logic ("Auto next").
 - Mock design có dữ liệu sai (serving, đơn vị).
 - Trước khi review chế độ doc ↔ Figma, dọn Figma trước. Lỗi của design thì ghi "Lỗi của design".
+
+## 19. ★ Mỗi giá trị của thang / trạng thái đều có hình
+
+- Doc có thang, cấp độ hay trạng thái gồm nhiều giá trị không (hạng E–S, mức BMI, cấp streak, gói Free / Pro, trạng thái đơn)? Lập ma trận **giá trị × chỗ hiển thị** (mỗi màn, component dùng giá trị đó) rồi kiểm từng ô trên Figma.
+- Figma chỉ vẽ một giá trị mẫu (thường là giá trị đẹp nhất) thì phải hỏi: các giá trị còn lại khác nhau ở đâu (màu, icon, copy, minh hoạ, thông điệp)? Đây là việc của design, không cần chờ PM: ghi thành mục **Design đề xuất**, dựng đủ state, kèm câu viết sẵn cho doc.
+- Kiểm cả giá trị đặc biệt: chưa có ("--"), không áp dụng (Not scored), mức thấp nhất (động viên, không chê), mức cao nhất, giá trị nằm đúng ngưỡng.
+- Đếm "N/M chuỗi có trong doc" chỉ chứng minh doc chép đủ chữ, **không** chứng minh design đủ state.
+
+> Ví dụ đã sót: PRD có thang 6 hạng E → S kèm ngưỡng điểm. Figma chỉ vẽ hạng A màu xanh lá ở cả 2 chỗ (thẻ điểm lúc tập, Completed). Qua 4 vòng review và cả doc AC, không ai hỏi E, D, C, B, S trông thế nào; designer tự phát hiện sau khi đã đóng doc.
